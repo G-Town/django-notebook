@@ -15,7 +15,7 @@ from datetime import timedelta
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+# load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -95,6 +95,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# for deployment
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -105,6 +106,14 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT"),
     }
 }
+
+# for local
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3"
+#     }
+# }
 
 
 # Password validation

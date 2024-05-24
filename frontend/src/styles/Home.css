@@ -1,7 +1,7 @@
 /* Container for the whole page */
-div {
+/* div {
   font-family: Arial, sans-serif;
-}
+} */
 
 /* Styles for the notes section */
 .notes-section {
@@ -61,6 +61,7 @@ form input[type="submit"] {
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+  font-weight: 600;
 }
 
 form input[type="submit"]:hover {
