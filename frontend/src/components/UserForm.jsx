@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+// import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import { AuthContext } from "../AuthContext";
 import "../styles/Form.css";
 import LoadingIndicator from "./LoadingIndicator";
 
 // eslint-disable-next-line react/prop-types
-function Form({ route, method }) {
+function UserForm({ route, method }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const name = method === "login" ? "Login" : "Register";
 
@@ -21,8 +23,9 @@ function Form({ route, method }) {
     try {
       const res = await api.post(route, { username, password });
       if (method === "login") {
-        localStorage.setItem(ACCESS_TOKEN, res.data.access);
-        localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+        // localStorage.setItem(ACCESS_TOKEN, res.data.access);
+        // localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+        login(res.data.access, res.data.refesh);
         navigate("/");
       } else {
         navigate("/login");
@@ -59,4 +62,4 @@ function Form({ route, method }) {
   );
 }
 
-export default Form;
+export default UserForm;

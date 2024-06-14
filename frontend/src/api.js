@@ -1,15 +1,18 @@
 import axios from "axios";
-import { ACCESS_TOKEN } from "./constants";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constants";
 
-const apiUrl = "/choreo-apis/django-notebook/backend/v1"
+const apiUrl = "/choreo-apis/django-notebook/backend/v1";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL : apiUrl
-})
+  baseURL: import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL : apiUrl,
+});
 
-// Set up interceptor to modify outgoing requests before they are sent.
-// This allows us to use the access token with every request to
-// authenticate use with backend API.
+// Set up interceptors to modify outgoing requests before they are sent.
+// This automatically adds the access and refresh tokens with every
+// request to authenticate use with backend API, so we don't have to
+// manually add it in the hearder of every request.
+
+// request interceptor
 api.interceptors.request.use(
   (config) => {
     // use access token as auth header if we have one
@@ -22,6 +25,48 @@ api.interceptors.request.use(
   (error) => {
     return Promise.reject(error);
   }
+);
+
+// function to refersh the access token
+const refreshToken = async () => {
+  try {
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN);
+    const response = await api.post("/api/token/refresh/", {
+      refresh: refreshToken,
+    });
+    localStorage.setItem(ACCESS_TOKEN, response.data.access);
+    return response.data.access;
+  } catch (error) {
+    localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(REFRESH_TOKEN);
+    throw error;
+  }
+};
+
+// response interceptor to handle 401 errors and refresh the token
+const handleResponseError = async (error) => {
+  const originalRequest = error.config;
+  if (
+    error.response &&
+    error.response.status === 401 &&
+    !originalRequest._retry
+  ) {
+    originalRequest._retry = true;
+    try {
+      const newAccessToken = await refreshToken();
+      api.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
+      originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+      return api(originalRequest);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+  return Promise.reject(error);
+};
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => handleResponseError(error)
 );
 
 export default api;
