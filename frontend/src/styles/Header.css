@@ -1,0 +1,27 @@
+/* Header.css */
+
+.header {
+  /* font-family:serif ; */
+  background-color:brown;
+  color: white;
+  padding: 10px 20px;
+}
+
+.nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+.nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.nav ul li a:hover {
+  text-decoration: underline;
+}

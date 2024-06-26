@@ -27,10 +27,24 @@ api.interceptors.request.use(
   }
 );
 
+let isRefreshing = false;
+let refreshSubscribers = [];
+
+const onRefreshed = (token) => {
+  refreshSubscribers.forEach((callback) => callback(token));
+  refreshSubscribers = [];
+};
+
+const addRefreshSubscriber = (callback) => {
+  refreshSubscribers.push(callback);
+};
+
 // function to refersh the access token
 const refreshToken = async () => {
   try {
+    
     const refreshToken = localStorage.getItem(REFRESH_TOKEN);
+    // console.log("🚀 ~ refreshToken ~ refreshToken:", refreshToken)
     const response = await api.post("/api/token/refresh/", {
       refresh: refreshToken,
     });
@@ -45,15 +59,34 @@ const refreshToken = async () => {
 
 // response interceptor to handle 401 errors and refresh the token
 const handleResponseError = async (error) => {
+  // console.log("🚀 ~ handleResponseError ~")
   const originalRequest = error.config;
   if (
     error.response &&
     error.response.status === 401 &&
     !originalRequest._retry
   ) {
+    if (isRefreshing) {
+      // If already refreshing, queue the request
+      // console.log("🚀 ~ handleResponseError ~ isRefreshing:", isRefreshing)
+      return new Promise((resolve) => {
+        addRefreshSubscriber((token) => {
+          originalRequest.headers["Authorization"] = `Bearer ${token}`;
+          resolve(api(originalRequest));
+        });
+      });
+    }
+
     originalRequest._retry = true;
+    isRefreshing = true;
+
     try {
+      // console.log("🚀 ~ try refreshToken() ~")
       const newAccessToken = await refreshToken();
+      // console.log("🚀 ~ handleResponseError ~ newAccessToken:", newAccessToken)
+      isRefreshing = false;
+      onRefreshed(newAccessToken);
+
       api.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
       originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
       return api(originalRequest);

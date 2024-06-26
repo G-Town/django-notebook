@@ -1,7 +1,6 @@
-// import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-// import { useContext } from "react";
-import { AuthProvider } from "./AuthContext";
+import { useContext, useEffect } from "react";
+import { AuthContext, AuthProvider } from "./AuthContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
@@ -10,22 +9,24 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Header from "./components/Header";
 
 function Logout() {
-  localStorage.clear();
+  // localStorage.clear();
+  const { logout } = useContext(AuthContext);
+  useEffect(() => {
+    logout();
+  }, [logout]);
   return <Navigate to="/login" />;
 }
 
 function RegisterAndLogout() {
-  localStorage.clear();
+  // TODO: better registration
+  // localStorage.clear();
   return <Register />;
 }
 
 function App() {
-  // const { isAuthenticated } = useContext(AuthContext);
-
   return (
     <AuthProvider>
       <BrowserRouter>
-        {/* {isAuthenticated && <Header />} */}
         <Header />
         <Routes>
           <Route

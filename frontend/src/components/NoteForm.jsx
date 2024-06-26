@@ -1,22 +1,26 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import api from "../api";
+import LoadingIndicator from "./LoadingIndicator";
+import "../styles/NoteForm.css";
 
 function NoteForm({ noteID, closeForm }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (noteID) {
       // add note data to form for editing
-      api.get(`/api/notes/${noteID}/`)
-        .then(res => res.data)
-        .then(data => {
+      api
+        .get(`/api/notes/${noteID}/`)
+        .then((res) => res.data)
+        .then((data) => {
           setTitle(data.title);
           setContent(data.content);
-          console.log("🚀 ~ useEffect ~ data:", data)
+          console.log("🚀 ~ useEffect ~ data:", data);
         })
-        .catch(err => alert(err));
+        .catch((err) => alert(err));
     } else {
       // new empty form
       setTitle("");
@@ -26,18 +30,21 @@ function NoteForm({ noteID, closeForm }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const data = { title, content };
     try {
       if (noteID) {
-      // note has been selected for editing
+        // note has been selected for editing
         await api.patch(`/api/notes/update/${noteID}/`, data);
       } else {
-      // writing new note
+        // writing new note
         await api.post("/api/notes/", data);
       }
       closeForm();
     } catch (error) {
       alert(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,6 +63,7 @@ function NoteForm({ noteID, closeForm }) {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
+      {loading && <LoadingIndicator />}
       <button type="submit">Save</button>
       <button type="button" onClick={closeForm}>
         Cancel

@@ -5,16 +5,26 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constants";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const [accessToken, setAccessToken] = useState(localStorage.getItem(ACCESS_TOKEN));
+  const [refreshToken, setRefreshToken] = useState(localStorage.getItem(REFRESH_TOKEN));
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem(ACCESS_TOKEN);
-    setIsAuthenticated(!!accessToken);
+    const storedAccessToken = localStorage.getItem(ACCESS_TOKEN);
+    const storedRefreshToken = localStorage.getItem(REFRESH_TOKEN);
+    // const accessToken = localStorage.getItem(ACCESS_TOKEN);
+    if (storedAccessToken && storedRefreshToken) {
+      setAccessToken(storedAccessToken);
+      setRefreshToken(storedRefreshToken);
+      setIsAuthenticated(true);
+    }
   }, []);
 
-  const login = (accessToken, refreshToken) => {
-    localStorage.setItem(ACCESS_TOKEN, accessToken);
-    localStorage.setItem(REFRESH_TOKEN, refreshToken);
+  const login = (newAccessToken, newRefreshToken) => {
+    localStorage.setItem(ACCESS_TOKEN, newAccessToken);
+    localStorage.setItem(REFRESH_TOKEN, newRefreshToken);
+    setAccessToken(newAccessToken);
+    setRefreshToken(newRefreshToken);
     setIsAuthenticated(true);
   };
 
@@ -24,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ accessToken, refreshToken, isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

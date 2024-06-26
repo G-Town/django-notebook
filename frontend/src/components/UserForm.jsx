@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
-// import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import { AuthContext } from "../AuthContext";
-import "../styles/Form.css";
+import "../styles/UserForm.css";
 import LoadingIndicator from "./LoadingIndicator";
 
 // eslint-disable-next-line react/prop-types
@@ -23,9 +23,12 @@ function UserForm({ route, method }) {
     try {
       const res = await api.post(route, { username, password });
       if (method === "login") {
-        // localStorage.setItem(ACCESS_TOKEN, res.data.access);
-        // localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-        login(res.data.access, res.data.refesh);
+        // console.log("Login response:", res.data);
+        localStorage.setItem(ACCESS_TOKEN, res.data.access);
+        localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+        // console.log("Access token stored:", localStorage.getItem(ACCESS_TOKEN));
+        // console.log("Refresh token stored:", localStorage.getItem(REFRESH_TOKEN));
+        login(res.data.access, res.data.refresh);
         navigate("/");
       } else {
         navigate("/login");
