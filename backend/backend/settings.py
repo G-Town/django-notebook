@@ -96,6 +96,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 # for debugging databases
+print("\ncheck environment variables:")
 print("DB_NAME:", os.getenv("DB_NAME"))
 print("DB_USER:", os.getenv("DB_USER"))
 print("DB_PWD:", os.getenv("DB_PWD"))
