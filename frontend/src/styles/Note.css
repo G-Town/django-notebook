@@ -4,6 +4,7 @@
   margin: 20px 0;
   border: 1px solid #ccc;
   border-radius: 5px;
+  background-color: beige;
 }
 
 .note-title {
@@ -19,30 +20,20 @@
   font-size: 0.8rem;
 }
 
-.delete-button {
-  background-color: #f44336; /* Red */
-  color: white;
+.note-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.note-actions button {
+  background: none;
   border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  color: #982424;
+  font-size: 1.2em;
+  transition: color 0.3s;
 }
 
-.edit-button {
-  background-color: #007bff; /* Blue */
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.delete-button:hover {
-  background-color: #d32f2f; /* Darker red */
-}
-
-.edit-button:hover {
-  background-color: #0056b3; /* Darker blue */
+.note-actions button:hover {
+  color: #711010;
 }

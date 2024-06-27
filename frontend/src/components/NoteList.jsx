@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api";
 import Note from "./Note";
-import NoteForm from "./NoteForm";
-// import "../styles/NoteList.css";
+// import NoteForm from "./NoteForm";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import "../styles/NoteList.css";
 
 const NoteList = () => {
-  
   const [notes, setNotes] = useState([]);
-  const [noteID, setNoteID] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  // const [noteID, setNoteID] = useState(null);
   // const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getNotes();
@@ -37,13 +41,11 @@ const NoteList = () => {
   };
 
   const handleEdit = (noteID) => {
-    setNoteID(noteID);
-    console.log("🚀 ~ handleEdit ~ noteID:", noteID);
+    navigate(`/note/${noteID}`);
   };
 
-  const handleCloseForm = () => {
-    setNoteID(null);
-    getNotes();
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
   };
 
   // if (loading) {
@@ -51,24 +53,23 @@ const NoteList = () => {
   // }
 
   return (
-    <div className="note-list">
-        <h2>Notes</h2>
-        {notes.map((note) => (
-          noteID === note.id ? (
-            <NoteForm
-              key={note.id}
-              noteID={note.id}
-              closeForm={handleCloseForm}
-            />
-          ) : (
+    <div className="note-list-container">
+      <div className="folder-name" onClick={toggleExpand}>
+        <h2>{isExpanded ? "Notes" : "Notes"}</h2>
+        <FontAwesomeIcon icon={isExpanded ? faChevronUp : faChevronDown} />
+      </div>
+      {isExpanded && (
+        <div className="note-list">
+          {notes.map((note) => (
             <Note
               key={note.id}
               note={note}
               onEdit={handleEdit}
               onDelete={deleteNote}
             />
-          )
-        ))}
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -1,7 +1,14 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../AuthContext";
-import "../styles/Header.css"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHome,
+  faSignOutAlt,
+  faSignInAlt,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import "../styles/Header.css";
 
 function Header() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -12,19 +19,27 @@ function Header() {
         {isAuthenticated ? (
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/">
+                <FontAwesomeIcon icon={faHome} /> Home
+              </Link>
             </li>
             <li>
-              <Link to="/logout">Logout</Link>
+              <Link to="/logout">
+                <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+              </Link>
             </li>
           </ul>
         ) : (
           <ul>
             <li>
-              <Link to="/login">Login</Link>
+              <Link to="/login">
+                <FontAwesomeIcon icon={faSignInAlt} /> Login
+              </Link>
             </li>
             <li>
-              <Link to="/register">Register</Link>
+              <Link to="/register">
+                <FontAwesomeIcon icon={faUserPlus} /> Register
+              </Link>
             </li>
           </ul>
         )}

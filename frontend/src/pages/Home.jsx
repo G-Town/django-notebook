@@ -1,8 +1,8 @@
 import { useState } from "react";
-// import api from "../api";
-// import Note from "../components/Note";
 import NoteList from "../components/NoteList";
 import NoteForm from "../components/NoteForm";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import "../styles/Home.css";
 
 function Home() {
@@ -19,8 +19,10 @@ function Home() {
   return (
     <div>
       <div className="container">
-        <h2>Create Note</h2>
-        <button onClick={handleCreate}>New Note</button>
+        <h2>Write Note</h2>
+        <button onClick={handleCreate}>
+          <FontAwesomeIcon icon={faPlus} />
+        </button>
         {isWriting && <NoteForm closeForm={handleCloseForm} />}
         <NoteList></NoteList>
       </div>
