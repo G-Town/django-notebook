@@ -66,6 +66,7 @@ const NoteList = () => {
               note={note}
               onEdit={handleEdit}
               onDelete={deleteNote}
+              displaySnippet={true}
             />
           ))}
         </div>

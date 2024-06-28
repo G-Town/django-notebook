@@ -1,18 +1,23 @@
 # from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics
-from .serializers import UserSerializer, NoteSerializer
+from .serializers import UserSerializer, NoteListSerializer, NoteDetailSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Note
 
 
 class NoteListCreate(generics.ListCreateAPIView):
-    serializer_class = NoteSerializer
+    # serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
         return Note.objects.filter(author=user)
+    
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return NoteListSerializer
+        return NoteDetailSerializer
 
     def perform_create(self, serializer):
         if serializer.is_valid():
@@ -22,7 +27,7 @@ class NoteListCreate(generics.ListCreateAPIView):
 
 
 class NoteDelete(generics.DestroyAPIView):
-    queryset = NoteSerializer
+    # queryset = NoteSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -31,8 +36,8 @@ class NoteDelete(generics.DestroyAPIView):
 
 
 class NoteUpdate(generics.UpdateAPIView):
-    queryset = Note.objects.all()
-    serializer_class = NoteSerializer
+    # queryset = Note.objects.all()
+    # serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -41,13 +46,16 @@ class NoteUpdate(generics.UpdateAPIView):
 
 
 class NoteDetail(generics.RetrieveAPIView):
-    queryset = Note.objects.all()
-    serializer_class = NoteSerializer
+    # queryset = Note.objects.all()
+    # serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
         return Note.objects.filter(author=user)
+    
+    def get_serializer_class(self):
+        return NoteDetailSerializer
 
 
 class CreateUserView(generics.CreateAPIView):
