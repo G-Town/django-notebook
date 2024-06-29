@@ -10,6 +10,8 @@ import "../styles/NoteList.css";
 const NoteList = () => {
   const [notes, setNotes] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [expandedNoteId, setExpandedNoteId] = useState(null);
+  // const [expandedNoteContent, setExpandedNoteContent] = useState("");
   // const [noteID, setNoteID] = useState(null);
   // const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -48,6 +50,14 @@ const NoteList = () => {
     setIsExpanded(!isExpanded);
   };
 
+  const handleNoteClick = (noteID) => {
+    if (expandedNoteId === noteID) {
+      setExpandedNoteId(null);
+    } else {
+      setExpandedNoteId(noteID);
+    }
+  };
+
   // if (loading) {
   //   return <div>Loading...</div>;
   // }
@@ -66,7 +76,8 @@ const NoteList = () => {
               note={note}
               onEdit={handleEdit}
               onDelete={deleteNote}
-              displaySnippet={true}
+              onClick={() => handleNoteClick(note.id)}
+              isExpanded={expandedNoteId === note.id}
             />
           ))}
         </div>

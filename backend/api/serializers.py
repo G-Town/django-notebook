@@ -14,15 +14,22 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-class NoteListSerializer(serializers.ModelSerializer):
+class NoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = ["id", "title", "snippet", "created_at", "author"]
+        fields = ["id", "title", "content", "snippet", "created_at", "author"]
         extra_kwargs = {"author": {"read_only": True}}
 
 
-class NoteDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Note
-        fields = ["id", "title", "content", "created_at", "author"]
-        extra_kwargs = {"author": {"read_only": True}}
+# class NoteListSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Note
+#         fields = ["id", "title", "snippet", "created_at", "author"]
+#         extra_kwargs = {"author": {"read_only": True}}
+
+
+# class NoteDetailSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Note
+#         fields = ["id", "title", "content", "created_at", "author"]
+#         extra_kwargs = {"author": {"read_only": True}}
