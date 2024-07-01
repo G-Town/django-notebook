@@ -12,7 +12,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedAccessToken = localStorage.getItem(ACCESS_TOKEN);
     const storedRefreshToken = localStorage.getItem(REFRESH_TOKEN);
-    // const accessToken = localStorage.getItem(ACCESS_TOKEN);
     if (storedAccessToken && storedRefreshToken) {
       setAccessToken(storedAccessToken);
       setRefreshToken(storedRefreshToken);

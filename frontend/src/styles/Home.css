@@ -3,7 +3,7 @@
   margin: 50px;
 }
 
-button {
+.plus-button {
   display: flex;
   align-items: center;
   background-color: #74b576;

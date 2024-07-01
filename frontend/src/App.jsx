@@ -8,9 +8,10 @@ import NotFound from "./pages/NotFound";
 import NoteForm from "./pages/NoteForm";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import "./styles/App.css";
 
 function Logout() {
-  // localStorage.clear();
   const { logout } = useContext(AuthContext);
   useEffect(() => {
     logout();
@@ -20,7 +21,6 @@ function Logout() {
 
 function RegisterAndLogout() {
   // TODO: better registration
-  // localStorage.clear();
   return <Register />;
 }
 
@@ -28,37 +28,44 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/note/:noteID"
-            element={
-              <ProtectedRoute>
-                <NoteForm />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/note/new"
-            element={
-              <ProtectedRoute>
-                <NoteForm />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/register" element={<RegisterAndLogout />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <div className="app-container">
+          <Header />
+          <div className="content-container">
+            <Sidebar />
+            <div className="main-content">
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute>
+                      <Home />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/note/:noteID"
+                  element={
+                    <ProtectedRoute>
+                      <NoteForm />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/note/new"
+                  element={
+                    <ProtectedRoute>
+                      <NoteForm />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/login" element={<Login />} />
+                <Route path="/logout" element={<Logout />} />
+                <Route path="/register" element={<RegisterAndLogout />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
+          </div>
+        </div>
       </BrowserRouter>
     </AuthProvider>
   );

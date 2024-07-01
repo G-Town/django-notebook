@@ -19,8 +19,8 @@ function Home() {
   return (
     <div>
       <div className="container">
-        <h2>Write Note</h2>
-        <button onClick={handleCreate}>
+        {/* <h2>Write Note</h2> */}
+        <button className="plus-button" onClick={handleCreate}>
           <FontAwesomeIcon icon={faPlus} />
         </button>
         {isWriting && <NoteForm closeForm={handleCloseForm} />}
