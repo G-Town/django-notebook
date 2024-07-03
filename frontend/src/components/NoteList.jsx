@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
@@ -7,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import "../styles/NoteList.css";
 
-const NoteList = () => {
+const NoteList = ({ folder }) => {
   const [notes, setNotes] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [expandedNoteId, setExpandedNoteId] = useState(null);
@@ -17,12 +18,14 @@ const NoteList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getNotes();
-  }, []);
+    if (isExpanded) {
+      getNotes();
+    }
+  }, [isExpanded]);
 
   const getNotes = () => {
     api
-      .get("/api/notes/")
+      .get("/api/notes/?folder=${folder.id}")
       .then((res) => res.data)
       .then((data) => {
         setNotes(data.reverse());
@@ -65,7 +68,8 @@ const NoteList = () => {
   return (
     <div className="note-list-container">
       <div className="folder-name" onClick={toggleExpand}>
-        <h2>{isExpanded ? "Notes" : "Notes"}</h2>
+        {/* <h2>{isExpanded ? "Notes" : "Notes"}</h2> */}
+        <h2>{folder.name}</h2>
         <FontAwesomeIcon icon={isExpanded ? faChevronUp : faChevronDown} />
       </div>
       {isExpanded && (

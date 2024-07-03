@@ -14,38 +14,19 @@ from .models import Note, Folder, FolderShare, Tag, NoteTag
 
 
 ########## notes ##########
-class NoteListCreate(generics.ListCreateAPIView):
-    queryset = Note.objects.all()  # use all objects for now, since i am the only author
+class NoteViewSet(viewsets.ModelViewSet):
     serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]
 
-    # use this and similar functions for all views when multiple authors to query
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     return Note.objects.filter(author=user)
+    def get_queryset(self):
+        user = self.request.user
+        folder_id = self.request.query_params.get("folder", None)
+        if folder_id:
+            return Note.objects.filter(author=user, folder_id=folder_id)
+        return Note.objects.filter(author=user)
 
     def perform_create(self, serializer):
-        if serializer.is_valid():
-            serializer.save(author=self.request.user)
-        else:
-            print(serializer.errors)
-
-
-class NoteDelete(generics.DestroyAPIView):
-    queryset = Note.objects.all()
-    permission_classes = [IsAuthenticated]
-
-
-class NoteUpdate(generics.UpdateAPIView):
-    queryset = Note.objects.all()
-    serializer_class = NoteSerializer
-    permission_classes = [IsAuthenticated]
-
-
-class NoteDetail(generics.RetrieveAPIView):
-    queryset = Note.objects.all()
-    serializer_class = NoteSerializer
-    permission_classes = [IsAuthenticated]
+        serializer.save(author=self.request.user)
 
 
 ########## user ##########

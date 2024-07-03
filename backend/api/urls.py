@@ -1,9 +1,22 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import (
+    NoteViewSet,
+    CreateUserView,
+    FolderViewSet,
+    FolderShareViewSet,
+    TagViewSet,
+    NoteTagViewSet,
+)
+
+router = DefaultRouter()
+router.register(r"notes", NoteViewSet, basename="note")
+router.register(r"folders", FolderViewSet, basename="folder")
+router.register(r"folder-shares", FolderShareViewSet, basename="folder-share")
+router.register(r"tags", TagViewSet, basename="tag")
+router.register(r"note-tags", NoteTagViewSet, basename="note-tag")
 
 urlpatterns = [
-    path("notes/", views.NoteListCreate.as_view(), name="note-list"),
-    path("notes/<int:pk>/", views.NoteDetail.as_view(), name="note-detail"),
-    path("notes/delete/<int:pk>/", views.NoteDelete.as_view(), name="note-delete"),
-    path("notes/update/<int:pk>/", views.NoteUpdate.as_view(), name="note-update"),
+    path("", include(router.urls)),
+    path("create-user/", CreateUserView.as_view(), name="create-user"),
 ]
