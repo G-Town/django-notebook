@@ -16,11 +16,11 @@ const Sidebar = () => {
         {/* <Link to="/" className="active">
           <FontAwesomeIcon icon={faHome} /> Home
         </Link> */}
-        <Link to="/import" className="active">
-          <FontAwesomeIcon icon={faUpload} /> Import
-        </Link>
         <Link to="/create" className="active">
           <FontAwesomeIcon icon={faPlus} /> Write
+        </Link>
+        <Link to="/import" className="active">
+          <FontAwesomeIcon icon={faUpload} /> Import
         </Link>
       </nav>
       <div className="sidebar-footer">

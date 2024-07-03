@@ -1,23 +1,28 @@
 # from django.shortcuts import render
 from django.contrib.auth.models import User
-from rest_framework import generics
-from .serializers import UserSerializer, NoteSerializer
+from rest_framework import generics, viewsets
+from .serializers import (
+    UserSerializer,
+    NoteSerializer,
+    TagSerializer,
+    NoteTagSerializer,
+    FolderSerializer,
+    FolderShareSerializer,
+)
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Note
+from .models import Note, Folder, FolderShare, Tag, NoteTag
 
 
+########## notes ##########
 class NoteListCreate(generics.ListCreateAPIView):
+    queryset = Note.objects.all()  # use all objects for now, since i am the only author
     serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        user = self.request.user
-        return Note.objects.filter(author=user)
-
-    # def get_serializer_class(self):
-    #     if self.request.method == 'GET':
-    #         return NoteListSerializer
-    #     return NoteDetailSerializer
+    # use this and similar functions for all views when multiple authors to query
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     return Note.objects.filter(author=user)
 
     def perform_create(self, serializer):
         if serializer.is_valid():
@@ -27,35 +32,50 @@ class NoteListCreate(generics.ListCreateAPIView):
 
 
 class NoteDelete(generics.DestroyAPIView):
-    # queryset = Note.objects.all()
+    queryset = Note.objects.all()
     permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        user = self.request.user
-        return Note.objects.filter(author=user)
 
 
 class NoteUpdate(generics.UpdateAPIView):
-    # queryset = Note.objects.all()
+    queryset = Note.objects.all()
     serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        user = self.request.user
-        return Note.objects.filter(author=user)
 
 
 class NoteDetail(generics.RetrieveAPIView):
-    # queryset = Note.objects.all()
+    queryset = Note.objects.all()
     serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        user = self.request.user
-        return Note.objects.filter(author=user)
 
-
+########## user ##########
 class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
+
+
+########## folders ##########
+class FolderViewSet(viewsets.ModelViewSet):
+    queryset = Folder.objects.all()
+    serializer_class = FolderSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class FolderShareViewSet(viewsets.ModelViewSet):
+    queryset = FolderShare.objects.all()
+    serializer_class = FolderShareSerializer
+    permission_classes = [IsAuthenticated]
+
+
+########## tags ##########
+class TagViewSet(viewsets.ModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class NoteTagViewSet(viewsets.ModelViewSet):
+    queryset = NoteTag.objects.all()
+    serializer_class = NoteTagSerializer
+    permission_classes = [IsAuthenticated]
