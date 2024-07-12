@@ -35,7 +35,7 @@ function NoteForm() {
     const data = { title, content };
     try {
       if (noteID) {
-        await api.patch(`/api/notes/update/${noteID}/`, data);
+        await api.patch(`/api/notes/${noteID}/`, data);
       } else {
         await api.post("/api/notes/", data);
       }

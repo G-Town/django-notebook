@@ -1,13 +1,14 @@
-/* Container for the whole page */
-.container {
+/* Container for the home page */
+/* .container {
   margin: 50px;
-}
+} */
 
 .plus-button {
   display: flex;
   align-items: center;
   background-color: #74b576;
   color: white;
+  margin: 10px;
   padding: 10px 20px;
   border: none;
   border-radius: 25px;

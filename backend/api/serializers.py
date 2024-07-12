@@ -31,10 +31,28 @@ class NoteTagSerializer(serializers.ModelSerializer):
 class NoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = ["id", "title", "content", "snippet", "created_at", "author", "tags"]
+        fields = [
+            "id",
+            "title",
+            "content",
+            "snippet",
+            "created_at",
+            "author",
+            "folder",
+            "tags",
+        ]
         extra_kwargs = {"author": {"read_only": True}}
 
     def create(self, validated_data):
+        # Check if a folder is provided, otherwise assign to "Unfiled"
+        if not validated_data.get("folder"):
+            author = self.context["request"].user
+            unfiled_folder, created = Folder.objects.get_or_create(
+                name="Unfiled",
+                author = author
+            )
+            validated_data["folder"] = unfiled_folder
+
         tags_data = self.context["request"].data.get("tags", [])
         note = Note.objects.create(**validated_data)
 
@@ -46,15 +64,15 @@ class NoteSerializer(serializers.ModelSerializer):
 
 
 class FolderSerializer(serializers.ModelSerializer):
-    notes = NoteSerializer(many=True, read_only=True)
+    # notes = NoteSerializer(many=True, read_only=True)
 
     class Meta:
         model = Folder
-        fields = ["id", "name", "user", "notes"]
-        extra_kwargs = {"user": {"read_only": True}}
+        fields = ["id", "name", "author"]
+        extra_kwargs = {"author": {"read_only": True}}
 
 
 class FolderShareSerializer(serializers.ModelSerializer):
     class Meta:
         model = FolderShare
-        fields = ["folder", "user", "can_edit"]
+        fields = ["folder", "shared_with", "permission"]

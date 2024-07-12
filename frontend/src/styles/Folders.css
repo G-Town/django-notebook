@@ -1,0 +1,15 @@
+.folder-name {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: whitesmoke;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  width: fit-content;
+}
+
+.folder-name h3 {
+  margin: 0;
+  margin-right: 6px;
+}

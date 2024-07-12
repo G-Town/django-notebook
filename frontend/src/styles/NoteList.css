@@ -1,27 +1,12 @@
 .note-list-container {
   margin: 20px;
-}
-
-.folder-name {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  background-color: #f0f0f0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  width: fit-content;
-}
-
-.folder-name h2 {
-  margin: 0;
-  margin-right: 6px;
+  opacity: 0.5;
 }
 
 .note-list {
-  margin-top: 10px;
-  padding: 10px;
+  /* margin-top: 10px; */
+  /* padding: 10px; */
   border: px solid #ccc;
   border-radius: 5px;
-  /* background-color: rgb(183, 170, 170); */
+  /* background-color: rgba(183, 178, 170, 0.283); */
 }

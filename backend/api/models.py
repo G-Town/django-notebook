@@ -10,14 +10,16 @@ class Tag(models.Model):
 
 
 class Folder(models.Model):
+    # consider indexing name
     name = models.CharField(max_length=50)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
 
 
 class Note(models.Model):
+    # consider indexing title
     title = models.CharField(max_length=100)
     content = models.TextField()
     snippet = models.TextField(blank=True, null=True)
