@@ -2,9 +2,10 @@
 
 .header {
   /* font-family: consolas; */
-  background-color:brown;
-  color: white;
+  background-color:rgb(225, 205, 140);
+  /* color: white; */
   padding: 10px 20px;
+  border-bottom: solid var(--color-accent) 0.1rem;
 }
 
 .nav ul {
@@ -18,7 +19,7 @@
 }
 
 .nav ul li a {
-  color: white;
+  color: var(--color-text);
   text-decoration: none;
 }
 

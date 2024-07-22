@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   // faHome,
+  faBook,
   faUpload,
   faPlus,
   faSignOutAlt,
@@ -13,15 +14,19 @@ const Sidebar = () => {
     <div className="sidebar">
       <div className="sidebar-header">{"logo"}</div>
       <nav className="sidebar-nav">
-        {/* <Link to="/" className="active">
+        {/* <Link to="/" className="sidebar-nav-item">
           <FontAwesomeIcon icon={faHome} /> Home
         </Link> */}
-        <Link to="/create" className="active">
+        <Link to="/notebook" className="sidebar-nav-item">
+          <FontAwesomeIcon icon={faBook} /> Notebook
+        </Link>
+        <Link to="/create" className="sidebar-nav-item">
           <FontAwesomeIcon icon={faPlus} /> Write
         </Link>
-        <Link to="/import" className="active">
+        <Link to="/import" className="sidebar-nav-item">
           <FontAwesomeIcon icon={faUpload} /> Import
         </Link>
+        
       </nav>
       <div className="sidebar-footer">
         <button className="logout-button">

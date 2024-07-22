@@ -7,6 +7,10 @@ from .views import (
     FolderShareViewSet,
     TagViewSet,
     NoteTagViewSet,
+    RecentNotesView,
+    FeaturedFoldersView,
+    UserDetailView,
+    
 )
 
 router = DefaultRouter()
@@ -19,4 +23,7 @@ router.register(r"note-tags", NoteTagViewSet, basename="note-tag")
 urlpatterns = [
     path("", include(router.urls)),
     path("create-user/", CreateUserView.as_view(), name="create-user"),
+    path("recent/", RecentNotesView.as_view(), name="recent-notes"),
+    path("featured/", FeaturedFoldersView.as_view(), name="featured-folders"),
+    path("user/", UserDetailView.as_view(), name="user-detail"),
 ]

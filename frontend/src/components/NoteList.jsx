@@ -8,27 +8,39 @@ import Note from "./Note";
 // import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import "../styles/NoteList.css";
 
-const NoteList = ({ folderId }) => {
+const NoteList = ({ folderID }) => {
   const [notes, setNotes] = useState([]);
+  const [notesCache, setNotesCache] = useState({});
   // const [isExpanded, setIsExpanded] = useState(false);
   // const [loading, setLoading] = useState(true);
 
   // useCallback to ensure that getNotes only changes when dependancies change
   const getNotes = useCallback(() => {
-    // setLoading(true);
-    api
-      .get(`/api/notes/?folder=${folderId}`)
-      .then((res) => res.data)
-      .then((data) => {
-        setNotes(data.reverse());
-        console.log(data);
-        // setLoading(false);
-      })
-      .catch((err) => {
-        alert(err);
-        // setLoading(false);
-      });
-  }, [folderId]);
+    if (notesCache[folderID]) {
+      setNotes(notesCache[folderID]);
+      console.log("retrieved cached notes")
+    } else {
+      // setLoading(true);
+      api
+        .get(`/api/notes/?folder=${folderID}`)
+        .then((res) => res.data)
+        .then((data) => {
+          const reversedData = data.reverse();
+          setNotes(reversedData);
+          console.log(data);
+          // update cache
+          setNotesCache((prevCache) => ({
+            ...prevCache,
+            [folderID]: reversedData,
+          }));
+          // setLoading(false);
+        })
+        .catch((err) => {
+          alert(err);
+          // setLoading(false);
+        });
+    }
+  }, [folderID, notesCache]);
 
   useEffect(() => {
     getNotes();
@@ -39,7 +51,13 @@ const NoteList = ({ folderId }) => {
   // };
 
   const handleDelete = (id) => {
-    setNotes(notes.filter((note) => note.id !== id));
+    const updatedNotes = notes.filter((note) => note.id !== id);
+    setNotes(updatedNotes);
+    // update cache after deletion
+    setNotesCache((prevCache) => ({
+      ...prevCache,
+      [folderID]: updatedNotes,
+    }));
   };
 
   // if (loading) {

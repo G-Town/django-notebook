@@ -1,9 +1,4 @@
-/* Container for the home page */
-/* .container {
-  margin: 50px;
-} */
-
-/* .plus-button {
+.plus-button {
   display: flex;
   align-items: center;
   background-color: #74b576;
@@ -14,8 +9,4 @@
   border-radius: 25px;
   cursor: pointer;
   font-size: 16px;
-} */
-
-/* button svg {
-  margin-right: 8px;
-} */
+}

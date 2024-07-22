@@ -36,11 +36,27 @@ class NoteViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 
+class RecentNotesView(generics.ListAPIView):
+    serializer_class = NoteSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Note.objects.filter(author=self.request.user).order_by("-updated_at")[:3]
+
+
 ########## user ##########
 class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
+
+
+class UserDetailView(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
 
 
 ########## folders ##########
@@ -54,6 +70,14 @@ class FolderViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
+class FeaturedFoldersView(generics.ListAPIView):
+    serializer_class = FolderSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Folder.objects.filter(author=self.request.user).order_by("-id")[:3]
 
 
 class FolderShareViewSet(viewsets.ModelViewSet):

@@ -10,7 +10,6 @@ class Tag(models.Model):
 
 
 class Folder(models.Model):
-    # consider indexing name
     name = models.CharField(max_length=50)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -19,11 +18,11 @@ class Folder(models.Model):
 
 
 class Note(models.Model):
-    # consider indexing title
     title = models.CharField(max_length=100)
     content = models.TextField()
     snippet = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notes")
     folder = models.ForeignKey(
         Folder, on_delete=models.CASCADE, related_name="notes", null=True, blank=True

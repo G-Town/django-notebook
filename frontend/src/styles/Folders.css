@@ -1,7 +1,10 @@
-.folder-name {
+.folder-card {
   display: flex;
+  width:auto;
   align-items: center;
+  justify-content: space-between;
   cursor: pointer;
+  color: var(--color-text);
   background-color: whitesmoke;
   padding: 10px;
   border: 1px solid #ccc;
@@ -9,7 +12,7 @@
   width: fit-content;
 }
 
-.folder-name h3 {
+.folder-card h3 {
   margin: 0;
-  margin-right: 6px;
+  /* margin-right: 6px; */
 }

@@ -4,6 +4,7 @@ import { AuthContext, AuthProvider } from "./AuthContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
+import Notebook from "./pages/Notebook";
 import NotFound from "./pages/NotFound";
 import NoteForm from "./pages/NoteForm";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -39,6 +40,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <Home />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/notebook"
+                  element={
+                    <ProtectedRoute>
+                      <Notebook />
                     </ProtectedRoute>
                   }
                 />

@@ -4,9 +4,20 @@ from .models import Folder, Note, Tag, NoteTag, FolderShare
 
 
 class UserSerializer(serializers.ModelSerializer):
+    note_count = serializers.IntegerField(source="note_set.count", read_only=True)
+    folder_count = serializers.IntegerField(source="folder_set.count", read_only=True)
+    tag_count = serializers.IntegerField(source="tag_set.count", read_only=True)
+
     class Meta:
         model = User
-        fields = ["id", "username", "password"]
+        fields = [
+            "id",
+            "username",
+            "password",
+            "note_count",
+            "folder_count",
+            "tag_count",
+        ]
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
@@ -17,7 +28,7 @@ class UserSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ["id", "name"]
+        fields = "__all__"
 
 
 class NoteTagSerializer(serializers.ModelSerializer):
@@ -37,6 +48,7 @@ class NoteSerializer(serializers.ModelSerializer):
             "content",
             "snippet",
             "created_at",
+            "updated_at",
             "author",
             "folder",
             "tags",
@@ -48,8 +60,7 @@ class NoteSerializer(serializers.ModelSerializer):
         if not validated_data.get("folder"):
             author = self.context["request"].user
             unfiled_folder, created = Folder.objects.get_or_create(
-                name="Unfiled",
-                author = author
+                name="Unfiled", author=author
             )
             validated_data["folder"] = unfiled_folder
 
@@ -64,11 +75,9 @@ class NoteSerializer(serializers.ModelSerializer):
 
 
 class FolderSerializer(serializers.ModelSerializer):
-    # notes = NoteSerializer(many=True, read_only=True)
-
     class Meta:
         model = Folder
-        fields = ["id", "name", "author"]
+        fields = "__all__"
         extra_kwargs = {"author": {"read_only": True}}
 
 
