@@ -1,18 +1,31 @@
-.folder-card {
+.folder-list {
   display: flex;
-  width:auto;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  color: var(--color-text);
-  background-color: whitesmoke;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  width: fit-content;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.folder-card h3 {
+.folder-card {
+  display: flex;
+  width: auto;
+  align-items: center;
+  cursor: pointer;
+  color: darkslategray;
+  background-color: floralwhite;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.folder-icon {
+  color: burlywood;
+}
+
+.folder-card h4 {
   margin: 0;
-  /* margin-right: 6px; */
+  margin-left: 6px;
+}
+
+.folder-card:hover {
+  background-color: beige;
+  background-color: cornsilk;
 }

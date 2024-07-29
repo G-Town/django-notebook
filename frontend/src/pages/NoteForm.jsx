@@ -39,7 +39,7 @@ function NoteForm() {
       } else {
         await api.post("/api/notes/", data);
       }
-      navigate("/");
+      navigate("/notebook");
     } catch (error) {
       alert(error);
     } finally {
@@ -48,25 +48,47 @@ function NoteForm() {
   };
 
   return (
+    // <form onSubmit={handleSubmit} className="note-form">
+    //   <label htmlFor="title">Title:</label>
+    //   <input
+    //     type="text"
+    //     id="title"
+    //     value={title}
+    //     onChange={(e) => setTitle(e.target.value)}
+    //   />
+    //   <label htmlFor="content">Content:</label>
+    //   <textarea
+    //     id="content"
+    //     value={content}
+    //     onChange={(e) => setContent(e.target.value)}
+    //   />
+    //   {loading && <LoadingIndicator />}
+    //   <button type="submit">Save</button>
+    //   <button type="button" onClick={() => navigate("/notebook")}>
+    //     Cancel
+    //   </button>
+    // </form>
     <form onSubmit={handleSubmit} className="note-form">
-      <label htmlFor="title">Title:</label>
       <input
         type="text"
-        id="title"
+        placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        className="note-title"
       />
-      <label htmlFor="content">Content:</label>
       <textarea
-        id="content"
+        placeholder="Write your note here..."
         value={content}
         onChange={(e) => setContent(e.target.value)}
+        className="note-content"
       />
       {loading && <LoadingIndicator />}
-      <button type="submit">Save</button>
-      <button type="button" onClick={() => navigate("/")}>
-        Cancel
-      </button>
+      <div className="form-actions">
+        <button type="submit">Save</button>
+        <button type="button" onClick={() => navigate("/notebook")}>
+          Cancel
+        </button>
+      </div>
     </form>
   );
 }

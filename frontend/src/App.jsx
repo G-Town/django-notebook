@@ -5,8 +5,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Notebook from "./pages/Notebook";
-import NotFound from "./pages/NotFound";
 import NoteForm from "./pages/NoteForm";
+import Import from "./pages/Import";
+import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
@@ -64,6 +65,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <NoteForm />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/import"
+                  element={
+                    <ProtectedRoute>
+                      <Import />
                     </ProtectedRoute>
                   }
                 />

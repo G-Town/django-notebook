@@ -1,21 +1,34 @@
 .note-container {
-  font-family: Times;
+  /* font-family: Times; */
   padding: 10px;
-  margin: 20px 0;
+  margin: 10px 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: beige;
+  background-color: oldlace;
+  background-color: floralwhite;
+}
+
+.note-container:hover {
+  background-color: cornsilk;
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
 }
 
 .note-title {
+  margin: 0;
   color: var(--color-text);
 }
 
 .note-content {
+  margin: 0;
   color: #666;
 }
 
 .note-date {
+  margin: 0;
   color: #999;
   font-size: 0.8rem;
 }
@@ -29,11 +42,14 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #982424;
+  color: olivedrab;
+  /* color: olive; */
+  /* color: darkolivegreen; */
   font-size: 1.2em;
   transition: color 0.3s;
 }
 
 .note-actions button:hover {
-  color: #711010;
+  color: darkolivegreen;
+  /* color: olive; */
 }

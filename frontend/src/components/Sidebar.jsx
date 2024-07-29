@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  // faHome,
+  faHome,
   faBook,
   faUpload,
   faPlus,
@@ -14,16 +14,16 @@ const Sidebar = () => {
     <div className="sidebar">
       <div className="sidebar-header">{"logo"}</div>
       <nav className="sidebar-nav">
-        {/* <Link to="/" className="sidebar-nav-item">
+        <Link to="/">
           <FontAwesomeIcon icon={faHome} /> Home
-        </Link> */}
-        <Link to="/notebook" className="sidebar-nav-item">
+        </Link>
+        <Link to="/notebook">
           <FontAwesomeIcon icon={faBook} /> Notebook
         </Link>
-        <Link to="/create" className="sidebar-nav-item">
+        <Link to="/note/new">
           <FontAwesomeIcon icon={faPlus} /> Write
         </Link>
-        <Link to="/import" className="sidebar-nav-item">
+        <Link to="/import">
           <FontAwesomeIcon icon={faUpload} /> Import
         </Link>
         

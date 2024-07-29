@@ -1,7 +1,7 @@
 .sidebar {
   /* position: fixed; */
-  width: 7rem;
-  background-color: silver;
+  width: 6.5rem;
+  background-color: lightgray;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,19 +17,16 @@
   top: 10%;
   flex-shrink: 0;
   position: sticky;
-  margin-left: 1rem;
-}
-
-.sidebar-nav-item {
-  background-color: gainsboro;
-  border: solid var(--color-accent) 0.1rem;
+  margin-left: 0.5rem;
 }
 
 .sidebar-nav a {
   display: flex;
   align-items: center;
   padding: 5px 10px;
-  border-radius: 2px;
+  border-radius: 3px;
+  background-color: gainsboro;
+  border: solid var(--color-accent) 0.1rem;
   /* color: white; */
   color: var(--color-text);
   text-decoration: none;
@@ -40,7 +37,7 @@
 
 .sidebar-nav a:hover,
 .sidebar-nav a.active {
-  background-color: gainsboro;
+  background-color: silver;
 }
 
 .sidebar-nav a svg {

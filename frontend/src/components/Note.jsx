@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api";
+// import api from "../api";
 import "../styles/Note.css";
 
 function Note({ note, onDelete }) {
@@ -16,17 +16,7 @@ function Note({ note, onDelete }) {
   };
 
   const handleDelete = () => {
-    api
-      .delete(`/api/notes/${note.id}/`)
-      .then((res) => {
-        if (res.status === 204) {
-          alert("Note deleted!");
-          onDelete(note.id);
-        } else {
-          alert("Failed to delete.");
-        }
-      })
-      .catch((err) => alert(err));
+    onDelete(note.id);
   };
 
   const toggleExpand = () => {
@@ -35,9 +25,11 @@ function Note({ note, onDelete }) {
 
   return (
     <div className="note-container" onClick={toggleExpand}>
-      <p className="note-title">{note.title}</p>
-      <p>{isExpanded ? note.content : note.snippet}</p>
-      <p className="note-date">{formattedDate}</p>
+      <div className="note-header">
+        <p className="note-title">{note.title}</p>
+        <p className="note-date">{formattedDate}</p>
+      </div>
+      <p className="note-content">{isExpanded ? note.content : note.snippet}</p>
       <div className="note-actions">
         <button onClick={handleEdit}>
           <FontAwesomeIcon icon={faEdit} />

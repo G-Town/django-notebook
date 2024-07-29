@@ -1,7 +1,6 @@
-import { useState } from "react";
+// import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Folders from "../components/Folders";
-// import NoteList from "../components/NoteList";
-import NoteForm from "../components/NoteForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   // faChevronDown,
@@ -12,21 +11,16 @@ import {
 import "../styles/Notebook.css";
 
 const Notebook = () => {
-  const [isWriting, setIsWriting] = useState(false);
-  // const [folders, setFolders] = useState([]);
-  // const [expandedFolderId, setExpandedFolderId] = useState(null);
-
-  // useEffect(() => {
-  //   getFolders();
-  // }, []);
+  const navigate = useNavigate();
 
   const handleCreate = () => {
-    setIsWriting(true);
+    navigate(`/note/new`);
+    // setIsWriting(true);
   };
 
-  const handleCloseForm = () => {
-    setIsWriting(false);
-  };
+  // const handleCloseForm = () => {
+  //   setIsWriting(false);
+  // };
 
   // const toggleExpand = (folderId) => {
   //   setExpandedFolderId(expandedFolderId === folderId ? null : folderId);
@@ -37,7 +31,6 @@ const Notebook = () => {
       <button className="plus-button" onClick={handleCreate}>
         <FontAwesomeIcon icon={faPlus} />
       </button>
-      {isWriting && <NoteForm closeForm={handleCloseForm} />}
       <Folders />
     </div>
   );

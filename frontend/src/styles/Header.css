@@ -2,9 +2,9 @@
 
 .header {
   /* font-family: consolas; */
-  background-color:rgb(225, 205, 140);
+  background-color:rgb(195, 221, 146);
   /* color: white; */
-  padding: 10px 20px;
+  padding: 0px 20px;
   border-bottom: solid var(--color-accent) 0.1rem;
 }
 
