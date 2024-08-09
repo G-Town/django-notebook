@@ -35,7 +35,7 @@ class Note(models.Model):
 
     def generate_snippet(self):
         max_length = 100  # Adjust this value as needed
-        content = self.content.split("\n", 1)[0]
+        content = self.content.strip().split("\n", 1)[0]
         return content if len(content) <= max_length else content[:max_length] + "..."
 
     def __str__(self):

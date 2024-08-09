@@ -19,6 +19,7 @@
   align-items: center;
   cursor: pointer;
   padding: 10px;
+  background-color:#dddddd91;
   border: 1px solid #ccc;
   border-radius: 5px;
   transition: background-color 0.3s;

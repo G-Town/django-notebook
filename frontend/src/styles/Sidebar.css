@@ -11,6 +11,8 @@
   /* height: 100vh; */
   /* To enable positioning child elements */
   position: relative;
+  /* border-left: solid 1px slategray; */
+  border-right: solid 1px slategray;
 }
 
 .sidebar-nav {

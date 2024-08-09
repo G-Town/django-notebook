@@ -10,7 +10,7 @@ from .views import (
     RecentNotesView,
     FeaturedFoldersView,
     UserDetailView,
-    
+    import_icloud_notes
 )
 
 router = DefaultRouter()
@@ -26,4 +26,5 @@ urlpatterns = [
     path("recent/", RecentNotesView.as_view(), name="recent-notes"),
     path("featured/", FeaturedFoldersView.as_view(), name="featured-folders"),
     path("user/", UserDetailView.as_view(), name="user-detail"),
+    path('import-icloud-notes/', import_icloud_notes, name='import_icloud_notes'),
 ]

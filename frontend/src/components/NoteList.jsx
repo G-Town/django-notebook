@@ -29,6 +29,7 @@ const NoteList = ({ folderId }) => {
     if (cachedNotes) {
       setNotes(cachedNotes);
       console.log("retrieved cached notes");
+      console.log("🚀 ~ getNotes ~ cachedNotes:", cachedNotes);
     } else {
       api
         .get(`/api/notes/?folder=${folderId}`)
@@ -38,6 +39,7 @@ const NoteList = ({ folderId }) => {
           setNotes(reversedData);
           saveToLocalStorage(`notes_${folderId}`, reversedData);
           console.log("fetched notes from API");
+          console.log("🚀 ~ reversedData:", reversedData);
         })
         .catch((err) => alert(err));
     }
