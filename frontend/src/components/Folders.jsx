@@ -9,18 +9,23 @@ import {
   faEllipsis,
 } from "@fortawesome/free-solid-svg-icons";
 import NoteList from "./NoteList";
-import api from "../api";
-// import { getFolders } from "../services/folderService";
+// import api from "../api";
+import {
+  getFolders,
+  createFolder,
+  updateFolder,
+  deleteFolder,
+} from "../services/folderService";
 import "../styles/Folders.css";
 
 // Utility functions for local storage
-const saveToLocalStorage = (key, data) => {
-  localStorage.setItem(key, JSON.stringify(data));
-};
-const getFromLocalStorage = (key) => {
-  const storedData = localStorage.getItem(key);
-  return storedData ? JSON.parse(storedData) : null;
-};
+// const saveToLocalStorage = (key, data) => {
+//   localStorage.setItem(key, JSON.stringify(data));
+// };
+// const getFromLocalStorage = (key) => {
+//   const storedData = localStorage.getItem(key);
+//   return storedData ? JSON.parse(storedData) : null;
+// };
 
 const Folders = () => {
   const [folders, setFolders] = useState([]);
@@ -29,10 +34,11 @@ const Folders = () => {
   const [newFolderName, setNewFolderName] = useState("");
   const [editFolderId, setEditFolderId] = useState(null);
   const [editFolderName, setEditFolderName] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const menuRef = useRef(null);
 
   useEffect(() => {
-    getFolders(setFolders);
+    loadFolders();
   }, []);
 
   useEffect(() => {
@@ -47,24 +53,6 @@ const Folders = () => {
     };
   }, []);
 
-  const getFolders = () => {
-    const cachedFolders = getFromLocalStorage("folders");
-    if (cachedFolders) {
-      setFolders(cachedFolders);
-      console.log(cachedFolders);
-    } else {
-      api
-        .get("/api/folders/")
-        .then((res) => res.data)
-        .then((data) => {
-          setFolders(data);
-          saveToLocalStorage("folders", data);
-          console.log(data);
-        })
-        .catch((err) => alert(err));
-    }
-  };
-
   const toggleExpand = (folderId) => {
     setExpandedFolderId(expandedFolderId === folderId ? null : folderId);
   };
@@ -73,7 +61,51 @@ const Folders = () => {
     setSelectedFolderId(selectedFolderId === folderId ? null : folderId);
   };
 
-  const handleFolderAction = (action, folder) => {
+  const loadFolders = async () => {
+    setIsLoading(true);
+    try {
+      const fetchedFolders = await getFolders();
+      setFolders(fetchedFolders);
+    } catch (error) {
+      console.error("Error loading folders:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // const handleFolderAction = async (action, folder) => {
+  //   if (action === "rename") {
+  //     setEditFolderId(folder.id);
+  //     setEditFolderName(folder.name);
+  //   } else if (action === "delete") {
+  //     if (
+  //       window.confirm(
+  //         `Are you sure you want to delete the folder "${folder.name}"?`
+  //       )
+  //     ) {
+  //       try {
+  //         await deleteFolder(folder.id);
+  //         await loadFolders(); // Reload folders after deletion
+  //       } catch (error) {
+  //         console.error("Error deleting folder:", error);
+  //         // Handle error (e.g., show an error message to the user)
+  //       }
+  //     }
+  //   } else if (action === "createSubfolder") {
+  //     const subfolderName = window.prompt("Enter name for the new subfolder:");
+  //     if (subfolderName) {
+  //       api
+  //         .post("/api/folders/", { name: subfolderName, parent: folder.id })
+  //         .then((res) => {
+  //           setFolders([...folders, res.data]);
+  //           saveToLocalStorage("folders", [...folders, res.data]);
+  //         })
+  //         .catch((err) => alert(err));
+  //     }
+  //   }
+  // };
+
+  const handleFolderAction = async (action, folder) => {
     if (action === "rename") {
       setEditFolderId(folder.id);
       setEditFolderName(folder.name);
@@ -83,59 +115,88 @@ const Folders = () => {
           `Are you sure you want to delete the folder "${folder.name}"?`
         )
       ) {
-        api
-          .delete(`/api/folders/${folder.id}/`)
-          .then(() => {
-            const updatedFolders = folders.filter((f) => f.id !== folder.id);
-            setFolders(updatedFolders);
-            saveToLocalStorage("folders", updatedFolders);
-          })
-          .catch((err) => alert(err));
+        try {
+          await deleteFolder(folder.id);
+          await loadFolders(); // Reload folders after deletion
+        } catch (error) {
+          console.error("Error deleting folder:", error);
+        }
       }
     } else if (action === "createSubfolder") {
       const subfolderName = window.prompt("Enter name for the new subfolder:");
       if (subfolderName) {
-        api
-          .post("/api/folders/", { name: subfolderName, parent: folder.id })
-          .then((res) => {
-            setFolders([...folders, res.data]);
-            saveToLocalStorage("folders", [...folders, res.data]);
-          })
-          .catch((err) => alert(err));
+        try {
+          await createFolder({ name: subfolderName, parent: folder.id });
+          await loadFolders(); // Reload folders after creation
+        } catch (error) {
+          console.error("Error creating subfolder:", error);
+        }
       }
     }
   };
 
-  const addNewFolder = () => {
+  // const addNewFolder = () => {
+  //   if (newFolderName.trim()) {
+  //     // Call the API to create a new folder
+  //     api
+  //       .post("/api/folders/", { name: newFolderName.trim() })
+  //       .then((res) => {
+  //         setFolders([...folders, res.data]);
+  //         setNewFolderName(""); // Clear the input
+  //       })
+  //       .catch((err) => alert(err));
+  //   }
+  // };
+
+  const addNewFolder = async () => {
     if (newFolderName.trim()) {
-      // Call the API to create a new folder
-      api
-        .post("/api/folders/", { name: newFolderName.trim() })
-        .then((res) => {
-          setFolders([...folders, res.data]);
-          setNewFolderName(""); // Clear the input
-        })
-        .catch((err) => alert(err));
+      try {
+        await createFolder({ name: newFolderName.trim() });
+        setNewFolderName(""); // Clear the input
+        await loadFolders(); // Reload folders after creation
+      } catch (error) {
+        console.error("Error creating new folder:", error);
+        // Handle error (e.g., show an error message to the user)
+      }
     }
   };
 
-  const handleRenameSubmit = (e) => {
+  // const handleRenameSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (editFolderName.trim()) {
+  //     api
+  //       .put(`/api/folders/${editFolderId}/`, { name: editFolderName.trim() })
+  //       .then((res) => {
+  //         const updatedFolders = folders.map((folder) =>
+  //           folder.id === editFolderId ? res.data : folder
+  //         );
+  //         setFolders(updatedFolders);
+  //         saveToLocalStorage("folders", updatedFolders);
+  //         setEditFolderId(null); // Clear the edit mode
+  //         setEditFolderName("");
+  //       })
+  //       .catch((err) => alert(err));
+  //   }
+  // };
+
+  const handleRenameSubmit = async (e) => {
     e.preventDefault();
     if (editFolderName.trim()) {
-      api
-        .put(`/api/folders/${editFolderId}/`, { name: editFolderName.trim() })
-        .then((res) => {
-          const updatedFolders = folders.map((folder) =>
-            folder.id === editFolderId ? res.data : folder
-          );
-          setFolders(updatedFolders);
-          saveToLocalStorage("folders", updatedFolders);
-          setEditFolderId(null); // Clear the edit mode
-          setEditFolderName("");
-        })
-        .catch((err) => alert(err));
+      try {
+        await updateFolder(editFolderId, { name: editFolderName.trim() });
+        setEditFolderId(null); // Clear the edit mode
+        setEditFolderName("");
+        await loadFolders(); // Reload folders after renaming
+      } catch (error) {
+        console.error("Error renaming folder:", error);
+        // Handle error (e.g., show an error message to the user)
+      }
     }
   };
+
+  if (isLoading) {
+    return <div>Loading folders...</div>;
+  }
 
   return (
     // conditionally set open menu class for whole folder list

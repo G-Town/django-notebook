@@ -109,7 +109,10 @@ class NoteTagViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
-# import from icloud
+########## import from icloud ##########
+# function based view
+# consider implementing class based views for interacting with multiple other apps
+# or a utility functiom to define shared functionality
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def import_icloud_notes(request):
@@ -130,19 +133,17 @@ def import_icloud_notes(request):
         user = request.user
 
         imported_notes = []
+        imported_notes_data = []
+
         for icloud_note in notes:
             if (
-                # skip note if deleted
                 "Deleted" in icloud_note["fields"]
                 and icloud_note["fields"]["Deleted"]["value"]
             ):
                 continue
 
             # note_fields = icloud_note["fields"]
-
             full_content = icloud_note["fields"]["Text"]["string"]
-
-            # Split the full content into title and content by the first newline
             content_split = full_content.split("\n", 1)
 
             if len(content_split) > 1:
@@ -151,14 +152,8 @@ def import_icloud_notes(request):
                 title = content_split[0]
                 content = ""
 
-            debug_info["title"] = title
-            debug_info["content"] = content
-            
-            # Find the first non-empty line for the snippet
-            # snippet_lines = [line for line in content_split[1] if line.strip()]
-            # snippet = "\n".join(snippet_lines)[:100] if snippet_lines else ""
+            # check if note already exists
 
-            # snippet = content.strip()[:100]
 
             # Link to a specific folder or create a new one
             folder, created = Folder.objects.get_or_create(name="Imported", author=user)
@@ -166,19 +161,30 @@ def import_icloud_notes(request):
             note = Note(
                 title=title,
                 content=content,
-                # snippet=snippet,
                 author=user,
                 folder=folder,
             )
             note.save()
             imported_notes.append(note)
 
-        # Return a summary of imported notes
+            # Add the note data to return list
+            imported_notes_data.append(
+                {
+                    "id": note.id,
+                    "title": note.title,
+                    "content": note.content,
+                    "folder_id": note.folder.id,
+                    "folder_name": note.folder.name,
+                    "created_at": note.created_at.isoformat(),
+                    "updated_at": note.updated_at.isoformat(),
+                }
+            )
+
         return JsonResponse(
             {
                 "imported_notes_count": len(imported_notes),
+                "imported_notes": imported_notes_data,
                 "debug_info": debug_info,
-                # "snippet": snippet,
             },
             status=200,
         )
