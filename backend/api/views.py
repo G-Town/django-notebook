@@ -3,7 +3,6 @@ from rest_framework import generics, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth.models import User
-from django.db.models import Q
 from .models import Note, Folder, FolderShare, Tag, NoteTag
 from .serializers import (
     UserSerializer,
@@ -123,11 +122,12 @@ def import_icloud_notes(request):
         icloud_service.connect()
         notes, folder_names = icloud_service.get_notes_and_folders()
         
-        imported_notes = icloud_service.process_notes(notes, request.user)
+        imported_notes, imported_folder = icloud_service.process_notes(notes, request.user)
         
         return JsonResponse({
             "imported_notes_count": len(imported_notes),
-            "imported_folders": folder_names,
+            "imported_notes": imported_notes,
+            "imported_folder": imported_folder,
         }, status=200)
     
     except Exception as e:

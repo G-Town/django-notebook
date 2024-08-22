@@ -1,7 +1,9 @@
 import os
-from api.models import Note, Folder
 from pyicloud import PyiCloudService
 from pyicloud.exceptions import PyiCloudFailedLoginException
+from api.serializers import FolderSerializer, NoteSerializer
+from api.models import Note, Folder
+from django.db.models import Q
 
 
 class ICloudService:
@@ -25,13 +27,16 @@ class ICloudService:
 
         notes = self.service.notes.notes
         folders = self.service.notes.folders
-
         folder_names = [folder["fields"]["title"] for folder in folders]
 
         return notes, folder_names
 
     def process_notes(self, notes, user):
         imported_notes = []
+        notes_data = []
+
+        folder, _ = Folder.objects.get_or_create(name="Apple Notes Import", author=user)
+
         for icloud_note in notes:
             if (
                 "Deleted" in icloud_note["fields"]
@@ -42,7 +47,16 @@ class ICloudService:
             full_content = icloud_note["fields"]["Text"]["string"]
             title, content = self.split_content(full_content)
 
-            folder, _ = Folder.objects.get_or_create(name="Imported", author=user)
+            # check if the note already exists
+            existing_note = Note.objects.filter(
+                Q(author=user) & (Q(title=title) & Q(folder=folder))
+            ).first()
+
+            # if the note already exists, keep this version
+            # TODO: implement some way of reconciling note updates between
+            # this app and icloud notes
+            # if existing_note:
+            #     continue
 
             note = Note(
                 title=title,
@@ -53,7 +67,13 @@ class ICloudService:
             note.save()
             imported_notes.append(note)
 
-        return imported_notes
+        # serialize note and folder data
+        note_serializer = NoteSerializer(imported_notes, many=True)
+        notes_data = note_serializer.data
+        folder_serializer = FolderSerializer(folder)
+        folder_data = folder_serializer.data
+
+        return notes_data, folder_data
 
     @staticmethod
     def split_content(full_content):
