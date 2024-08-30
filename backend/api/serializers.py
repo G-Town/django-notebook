@@ -75,11 +75,13 @@ class NoteSerializer(serializers.ModelSerializer):
 
 
 class FolderSerializer(serializers.ModelSerializer):
-    note_count = serializers.IntegerField(source='notes.count', read_only=True)
+    children = serializers.SerializerMethodField()
+    note_count = serializers.IntegerField(source="notes.count", read_only=True)
+    children = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Folder
-        fields = ["id", "name", "author", "note_count"]
+        fields = ["id", "name", "author", "parent", "children", "note_count"]
         extra_kwargs = {"author": {"read_only": True}}
 
 

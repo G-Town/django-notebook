@@ -5,19 +5,18 @@ const handleImportClick = async (source) => {
   if (source === "Apple Notes") {
     try {
       const response = await api.post("/api/import-icloud-notes/");
-      console.log(
-        "🚀 ~ handleImportClick ~ imported notes:",
-        response.data.imported_folder
-      );
+      console.log("🚀 ~ handleImportClick ~ imported notes:", response.data);
 
-      // Update cache with new folders
       const cachedFolders = getFromLocalStorage("folders") || [];
-      const updatedFolders = mergeImportedFolder(
+      // const cachedNotes = getFromLocalStorage("notes") || [];
+      const updatedFolders = mergeImportedFolders(
         cachedFolders,
-        response.data.imported_folder,
+        response.data.folders,
         source
       );
+      // const updatedNotes = mergeImportedNotes(cachedNotes, response.data.notes);
       saveToLocalStorage("folders", updatedFolders);
+      // saveToLocalStorage("notes", updatedNotes);
 
       return {
         success: true,
@@ -40,37 +39,61 @@ const handleImportClick = async (source) => {
   }
 };
 
-const mergeImportedFolder = (cachedFolders, importedFolder, source) => {
+const mergeImportedFolders = (cachedFolders, importedFolders, source) => {
   const updatedFolders = [...cachedFolders];
-  const existingFolderIndex = updatedFolders.findIndex(
-    (folder) => folder.name === `${source} Import`
-  );
 
-  if (existingFolderIndex !== -1) {
-    // Update existing folder
-    updatedFolders[existingFolderIndex] = {
-      ...updatedFolders[existingFolderIndex],
-      ...importedFolder,
-      updatedAt: new Date().toISOString(),
-    };
-  } else {
-    // Add new folder
-    updatedFolders.push({
-      ...importedFolder,
-      name: "Apple Notes Import",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    });
-  }
+  importedFolders.forEach((importedFolder) => {
+    const existingFolderIndex = updatedFolders.findIndex(
+      (folder) => folder.name === `${source} Import`
+    );
+
+    if (existingFolderIndex !== -1) {
+      // Update existing folder
+      updatedFolders[existingFolderIndex] = {
+        ...updatedFolders[existingFolderIndex],
+        ...importedFolder,
+        updatedAt: new Date().toISOString(),
+      };
+    } else {
+      // Add new folder
+      updatedFolders.push({
+        ...importedFolder,
+        name: `${source} Import`,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      });
+    }
+  });
 
   return updatedFolders;
 };
 
-// TODO: consider service workers to handle caching and merging
-// const mergeImportedFolders = (cachedFolders, newFolder) => {
-//   const mergedFolders = [...cachedFolders, newFolder];
-//   return Array.from(new Set(mergedFolders.map(JSON.stringify))).map(JSON.parse);
-//   return mergedFolders;
+// const mergeImportedNotes = (cachedNotes, importedNotes) => {
+//   const updatedNotes = [...cachedNotes];
+
+//   importedNotes.forEach((importedNote) => {
+//     const existingNoteIndex = updatedNotes.findIndex(
+//       (note) => note.id === importedNote.id
+//     );
+
+//     if (existingNoteIndex !== -1) {
+//       // Update existing note
+//       updatedNotes[existingNoteIndex] = {
+//         ...updatedNotes[existingNoteIndex],
+//         ...importedNote,
+//         updatedAt: new Date().toISOString(),
+//       };
+//     } else {
+//       // Add new note
+//       updatedNotes.push({
+//         ...importedNote,
+//         createdAt: new Date().toISOString(),
+//         updatedAt: new Date().toISOString(),
+//       });
+//     }
+//   });
+
+//   return updatedNotes;
 // };
 
 export default {

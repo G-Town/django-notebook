@@ -9,7 +9,6 @@ import {
   faEllipsis,
 } from "@fortawesome/free-solid-svg-icons";
 import NoteList from "./NoteList";
-// import api from "../api";
 import {
   getFolders,
   createFolder,
@@ -17,15 +16,6 @@ import {
   deleteFolder,
 } from "../services/folderService";
 import "../styles/Folders.css";
-
-// Utility functions for local storage
-// const saveToLocalStorage = (key, data) => {
-//   localStorage.setItem(key, JSON.stringify(data));
-// };
-// const getFromLocalStorage = (key) => {
-//   const storedData = localStorage.getItem(key);
-//   return storedData ? JSON.parse(storedData) : null;
-// };
 
 const Folders = () => {
   const [folders, setFolders] = useState([]);
@@ -73,38 +63,6 @@ const Folders = () => {
     }
   };
 
-  // const handleFolderAction = async (action, folder) => {
-  //   if (action === "rename") {
-  //     setEditFolderId(folder.id);
-  //     setEditFolderName(folder.name);
-  //   } else if (action === "delete") {
-  //     if (
-  //       window.confirm(
-  //         `Are you sure you want to delete the folder "${folder.name}"?`
-  //       )
-  //     ) {
-  //       try {
-  //         await deleteFolder(folder.id);
-  //         await loadFolders(); // Reload folders after deletion
-  //       } catch (error) {
-  //         console.error("Error deleting folder:", error);
-  //         // Handle error (e.g., show an error message to the user)
-  //       }
-  //     }
-  //   } else if (action === "createSubfolder") {
-  //     const subfolderName = window.prompt("Enter name for the new subfolder:");
-  //     if (subfolderName) {
-  //       api
-  //         .post("/api/folders/", { name: subfolderName, parent: folder.id })
-  //         .then((res) => {
-  //           setFolders([...folders, res.data]);
-  //           saveToLocalStorage("folders", [...folders, res.data]);
-  //         })
-  //         .catch((err) => alert(err));
-  //     }
-  //   }
-  // };
-
   const handleFolderAction = async (action, folder) => {
     if (action === "rename") {
       setEditFolderId(folder.id);
@@ -135,19 +93,6 @@ const Folders = () => {
     }
   };
 
-  // const addNewFolder = () => {
-  //   if (newFolderName.trim()) {
-  //     // Call the API to create a new folder
-  //     api
-  //       .post("/api/folders/", { name: newFolderName.trim() })
-  //       .then((res) => {
-  //         setFolders([...folders, res.data]);
-  //         setNewFolderName(""); // Clear the input
-  //       })
-  //       .catch((err) => alert(err));
-  //   }
-  // };
-
   const addNewFolder = async () => {
     if (newFolderName.trim()) {
       try {
@@ -160,24 +105,6 @@ const Folders = () => {
       }
     }
   };
-
-  // const handleRenameSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (editFolderName.trim()) {
-  //     api
-  //       .put(`/api/folders/${editFolderId}/`, { name: editFolderName.trim() })
-  //       .then((res) => {
-  //         const updatedFolders = folders.map((folder) =>
-  //           folder.id === editFolderId ? res.data : folder
-  //         );
-  //         setFolders(updatedFolders);
-  //         saveToLocalStorage("folders", updatedFolders);
-  //         setEditFolderId(null); // Clear the edit mode
-  //         setEditFolderName("");
-  //       })
-  //       .catch((err) => alert(err));
-  //   }
-  // };
 
   const handleRenameSubmit = async (e) => {
     e.preventDefault();

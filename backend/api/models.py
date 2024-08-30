@@ -12,10 +12,16 @@ class Tag(models.Model):
 class Folder(models.Model):
     name = models.CharField(max_length=50)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-
+    parent = models.ForeignKey(
+        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="children"
+    )
 
     def __str__(self):
         return self.name
+
+    @property
+    def is_root(self):
+        return self.parent is None
 
 
 class Note(models.Model):

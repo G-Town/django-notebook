@@ -1,9 +1,12 @@
 import os
+import sys
+import traceback
 from pyicloud import PyiCloudService
 from pyicloud.exceptions import PyiCloudFailedLoginException
 from api.serializers import FolderSerializer, NoteSerializer
 from api.models import Note, Folder
 from django.db.models import Q
+from django.db import transaction
 
 
 class ICloudService:
@@ -21,59 +24,127 @@ class ICloudService:
         except PyiCloudFailedLoginException:
             raise Exception("Failed to log in to iCloud.")
 
-    def get_notes_and_folders(self):
+    def get_folders(self):
         if not self.service:
             self.connect()
-
-        notes = self.service.notes.notes
         folders = self.service.notes.folders
-        folder_names = [folder["fields"]["title"] for folder in folders]
+        return folders
 
-        return notes, folder_names
+    @transaction.atomic
+    def process_folders(self, imported_folders, user):
+        try:
+            debug_info = {}
+            cleaned_folders = self.clean_folders(imported_folders)
 
-    def process_notes(self, notes, user):
-        imported_notes = []
+            # First pass: create all folders and map them by icloud record name
+            folder_map = self.create_folder_map(cleaned_folders, user)
+            root_folder_data = FolderSerializer(folder_map["Apple Notes Import"]).data
+            imported_folders_data = [root_folder_data]
+
+            # Second pass: set correct parent relationships and process notes
+            for imported_folder in cleaned_folders:
+                folder_debug_info = {}
+                try:
+                    folder = folder_map[imported_folder["recordName"]]
+                    parent_record = imported_folder.get("parent", {}).get("recordName")
+
+                    if parent_record and parent_record in folder_map:
+                        folder.parent = folder_map[parent_record]
+
+                    folder.save()
+
+                    # TODO: do something with notes data in response
+                    notes_data = self.process_notes(imported_folder, folder, user)
+
+                    serialized_folder = FolderSerializer(folder).data
+                    imported_folders_data.append(serialized_folder)
+
+                except Exception as e:
+                    raise ICloudProcessingError(
+                        f"Error processing folder: {str(e)}",
+                        debug_info=folder_debug_info,
+                    )
+
+            return imported_folders_data
+
+        except Exception as e:
+            transaction.set_rollback(True)
+            error_message = f"Unexpected error in process_folders: {str(e)}"
+
+            raise ICloudProcessingError(error_message, debug_info)
+
+    def create_folder_map(self, cleaned_folders, user):
+        root_folder, _ = Folder.objects.get_or_create(
+            name="Apple Notes Import", author=user
+        )
+        folder_map = {root_folder.name: root_folder}
+        for imported_folder in cleaned_folders:
+            try:
+                folder, _ = Folder.objects.get_or_create(
+                    name=imported_folder["fields"]["title"],
+                    author=user,
+                    defaults={"parent": root_folder},
+                )
+                folder_map[imported_folder["recordName"]] = folder
+
+            except Exception as e:
+                raise ICloudProcessingError(
+                    f"Error creating folder: {str(e)}",
+                    debug_info={"imported_folder": str(imported_folder)},
+                )
+
+        return folder_map
+
+    @transaction.atomic
+    def process_notes(self, imported_folder, folder, user):
         notes_data = []
+        for note in imported_folder.get("notes", []):
+            try:
+                full_content = note["fields"]["Text"]["string"]
+                title, content = self.split_content(full_content)
 
-        folder, _ = Folder.objects.get_or_create(name="Apple Notes Import", author=user)
+                existing_note = Note.objects.filter(
+                    Q(author=user) & (Q(title=title) & Q(folder=folder))
+                ).first()
 
-        for icloud_note in notes:
-            if (
-                "Deleted" in icloud_note["fields"]
-                and icloud_note["fields"]["Deleted"]["value"]
-            ):
+                if existing_note:
+                    # TODO: reconcile note updates between this app and icloud notes
+                    continue
+
+                new_note = Note.objects.create(
+                    title=title,
+                    content=content,
+                    author=user,
+                    folder=folder,
+                )
+
+                serialized_note = NoteSerializer(new_note)
+                notes_data.append(serialized_note.data)
+
+            except Exception as e:
+                transaction.set_rollback(True)
+                raise ICloudProcessingError(
+                    f"Error processing note: {str(e)}", debug_info={"note": str(note)}
+                )
+        return notes_data
+
+    @staticmethod
+    def clean_folders(imported_folders):
+        cleaned_folders = []
+        for folder in imported_folders:
+            if folder["fields"]["title"] == "Recently Deleted":
                 continue
 
-            full_content = icloud_note["fields"]["Text"]["string"]
-            title, content = self.split_content(full_content)
+            cleaned_notes = []
+            for note in folder.get("notes", []):
+                if not note["fields"].get("Deleted", {}).get("value", False):
+                    cleaned_notes.append(note)
 
-            # check if the note already exists
-            existing_note = Note.objects.filter(
-                Q(author=user) & (Q(title=title) & Q(folder=folder))
-            ).first()
+            cleaned_folder = folder.copy()
+            cleaned_folder["notes"] = cleaned_notes
+            cleaned_folders.append(cleaned_folder)
 
-            # if the note already exists, keep this version
-            # TODO: implement some way of reconciling note updates between
-            # this app and icloud notes
-            # if existing_note:
-            #     continue
-
-            note = Note(
-                title=title,
-                content=content,
-                author=user,
-                folder=folder,
-            )
-            note.save()
-            imported_notes.append(note)
-
-        # serialize note and folder data
-        note_serializer = NoteSerializer(imported_notes, many=True)
-        notes_data = note_serializer.data
-        folder_serializer = FolderSerializer(folder)
-        folder_data = folder_serializer.data
-
-        return notes_data, folder_data
+        return cleaned_folders
 
     @staticmethod
     def split_content(full_content):
@@ -81,3 +152,10 @@ class ICloudService:
         if len(content_split) > 1:
             return content_split[0], content_split[1]
         return content_split[0], ""
+
+
+class ICloudProcessingError(Exception):
+    def __init__(self, message, debug_info=None):
+        super().__init__(message)
+        self.debug_info = debug_info
+        self.traceback = "".join(traceback.format_exception(*sys.exc_info()))

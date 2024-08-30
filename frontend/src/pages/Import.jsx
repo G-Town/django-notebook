@@ -12,30 +12,6 @@ function Import() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // const handleImportClick = async (source) => {
-  //   if (source === "Apple Notes") {
-  //     setIsLoading(true);
-  //     setError(null);
-  //     try {
-  //       const response = await api.post("/api/import-icloud-notes/");
-  //       console.log("Import successful:", response.data);
-  //       // You might want to show a success message here
-  //       alert(
-  //         `Successfully imported ${response.data.imported_notes_count} notes from Apple Notes.`
-  //       );
-  //       navigate("/notebook"); // Navigate to notebook after successful import
-  //     } catch (err) {
-  //       console.error("Import failed:", err);
-  //       setError("Failed to import notes. Please try again.");
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   } else {
-  //     // For other sources, keep the placeholder alert for now
-  //     alert(`Importing from ${source} is not implemented yet.`);
-  //   }
-  // };
-
   const handleImportClick = async (source) => {
     setIsLoading(true);
     setError(null);
@@ -43,10 +19,6 @@ function Import() {
     const result = await importService.handleImportClick(source);
 
     if (result.success) {
-      // Update your state or context with the new folders and notes
-      // For example:
-      // setFolders(result.updatedFolders);
-      // setNotes(result.updatedNotes);
       alert(result.message);
       navigate("/notebook");
     } else {

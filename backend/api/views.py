@@ -12,10 +12,12 @@ from .serializers import (
     FolderSerializer,
     FolderShareSerializer,
 )
-from services.icloud_service import ICloudService
+from services.icloud_service import ICloudService, ICloudProcessingError
+
 # from pyicloud import PyiCloudService
 # from pyicloud.exceptions import PyiCloudFailedLoginException
 from .models import Note, Folder, Tag
+
 # import os
 
 import logging
@@ -77,7 +79,7 @@ class FolderViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Folder.objects.filter(author=self.request.user)
+        return Folder.objects.filter(author=self.request.user, parent=None)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -112,129 +114,33 @@ class NoteTagViewSet(viewsets.ModelViewSet):
 
 ########## import from icloud ##########
 # function based view
-# consider implementing class based views for interacting with multiple other apps
+# consider implementing class based views for importing from multiple other notes apps
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def import_icloud_notes(request):
     icloud_service = ICloudService()
-    
     try:
         icloud_service.connect()
-        notes, folder_names = icloud_service.get_notes_and_folders()
-        
-        imported_notes, imported_folder = icloud_service.process_notes(notes, request.user)
-        
-        return JsonResponse({
-            "imported_notes_count": len(imported_notes),
-            "imported_notes": imported_notes,
-            "imported_folder": imported_folder,
-        }, status=200)
-    
+        imported_folders = icloud_service.get_folders()
+        folders_data = icloud_service.process_folders(imported_folders, request.user)
+        return JsonResponse(
+            {
+                "imported_folders_count": len(folders_data),
+                # "root_folder": root_folder,
+                "imported_folders": folders_data,
+            },
+            status=200,
+        )
+    except ICloudProcessingError as e:
+        return JsonResponse(
+            {"traceback": e.traceback, "debug_info": e.debug_info},
+            status=500,
+        )
     except Exception as e:
-        return JsonResponse({
-            "error": str(e),
-            "error_location": f"{e.__traceback__.tb_frame.f_code.co_filename}:{e.__traceback__.tb_lineno}",
-        }, status=500)
-
-# @api_view(["POST"])
-# @permission_classes([IsAuthenticated])
-# def import_icloud_notes(request):
-#     apple_id = os.getenv("IC_APPLEID")
-#     password = os.getenv("IC_PWD")
-
-#     # use this object to store items to return in response for debugging
-#     debug_info = {}
-
-#     try:
-#         icloud_service = PyiCloudService(apple_id, password)
-#         if icloud_service.requires_2fa:
-#             return JsonResponse(
-#                 {"error": "Two-factor authentication required."}, status=401
-#             )
-
-#         notes = icloud_service.notes.notes
-#         folders = icloud_service.notes.folders
-#         if not folders:
-#             debug_info["folder_status"] = "no folders fetched"
-#         folder_names = []
-#         for folder in folders:
-#             folder_names.append(folder["fields"]["title"])
-#         user = request.user
-
-#         imported_notes = []
-#         imported_notes_data = []
-#         imported_folders_data = []
-
-#         for icloud_note in notes:
-#             if (
-#                 "Deleted" in icloud_note["fields"]
-#                 and icloud_note["fields"]["Deleted"]["value"]
-#             ):
-#                 continue
-
-#             # note_fields = icloud_note["fields"]
-#             full_content = icloud_note["fields"]["Text"]["string"]
-#             content_split = full_content.split("\n", 1)
-
-#             if len(content_split) > 1:
-#                 [title, content] = content_split
-#             else:
-#                 title = content_split[0]
-#                 content = ""
-
-#             # check if note already exists
-#             existing_note = Note.objects.filter(
-#                 Q(author=user) & (Q(title=title) | Q(content=content))
-#             ).first()
-
-#             # if existing_note:
-#             #     # Update existing note if it's been modified
-#             #     if icloud_note:
-
-#             # Link to a specific folder or create a new one
-#             folder, created = Folder.objects.get_or_create(name="Imported", author=user)
-
-#             note = Note(
-#                 title=title,
-#                 content=content,
-#                 author=user,
-#                 folder=folder,
-#             )
-#             note.save()
-#             imported_notes.append(note)
-
-#             # Add the note data to return list
-#             imported_notes_data.append(
-#                 {
-#                     "id": note.id,
-#                     "title": note.title,
-#                     "content": note.content,
-#                     "folder_id": note.folder.id,
-#                     "folder_name": note.folder.name,
-#                     "created_at": note.created_at.isoformat(),
-#                     "updated_at": note.updated_at.isoformat(),
-#                 }
-#             )
-
-#         return JsonResponse(
-#             {
-#                 "imported_notes_count": len(imported_notes),
-#                 # "imported_notes": imported_notes_data,
-#                 "imported_folders": folder_names,
-#                 "debug_info": debug_info,
-#             },
-#             status=200,
-#         )
-
-#     except PyiCloudFailedLoginException:
-#         return JsonResponse({"error": "Failed to log in to iCloud."}, status=401)
-#     except Exception as e:
-#         return JsonResponse(
-#             {
-#                 "error": str(e),
-#                 "error_location": f"{e.__traceback__.tb_frame.f_code.co_filename}:{e.__traceback__.tb_lineno}",
-#                 "title": title,
-#                 "debug_info": debug_info,
-#             },
-#             status=500,
-#         )
+        return JsonResponse(
+            {
+                "error": str(e),
+                "error_location": f"{e.__traceback__.tb_frame.f_code.co_filename}:{e.__traceback__.tb_lineno}",
+            },
+            status=500,
+        )
