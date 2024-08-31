@@ -1,6 +1,7 @@
 // import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Folders from "../components/Folders";
+// import Folders from "../components/Folders";
+import FolderTree from "../components/FolderTree";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   // faChevronDown,
@@ -31,7 +32,7 @@ const Notebook = () => {
       <button className="plus-button" onClick={handleCreate}>
         <FontAwesomeIcon icon={faPlus} />
       </button>
-      <Folders />
+      <FolderTree />
     </div>
   );
 }

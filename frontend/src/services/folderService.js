@@ -9,6 +9,7 @@ export const getFolders = async () => {
   try {
     const response = await api.get("/api/folders/");
     const fetchedFolders = response.data;
+    console.log("🚀 ~ getFolders ~ fetchedFolders:", fetchedFolders)
     saveToLocalStorage("folders", fetchedFolders);
     return fetchedFolders;
   } catch (error) {
@@ -16,6 +17,10 @@ export const getFolders = async () => {
     return [];
   }
 };
+
+// export const getFolder = async (id) => {
+
+// }
 
 export const createFolder = async (folderData) => {
   try {
@@ -52,3 +57,16 @@ export const deleteFolder = async (folderId) => {
     throw error;
   }
 };
+
+// export const handleRenameSubmit = async (e) => {
+//   e.preventDefault();
+//   if (editFolderName.trim()) {
+//     try {
+//       await updateFolder(folder.id, { name: editFolderName.trim() });
+//       setIsEditing(false);
+//       // You might want to trigger a re-fetch of folders here
+//     } catch (error) {
+//       console.error("Error renaming folder:", error);
+//     }
+//   }
+// };

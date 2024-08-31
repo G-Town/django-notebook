@@ -5,8 +5,9 @@ import "../styles/Folders.css";
 
 const FolderTree = () => {
   const [folders, setFolders] = useState([]);
-  const [expandedFolderId, setExpandedFolderId] = useState(null);
-  const [selectedFolderId, setSelectedFolderId] = useState(null);
+  // const [expandedFolderId, setExpandedFolderId] = useState(null);
+  // const [selectedFolderId, setSelectedFolderId] = useState(null);
+  const [expandedFolderIds, setExpandedFolderIds] = useState(new Set());
   const [newFolderName, setNewFolderName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -38,21 +39,36 @@ const FolderTree = () => {
     }
   };
 
+  const toggleFolder = (folderId) => {
+    setExpandedFolderIds(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(folderId)) {
+        newSet.delete(folderId);
+      } else {
+        newSet.add(folderId);
+      }
+      return newSet;
+    });
+  };
+
   const renderFolder = (folder) => {
+    console.log("🚀 ~ renderFolder ~ folder:", folder)
+    // const children = folders.filter(f => f.parent === folder.id);
+    console.log("🚀 ~ renderFolder ~ children:", folder.children)
     return (
       <Folder
         key={folder.id}
         folder={folder}
-        expandedFolderId={expandedFolderId}
-        setExpandedFolderId={setExpandedFolderId}
-        selectedFolderId={selectedFolderId}
-        setSelectedFolderId={setSelectedFolderId}
-        onFolderUpdate={loadFolders}
+        isExpanded={expandedFolderIds.has(folder.id)}
+        onToggle={() => toggleFolder(folder.id)}
+        onUpdate={loadFolders}
       >
         {folder.children && folder.children.map(childId => {
           const childFolder = folders.find(f => f.id === childId);
+          console.log("🚀 ~ renderFolder ~ childFolder:", childFolder)
           return childFolder ? renderFolder(childFolder) : null;
         })}
+        {/* {folder.children && folder.children.map(renderFolder)} */}
       </Folder>
     );
   };
@@ -65,8 +81,9 @@ const FolderTree = () => {
 
   return (
     <div className="folder-tree-container">
-      <div className={`folder-tree ${selectedFolderId ? "menu-open" : ""}`}>
-        {rootFolders.map(folder => renderFolder(folder))}
+      {/* <div className={`folder-tree ${selectedFolderId ? "menu-open" : ""}`}> */}
+      <div className="folder-tree">
+        {rootFolders.map(renderFolder)}
       </div>
       <div className="add-folder">
         <input

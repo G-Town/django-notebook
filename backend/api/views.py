@@ -79,7 +79,7 @@ class FolderViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Folder.objects.filter(author=self.request.user, parent=None)
+        return Folder.objects.filter(author=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

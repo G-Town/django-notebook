@@ -11,11 +11,11 @@ const handleImportClick = async (source) => {
       // const cachedNotes = getFromLocalStorage("notes") || [];
       const updatedFolders = mergeImportedFolders(
         cachedFolders,
-        response.data.folders,
-        source
+        response.data.imported_folders
       );
       // const updatedNotes = mergeImportedNotes(cachedNotes, response.data.notes);
       saveToLocalStorage("folders", updatedFolders);
+      console.log("🚀 ~ handleImportClick ~ updatedFolders:", updatedFolders);
       // saveToLocalStorage("notes", updatedNotes);
 
       return {
@@ -39,12 +39,13 @@ const handleImportClick = async (source) => {
   }
 };
 
-const mergeImportedFolders = (cachedFolders, importedFolders, source) => {
+const mergeImportedFolders = (cachedFolders, importedFolders) => {
   const updatedFolders = [...cachedFolders];
 
   importedFolders.forEach((importedFolder) => {
     const existingFolderIndex = updatedFolders.findIndex(
-      (folder) => folder.name === `${source} Import`
+      // (folder) => folder.name === `${source} Import`
+      (folder) => folder.name === importedFolder.name
     );
 
     if (existingFolderIndex !== -1) {
@@ -58,7 +59,8 @@ const mergeImportedFolders = (cachedFolders, importedFolders, source) => {
       // Add new folder
       updatedFolders.push({
         ...importedFolder,
-        name: `${source} Import`,
+        // name: `${source} Import`,
+        name: importedFolder.name,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       });
