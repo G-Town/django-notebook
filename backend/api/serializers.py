@@ -59,7 +59,7 @@ class NoteSerializer(serializers.ModelSerializer):
         # Check if a folder is provided, otherwise assign to "Unfiled"
         if not validated_data.get("folder"):
             author = self.context["request"].user
-            unfiled_folder, created = Folder.objects.get_or_create(
+            unfiled_folder, _ = Folder.objects.get_or_create(
                 name="Unfiled", author=author
             )
             validated_data["folder"] = unfiled_folder
@@ -68,7 +68,7 @@ class NoteSerializer(serializers.ModelSerializer):
         note = Note.objects.create(**validated_data)
 
         for tag_data in tags_data:
-            tag, created = Tag.objects.get_or_create(name=tag_data["name"])
+            tag, _ = Tag.objects.get_or_create(name=tag_data["name"])
             NoteTag.objects.create(note=note, tag=tag)
 
         return note

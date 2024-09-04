@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import Folder from './Folder';
 import { getFolders, createFolder } from "../services/folderService";
-import "../styles/Folders.css";
+import PropTypes from 'prop-types';
+import "../styles/FolderTree.css";
 
-const FolderTree = () => {
-  const [folders, setFolders] = useState([]);
-  // const [expandedFolderId, setExpandedFolderId] = useState(null);
-  // const [selectedFolderId, setSelectedFolderId] = useState(null);
+const FolderTree = ({ selectedFolderId, onSelectFolder }) => {
+  const [folders, setFolders] = useState([])
   const [expandedFolderIds, setExpandedFolderIds] = useState(new Set());
   const [newFolderName, setNewFolderName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -31,15 +30,15 @@ const FolderTree = () => {
     if (newFolderName.trim()) {
       try {
         await createFolder({ name: newFolderName.trim() });
-        setNewFolderName(""); // Clear the input
-        await loadFolders(); // Reload folders after creation
+        setNewFolderName("");
+        await loadFolders();
       } catch (error) {
         console.error("Error creating new folder:", error);
       }
     }
   };
 
-  const toggleFolder = (folderId) => {
+  const expandFolder = (folderId) => {
     setExpandedFolderIds(prev => {
       const newSet = new Set(prev);
       if (newSet.has(folderId)) {
@@ -52,23 +51,20 @@ const FolderTree = () => {
   };
 
   const renderFolder = (folder) => {
-    console.log("🚀 ~ renderFolder ~ folder:", folder)
-    // const children = folders.filter(f => f.parent === folder.id);
-    console.log("🚀 ~ renderFolder ~ children:", folder.children)
     return (
       <Folder
         key={folder.id}
         folder={folder}
+        selectedFolderId={selectedFolderId}
         isExpanded={expandedFolderIds.has(folder.id)}
-        onToggle={() => toggleFolder(folder.id)}
+        setSelectedFolder={onSelectFolder}
+        onExpand={() => expandFolder(folder.id)}
         onUpdate={loadFolders}
       >
         {folder.children && folder.children.map(childId => {
           const childFolder = folders.find(f => f.id === childId);
-          console.log("🚀 ~ renderFolder ~ childFolder:", childFolder)
           return childFolder ? renderFolder(childFolder) : null;
         })}
-        {/* {folder.children && folder.children.map(renderFolder)} */}
       </Folder>
     );
   };
@@ -81,7 +77,6 @@ const FolderTree = () => {
 
   return (
     <div className="folder-tree-container">
-      {/* <div className={`folder-tree ${selectedFolderId ? "menu-open" : ""}`}> */}
       <div className="folder-tree">
         {rootFolders.map(renderFolder)}
       </div>
@@ -96,6 +91,11 @@ const FolderTree = () => {
       </div>
     </div>
   );
+};
+
+FolderTree.propTypes = {
+  selectedFolderId: PropTypes.string,
+  onSelectFolder: PropTypes.func
 };
 
 export default FolderTree;

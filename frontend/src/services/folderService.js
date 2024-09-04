@@ -18,10 +18,6 @@ export const getFolders = async () => {
   }
 };
 
-// export const getFolder = async (id) => {
-
-// }
-
 export const createFolder = async (folderData) => {
   try {
     const response = await api.post("/api/folders/", folderData);

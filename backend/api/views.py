@@ -35,8 +35,7 @@ class NoteViewSet(viewsets.ModelViewSet):
         folder_id = self.request.query_params.get("folder", None)
         queryset = (
             Note.objects.filter(author=user)
-            # performs a SQL join between the Note and Folder tables
-            # and fetches related Folder objects in the same query
+            # performs a SQL join between the Note and Folder tables, fetches related Folder objects
             .select_related("folder")
             # fetches all Tag objects related to the Note objects in a separate query
             .prefetch_related("tags")
