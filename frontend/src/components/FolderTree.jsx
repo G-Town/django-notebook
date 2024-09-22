@@ -1,101 +1,49 @@
-import { useState, useEffect } from 'react';
-import Folder from './Folder';
-import { getFolders, createFolder } from "../services/folderService";
-import PropTypes from 'prop-types';
-import "../styles/FolderTree.css";
+import Folder from "./Folder";
+import PropTypes from "prop-types";
 
-const FolderTree = ({ selectedFolderId, onSelectFolder }) => {
-  const [folders, setFolders] = useState([])
-  const [expandedFolderIds, setExpandedFolderIds] = useState(new Set());
-  const [newFolderName, setNewFolderName] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    loadFolders();
-  }, []);
-
-  const loadFolders = async () => {
-    setIsLoading(true);
-    try {
-      const fetchedFolders = await getFolders();
-      setFolders(fetchedFolders);
-    } catch (error) {
-      console.error("Error loading folders:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const addNewFolder = async () => {
-    if (newFolderName.trim()) {
-      try {
-        await createFolder({ name: newFolderName.trim() });
-        setNewFolderName("");
-        await loadFolders();
-      } catch (error) {
-        console.error("Error creating new folder:", error);
-      }
-    }
-  };
-
-  const expandFolder = (folderId) => {
-    setExpandedFolderIds(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(folderId)) {
-        newSet.delete(folderId);
-      } else {
-        newSet.add(folderId);
-      }
-      return newSet;
-    });
-  };
-
-  const renderFolder = (folder) => {
+const FolderTree = ({
+  rootFolder,
+  folders,
+  selectedFolderId,
+  setSelectedFolderId,
+  isAnyMenuOpen,
+  setIsAnyMenuOpen,
+  loadFolders,
+}) => {
+  // TODO: consider handling folder expansions here w/ a set of every expanded folder id
+  // also consider refactoring folder component into this one
+  const renderFolder = (folder, depth) => {
     return (
       <Folder
         key={folder.id}
         folder={folder}
         selectedFolderId={selectedFolderId}
-        isExpanded={expandedFolderIds.has(folder.id)}
-        setSelectedFolder={onSelectFolder}
-        onExpand={() => expandFolder(folder.id)}
-        onUpdate={loadFolders}
+        setSelectedFolderId={setSelectedFolderId}
+        isMenuOpen={isAnyMenuOpen}
+        setIsMenuOpen={setIsAnyMenuOpen}
+        loadFolders={loadFolders}
+        depth={depth}
       >
-        {folder.children && folder.children.map(childId => {
-          const childFolder = folders.find(f => f.id === childId);
-          return childFolder ? renderFolder(childFolder) : null;
-        })}
+        {folder.children &&
+          folder.children.map((childId) => {
+            const childFolder = folders.find((f) => f.id === childId);
+            return childFolder ? renderFolder(childFolder, depth + 1) : null;
+          })}
       </Folder>
     );
   };
 
-  if (isLoading) {
-    return <div>Loading folders...</div>;
-  }
-
-  const rootFolders = folders.filter(folder => !folder.parent);
-
-  return (
-    <div className="folder-tree-container">
-      <div className="folder-tree">
-        {rootFolders.map(renderFolder)}
-      </div>
-      <div className="add-folder">
-        <input
-          type="text"
-          placeholder="New Folder Name"
-          value={newFolderName}
-          onChange={(e) => setNewFolderName(e.target.value)}
-        />
-        <button onClick={addNewFolder}>Add Folder</button>
-      </div>
-    </div>
-  );
+  return renderFolder(rootFolder, 0);
 };
 
 FolderTree.propTypes = {
-  selectedFolderId: PropTypes.string,
-  onSelectFolder: PropTypes.func
+  rootFolder: PropTypes.object,
+  folders: PropTypes.array,
+  selectedFolderId: PropTypes.number,
+  setSelectedFolderId: PropTypes.func,
+  isAnyMenuOpen: PropTypes.bool,
+  setIsAnyMenuOpen: PropTypes.func,
+  loadFolders: PropTypes.func,
 };
 
 export default FolderTree;

@@ -12,11 +12,11 @@ import {
   createFolder,
 } from "../services/folderService";
 import PropTypes from "prop-types";
+import "../styles/FolderActions.css";
 
-const FolderActions = ({ folder, onUpdate }) => {
+const FolderActions = ({ folder, isMenuOpen, setIsMenuOpen, loadFolders }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editFolderName, setEditFolderName] = useState(folder.name);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const FolderActions = ({ folder, onUpdate }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOut);
     };
-  }, []);
+  }, [setIsMenuOpen]);
 
   const toggleMenu = (e) => {
     e.stopPropagation();
@@ -48,7 +48,7 @@ const FolderActions = ({ folder, onUpdate }) => {
       ) {
         try {
           await deleteFolder(folder.id);
-          onUpdate();
+          loadFolders();
         } catch (error) {
           console.error("Error deleting folder:", error);
         }
@@ -58,7 +58,7 @@ const FolderActions = ({ folder, onUpdate }) => {
       if (subfolderName) {
         try {
           await createFolder({ name: subfolderName, parent: folder.id });
-          onUpdate();
+          loadFolders();
         } catch (error) {
           console.error("Error creating subfolder:", error);
         }
@@ -73,7 +73,7 @@ const FolderActions = ({ folder, onUpdate }) => {
       try {
         await updateFolder(folder.id, { name: editFolderName.trim() });
         setIsEditing(false);
-        onUpdate();
+        loadFolders();
       } catch (error) {
         console.error("Error renaming folder:", error);
       }
@@ -81,8 +81,16 @@ const FolderActions = ({ folder, onUpdate }) => {
   };
 
   return (
-    <div className="folder-actions" onClick={(e) => e.stopPropagation()}>
-      <FontAwesomeIcon icon={faEllipsis} onClick={toggleMenu} />
+    <div
+      className={`folder-actions ${isMenuOpen ? "menu-open" : ""}`}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <FontAwesomeIcon
+        icon={faEllipsis}
+        size="sm"
+        onClick={toggleMenu}
+        className={isMenuOpen ? "active" : ""}
+      />
       {isMenuOpen && (
         <div className="folder-actions-menu" ref={menuRef}>
           <div
@@ -125,7 +133,9 @@ const FolderActions = ({ folder, onUpdate }) => {
 
 FolderActions.propTypes = {
   folder: PropTypes.object,
-  onUpdate: PropTypes.func,
+  loadFolders: PropTypes.func,
+  isMenuOpen: PropTypes.bool,
+  setIsMenuOpen: PropTypes.func,
 };
 
 export default FolderActions;

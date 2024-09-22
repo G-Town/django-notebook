@@ -4,7 +4,7 @@
   /* font-family: consolas; */
   background-color:rgb(195, 221, 146);
   /* color: white; */
-  padding: 0px 20px;
+  /* padding: 0px 20px; */
   border-bottom: solid var(--color-accent) 0.1rem;
 }
 
@@ -15,7 +15,7 @@
 
 .nav ul li {
   display: inline;
-  margin-right: 20px;
+  margin: 0 20px;
 }
 
 .nav ul li a {

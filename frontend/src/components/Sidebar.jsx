@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faHome,
   faBook,
   faUpload,
-  faPlus,
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import "../styles/Sidebar.css";
@@ -14,14 +12,8 @@ const Sidebar = () => {
     <div className="sidebar">
       <div className="sidebar-header">{"logo"}</div>
       <nav className="sidebar-nav">
-        <Link to="/">
-          <FontAwesomeIcon icon={faHome} /> Home
-        </Link>
         <Link to="/notebook">
           <FontAwesomeIcon icon={faBook} /> Notebook
-        </Link>
-        <Link to="/note/new">
-          <FontAwesomeIcon icon={faPlus} /> Write
         </Link>
         <Link to="/import">
           <FontAwesomeIcon icon={faUpload} /> Import

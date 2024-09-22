@@ -1,0 +1,68 @@
+.note-list-container {
+  /* font-family: Times; */
+  /* padding: 10px; */
+  /* margin: 10px; */
+  /* border: 1px solid #ccc; */
+  /* border-radius: 5px; */
+  width: 14rem;
+  background-color: oldlace;
+  background-color: rgba(255, 250, 240, 0.5);
+}
+
+.note-list {
+  padding: 8px;
+}
+
+.note-container {
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.note-container:hover {
+  background-color: rgba(225, 221, 203, 0.8);
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.note-title {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.note-snippet {
+  font-size: 11px;
+  margin: 0;
+  color: #666;
+}
+
+.note-date {
+  margin: 0;
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.note-actions {
+  display: flex;
+  justify-content: space-between;
+  /* gap: 10px; */
+}
+
+.note-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: olivedrab;
+  /* color: olive; */
+  /* color: darkolivegreen; */
+  font-size: 1.2em;
+  transition: color 0.3s;
+}
+
+.note-actions button:hover {
+  color: darkolivegreen;
+  /* color: olive; */
+}

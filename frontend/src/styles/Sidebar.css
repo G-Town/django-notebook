@@ -1,6 +1,6 @@
 .sidebar {
   /* position: fixed; */
-  width: 6.5rem;
+  width: 5.5rem;
   background-color: lightgray;
   display: flex;
   flex-direction: column;
@@ -10,7 +10,7 @@
   box-sizing: border-box;
   /* height: 100vh; */
   /* To enable positioning child elements */
-  position: relative;
+  /* position: relative; */
   /* border-left: solid 1px slategray; */
   border-right: solid 1px slategray;
 }
@@ -19,21 +19,22 @@
   top: 10%;
   flex-shrink: 0;
   position: sticky;
-  margin-left: 0.5rem;
+  /* margin-left: 0.5rem; */
+  margin-left: 2.5px;
 }
 
 .sidebar-nav a {
   display: flex;
   align-items: center;
-  padding: 5px 10px;
+  padding: 3px 6px;
   border-radius: 3px;
   background-color: gainsboro;
   border: solid var(--color-accent) 0.1rem;
   /* color: white; */
   color: var(--color-text);
   text-decoration: none;
-  /* font-size: 18px; */
-  margin-bottom: 10px;
+  font-size: 13px;
+  margin-top: 6px;
   transition: background-color 0.3s ease;
 }
 
@@ -52,7 +53,7 @@
   position: sticky;
   top: 0;
   background-color: inherit;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 }
 
 .sidebar-footer {

@@ -75,7 +75,7 @@ class NoteSerializer(serializers.ModelSerializer):
 
 
 class FolderSerializer(serializers.ModelSerializer):
-    children = serializers.SerializerMethodField()
+    # children = serializers.SerializerMethodField()
     note_count = serializers.IntegerField(source="notes.count", read_only=True)
     children = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
