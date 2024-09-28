@@ -1,6 +1,6 @@
 .notebook-container {
-  /* display: flex;
-  align-items: center; */
+  display: flex;
+  align-items: center;
   height: 100%;
   /* background-color: aliceblue; */
 }
@@ -12,10 +12,20 @@
   /* gap: 20px; */
 }
 
-.folder-tree-container {
-  padding: 15px;
-  width: 14rem;
+.folders-container {
+  padding: 11px;
+  width: 11rem;
   /* background-color: #ddd; */
+}
+
+.notes-container {
+  padding: 11px;
+  width: 11rem;
+  background-color: rgba(255, 250, 240, 0.3);
+}
+
+.note-display {
+  justify-content: center;
 }
 
 /* .plus-button {

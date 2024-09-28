@@ -8,8 +8,9 @@ import { getNotesByFolder } from "../services/noteService";
 import PropTypes from "prop-types";
 import "../styles/NoteList.css";
 
-const NoteList = ({ folderId }) => {
+const NoteList = ({ folderId, onNoteSelect }) => {
   const [notes, setNotes] = useState([]);
+  const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   // const navigate = useNavigate();
 
@@ -54,13 +55,14 @@ const NoteList = ({ folderId }) => {
   //     .catch((err) => alert(err));
   // };
 
+  const handleNoteClick = (note) => {
+    setSelectedNoteId(note.id);
+    onNoteSelect(note);
+  };
+
   if (isLoading) {
     return <div>Loading notes...</div>;
   }
-
-  // if (!folderId) {
-  //   return <div>Select a folder to view notes</div>;
-  // }
 
   return (
     <div className="note-list-container">
@@ -70,28 +72,24 @@ const NoteList = ({ folderId }) => {
         <p>Empty</p>
       ) : (
         <div className="note-list">
-          {notes.map((note) => {
+          {notes.map((note) => (
             // TODO: sort notes by most recent edit and add line dividing notes
             // const date = new Date(note.created_at).toLocaleDateString("en-US");
-            return (
-              // <Note key={note.id} note={note} onDelete={handleDelete} />
-              <div key={note.id} className="note-container">
-                <div className="note-header">
-                  <p className="note-title">{note.title}</p>
-                  {/* <p className="note-date">{date}</p> */}
-                </div>
-                <p className="note-snippet">{note.snippet}</p>
-                {/* <div className="note-actions">
-                  <button onClick={handleDelete}>
-                    <FontAwesomeIcon icon={faTrash} size="xs" />
-                  </button>
-                  <button onClick={() => handleEdit(note.id)}>
-                    <FontAwesomeIcon icon={faEdit} size="xs" />
-                  </button>
-                </div> */}
+            // <Note key={note.id} note={note} onDelete={handleDelete} />
+            <div
+              key={note.id}
+              className={`note-container ${
+                selectedNoteId === note.id ? "selected" : ""
+              }`}
+              onClick={() => handleNoteClick(note)}
+            >
+              <div className="note-header">
+                <p className="note-title">{note.title}</p>
+                {/* <p className="note-date">{date}</p> */}
               </div>
-            );
-          })}
+              <p className="note-snippet">{note.snippet}</p>
+            </div>
+          ))}
         </div>
       )}
     </div>
@@ -100,6 +98,7 @@ const NoteList = ({ folderId }) => {
 
 NoteList.propTypes = {
   folderId: PropTypes.number,
+  onNoteSelect: PropTypes.func.isRequired,
 };
 
 export default NoteList;

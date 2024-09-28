@@ -2,11 +2,11 @@
   /* font-family: Times; */
   /* padding: 10px; */
   /* margin: 10px; */
-  /* border: 1px solid #ccc; */
+  border: 1px solid #ccc;
   /* border-radius: 5px; */
-  width: 14rem;
-  background-color: oldlace;
-  background-color: rgba(255, 250, 240, 0.5);
+  /* width: 14rem; */
+  /* background-color: oldlace; */
+  /* background-color: rgba(255, 250, 240, 0.5); */
 }
 
 .note-list {
@@ -14,12 +14,16 @@
 }
 
 .note-container {
-  padding: 8px;
+  /* padding: 3px; */
   border-radius: 10px;
 }
 
 .note-container:hover {
   background-color: rgba(225, 221, 203, 0.8);
+}
+
+.note-container.selected {
+  background-color: #e6f2ff;
 }
 
 .note-header {

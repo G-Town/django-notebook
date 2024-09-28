@@ -28,9 +28,9 @@ const Folder = ({
   };
 
   return (
-    <div className={`folder-container ${isSelected ? "active-folder" : ""}`}>
+    <div className="folder-container">
       <div
-        className="folder-card"
+        className={`folder-card ${isSelected ? "active-folder" : ""}`}
         style={indentStyle}
         onClick={() => {
           setSelectedFolderId(folder.id);

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
 import FolderTree from "../components/FolderTree";
 import NoteList from "../components/NoteList";
+import Note from "../pages/Note";
 import { getFolders } from "../services/folderService";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -12,6 +13,7 @@ const Notebook = () => {
   // const navigate = useNavigate();
   const [folders, setFolders] = useState([]);
   const [selectedFolderId, setSelectedFolderId] = useState(null);
+  const [selectedNote, setSelectedNote] = useState(null);
   const [isAnyMenuOpen, setIsAnyMenuOpen] = useState(false);
 
   // const handleCreate = () => {
@@ -60,8 +62,22 @@ const Notebook = () => {
         });
       }
     }
-
     return descendants;
+  };
+
+  const handleNoteSelect = (note) => {
+    setSelectedNote(note);
+  };
+
+  const handleNoteEdit = (noteId) => {
+    // Implement edit functionality
+    console.log("Editing note:", noteId);
+  };
+
+  const handleNoteDelete = (noteId) => {
+    // Implement delete functionality
+    console.log("Deleting note:", noteId);
+    setSelectedNote(null);
   };
 
   const rootFolders = folders.filter((folder) => !folder.parent);
@@ -72,24 +88,24 @@ const Notebook = () => {
         <FontAwesomeIcon icon={faPlus} />
       </button> */}
       <div className="notebook-nav">
-        <div className="folder-tree-container">
-        {rootFolders.map((rootFolder) => {
-          // console.log("🚀 ~ {rootFolders.map ~ rootFolder:", rootFolder);
-          const descendantFolders = getDescendantFolders(rootFolder);
-          return (
-            <FolderTree
-              key={rootFolder.id}
-              rootFolder={rootFolder}
-              folders={descendantFolders}
-              selectedFolderId={selectedFolderId}
-              setSelectedFolderId={setSelectedFolderId}
-              isAnyMenuOpen={isAnyMenuOpen}
-              setIsAnyMenuOpen={setIsAnyMenuOpen}
-              loadFolders={loadFolders}
-            />
-          );
-        })}
-        {/* <div className="add-folder">
+        <div className="folders-container">
+          {rootFolders.map((rootFolder) => {
+            // console.log("🚀 ~ {rootFolders.map ~ rootFolder:", rootFolder);
+            const descendantFolders = getDescendantFolders(rootFolder);
+            return (
+              <FolderTree
+                key={rootFolder.id}
+                rootFolder={rootFolder}
+                folders={descendantFolders}
+                selectedFolderId={selectedFolderId}
+                setSelectedFolderId={setSelectedFolderId}
+                isAnyMenuOpen={isAnyMenuOpen}
+                setIsAnyMenuOpen={setIsAnyMenuOpen}
+                loadFolders={loadFolders}
+              />
+            );
+          })}
+          {/* <div className="add-folder">
           <input
             type="text"
             placeholder="New Folder Name"
@@ -99,7 +115,24 @@ const Notebook = () => {
           <button onClick={addNewFolder}>+</button>
         </div> */}
         </div>
-        <NoteList folderId={selectedFolderId} isAnyMenuOpen={isAnyMenuOpen} />
+        <div className="notes-container">
+          <NoteList
+            folderId={selectedFolderId}
+            isAnyMenuOpen={isAnyMenuOpen}
+            onNoteSelect={handleNoteSelect}
+          />
+        </div>
+      </div>
+      <div className="note-display">
+        {selectedNote ? (
+          <Note
+            note={selectedNote}
+            onEdit={handleNoteEdit}
+            onDelete={handleNoteDelete}
+          />
+        ) : (
+          <p>Select a note to view its contents</p>
+        )}
       </div>
     </div>
   );

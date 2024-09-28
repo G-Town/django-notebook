@@ -1,4 +1,4 @@
-.folder-container.active-folder .folder-card {
+.folder-card.active-folder {
   pointer-events: all;
   opacity: 1;
   background-color: #f0f0f0;
@@ -22,12 +22,17 @@
   display: flex;
   align-items: center;
   /* justify-content: space-between; */
-  gap: 4px;
+  gap: 3px;
   margin-left: 5px;
+  overflow: hidden;
 }
 
 .folder-card-items h6 {
   margin: 0;
+  /* word-wrap: break-word; */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .folder-icon {
