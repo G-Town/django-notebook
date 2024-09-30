@@ -67,6 +67,7 @@ const Notebook = () => {
 
   const handleNoteSelect = (note) => {
     setSelectedNote(note);
+    console.log("🚀 ~ handleNoteSelect ~ note:", note.id)
   };
 
   const handleNoteEdit = (noteId) => {

@@ -1,29 +1,15 @@
-.note-list-container {
-  /* font-family: Times; */
-  /* padding: 10px; */
-  /* margin: 10px; */
-  border: 1px solid #ccc;
-  /* border-radius: 5px; */
-  /* width: 14rem; */
-  /* background-color: oldlace; */
-  /* background-color: rgba(255, 250, 240, 0.5); */
-}
-
-.note-list {
-  padding: 8px;
-}
-
 .note-container {
-  /* padding: 3px; */
-  border-radius: 10px;
+  /* font-family: Times; */
+  padding: 10px;
+  margin: 10px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: oldlace;
+  background-color: floralwhite;
 }
 
 .note-container:hover {
-  background-color: rgba(225, 221, 203, 0.8);
-}
-
-.note-container.selected {
-  background-color: #e6f2ff;
+  background-color: cornsilk;
 }
 
 .note-header {
@@ -31,14 +17,12 @@
   justify-content: space-between;
 }
 
-.note-list p {
+.note-title {
   margin: 0;
-  font-size: 13px;
   color: var(--color-text);
 }
 
-.note-snippet {
-  font-size: 11px;
+.note-content {
   margin: 0;
   color: #666;
 }
@@ -51,8 +35,7 @@
 
 .note-actions {
   display: flex;
-  justify-content: space-between;
-  /* gap: 10px; */
+  gap: 10px;
 }
 
 .note-actions button {

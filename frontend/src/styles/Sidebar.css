@@ -30,6 +30,7 @@
   border-radius: 3px;
   background-color: gainsboro;
   border: solid var(--color-accent) 0.1rem;
+  border: solid 1px slategray;
   /* color: white; */
   color: var(--color-text);
   text-decoration: none;

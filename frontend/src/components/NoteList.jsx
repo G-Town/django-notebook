@@ -84,7 +84,7 @@ const NoteList = ({ folderId, onNoteSelect }) => {
               onClick={() => handleNoteClick(note)}
             >
               <div className="note-header">
-                <p className="note-title">{note.title}</p>
+                <p>{note.title}</p>
                 {/* <p className="note-date">{date}</p> */}
               </div>
               <p className="note-snippet">{note.snippet}</p>
