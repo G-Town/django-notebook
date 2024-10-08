@@ -43,9 +43,9 @@
   color: #374151;
 }
 
-.note-editor {
-  /* Add any specific styles for the editor content here */
-}
+/* Add any specific styles for the editor content here */
+/* .note-editor {
+} */
 
 .note-editor .ProseMirror {
   min-height: 200px;

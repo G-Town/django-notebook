@@ -8,9 +8,9 @@ import { getNotesByFolder } from "../services/noteService";
 import PropTypes from "prop-types";
 import "../styles/NoteList.css";
 
-const NoteList = ({ folderId, onNoteSelect }) => {
+const NoteList = ({ folderId, onNoteSelect, selectedNoteId }) => {
   const [notes, setNotes] = useState([]);
-  const [selectedNoteId, setSelectedNoteId] = useState(null);
+  // const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   // const navigate = useNavigate();
 
@@ -56,7 +56,7 @@ const NoteList = ({ folderId, onNoteSelect }) => {
   // };
 
   const handleNoteClick = (note) => {
-    setSelectedNoteId(note.id);
+    // setSelectedNoteId(note.id);
     onNoteSelect(note);
   };
 
@@ -99,6 +99,7 @@ const NoteList = ({ folderId, onNoteSelect }) => {
 NoteList.propTypes = {
   folderId: PropTypes.number,
   onNoteSelect: PropTypes.func.isRequired,
+  selectedNoteId: PropTypes.number
 };
 
 export default NoteList;

@@ -67,7 +67,7 @@ const Notebook = () => {
 
   const handleNoteSelect = (note) => {
     setSelectedNote(note);
-    console.log("🚀 ~ handleNoteSelect ~ note:", note.id)
+    console.log("🚀 ~ handleNoteSelect ~ note:", note.id);
   };
 
   const handleNoteEdit = (noteId) => {
@@ -127,6 +127,7 @@ const Notebook = () => {
       <div className="note-display">
         {selectedNote ? (
           <Note
+            key={selectedNote.id}
             note={selectedNote}
             onEdit={handleNoteEdit}
             onDelete={handleNoteDelete}

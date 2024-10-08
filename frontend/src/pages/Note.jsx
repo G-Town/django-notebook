@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { Bold, Italic, List, ListOrdered, Heading1, Heading2 } from 'lucide-react';
@@ -21,9 +21,19 @@ const Note = ({ note, onEdit, onDelete }) => {
     onEdit(note.id, { title: e.target.value });
   };
 
+  const focusEditor = useCallback(() => {
+    if (editor) {
+      editor.chain().focus().run();
+    }
+  }, [editor]);
+
   const ToolbarButton = ({ icon: Icon, onClick }) => (
     <button
-      onClick={onClick}
+      onMouseDown={(e) => e.preventDefault()} // Prevent blur
+      onClick={() => {
+        focusEditor();
+        onClick();
+      }}
       className="toolbar-button"
     >
       <Icon size={20} />
