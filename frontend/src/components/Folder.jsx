@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFolderOpen,
@@ -14,13 +14,15 @@ const Folder = ({
   folder,
   selectedFolderId,
   setSelectedFolderId,
-  isMenuOpen,
-  setIsMenuOpen,
+  isExpanded,
+  onToggle,
+  // isMenuOpen,
+  setIsAnyMenuOpen,
   loadFolders,
   depth,
   children,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  // const [isExpanded, setIsExpanded] = useState(false);
   const isSelected = selectedFolderId === folder.id;
 
   const indentStyle = {
@@ -43,7 +45,8 @@ const Folder = ({
             size="xs"
             onClick={(e) => {
               e.stopPropagation();
-              setIsExpanded(!isExpanded);
+              // setIsExpanded(!isExpanded);
+              onToggle();
             }}
           />
           <FontAwesomeIcon
@@ -56,11 +59,13 @@ const Folder = ({
         <FolderActions
           folder={folder}
           loadFolders={loadFolders}
-          isMenuOpen={isMenuOpen}
-          setIsMenuOpen={setIsMenuOpen}
+          // isMenuOpen={isMenuOpen}
+          setIsAnyMenuOpen={setIsAnyMenuOpen}
         />
       </div>
-      {isExpanded && children && (
+      {
+      isExpanded && children && 
+      (
         <div className="folder-children">{children}</div>
       )}
     </div>
@@ -71,13 +76,13 @@ Folder.propTypes = {
   folder: PropTypes.object,
   selectedFolderId: PropTypes.number,
   setSelectedFolderId: PropTypes.func,
-  isMenuOpen: PropTypes.bool,
-  setIsMenuOpen: PropTypes.func,
-  isExpanded: PropTypes.bool,
-  expand: PropTypes.func,
+  onToggle: PropTypes.func,
   loadFolders: PropTypes.func,
+  // isMenuOpen: PropTypes.bool,
+  setIsAnyMenuOpen: PropTypes.func,
+  isExpanded: PropTypes.bool,
   depth: PropTypes.number,
-  children: PropTypes.array,
+  children: PropTypes.node,
 };
 
 export default Folder;

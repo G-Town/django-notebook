@@ -121,12 +121,13 @@ def import_icloud_notes(request):
     try:
         icloud_service.connect()
         imported_folders = icloud_service.get_folders()
-        folders_data = icloud_service.process_folders(imported_folders, request.user)
+        folders_data, debug_info = icloud_service.process_folders(imported_folders, request.user)
         return JsonResponse(
             {
                 "imported_folders_count": len(folders_data),
                 # "root_folder": root_folder,
                 "imported_folders": folders_data,
+                "debug_info": debug_info
             },
             status=200,
         )

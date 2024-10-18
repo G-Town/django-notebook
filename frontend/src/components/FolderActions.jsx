@@ -14,7 +14,8 @@ import {
 import PropTypes from "prop-types";
 import "../styles/FolderActions.css";
 
-const FolderActions = ({ folder, isMenuOpen, setIsMenuOpen, loadFolders }) => {
+const FolderActions = ({ folder, loadFolders, setIsAnyMenuOpen }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editFolderName, setEditFolderName] = useState(folder.name);
   const menuRef = useRef(null);
@@ -34,6 +35,7 @@ const FolderActions = ({ folder, isMenuOpen, setIsMenuOpen, loadFolders }) => {
   const toggleMenu = (e) => {
     e.stopPropagation();
     setIsMenuOpen(!isMenuOpen);
+    setIsAnyMenuOpen(!isMenuOpen);
   };
 
   const handleFolderAction = async (action) => {
@@ -134,8 +136,8 @@ const FolderActions = ({ folder, isMenuOpen, setIsMenuOpen, loadFolders }) => {
 FolderActions.propTypes = {
   folder: PropTypes.object,
   loadFolders: PropTypes.func,
-  isMenuOpen: PropTypes.bool,
-  setIsMenuOpen: PropTypes.func,
+  // isMenuOpen: PropTypes.bool,
+  setIsAnyMenuOpen: PropTypes.func,
 };
 
 export default FolderActions;

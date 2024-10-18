@@ -81,6 +81,10 @@ const Notebook = () => {
     setSelectedNote(null);
   };
 
+  // const toggleNotebookMenuState = (isOpen) => {
+  //   setIsAnyMenuOpen(isOpen);
+  // };
+
   const rootFolders = folders.filter((folder) => !folder.parent);
 
   return (
@@ -91,7 +95,8 @@ const Notebook = () => {
       <div className="notebook-nav">
         <div className="folders-container">
           {rootFolders.map((rootFolder) => {
-            // console.log("🚀 ~ {rootFolders.map ~ rootFolder:", rootFolder);
+            console.log("🚀 ~ {rootFolders.map ~ rootFolder:", rootFolder);
+            console.log("🚀 ~ {rootFolders.map ~ rootFolder parent:", rootFolder.parent)
             const descendantFolders = getDescendantFolders(rootFolder);
             return (
               <FolderTree
@@ -100,7 +105,7 @@ const Notebook = () => {
                 folders={descendantFolders}
                 selectedFolderId={selectedFolderId}
                 setSelectedFolderId={setSelectedFolderId}
-                isAnyMenuOpen={isAnyMenuOpen}
+                // isAnyMenuOpen={isAnyMenuOpen}
                 setIsAnyMenuOpen={setIsAnyMenuOpen}
                 loadFolders={loadFolders}
               />

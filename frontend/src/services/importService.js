@@ -5,9 +5,9 @@ const handleImportClick = async (source) => {
   if (source === "Apple Notes") {
     try {
       const response = await api.post("/api/import-icloud-notes/");
-      console.log("🚀 ~ handleImportClick ~ imported notes:", response.data);
-
+      // console.log("🚀 ~ handleImportClick ~ imported notes:", response.data);
       const cachedFolders = getFromLocalStorage("folders") || [];
+      // console.log("🚀 ~ handleImportClick ~ cachedFolders:", cachedFolders);
       // const cachedNotes = getFromLocalStorage("notes") || [];
       const updatedFolders = mergeImportedFolders(
         cachedFolders,
@@ -21,7 +21,8 @@ const handleImportClick = async (source) => {
       return {
         success: true,
         message: `Successfully imported ${response.data.imported_notes_count} notes from Apple Notes.`,
-        updatedFolders: updatedFolders,
+        // updatedFolders: updatedFolders,
+        updatedFolders: response
       };
     } catch (err) {
       console.error("Import failed:", err);
@@ -41,29 +42,41 @@ const handleImportClick = async (source) => {
 
 const mergeImportedFolders = (cachedFolders, importedFolders) => {
   const updatedFolders = [...cachedFolders];
+  const folderMap = new Map(
+    updatedFolders.map((folder) => [folder.id, folder])
+  );
 
   importedFolders.forEach((importedFolder) => {
-    const existingFolderIndex = updatedFolders.findIndex(
-      // (folder) => folder.name === `${source} Import`
-      (folder) => folder.name === importedFolder.name
-    );
+    console.log("🚀 ~ importedFolders.forEach ~ importedFolder children:", importedFolder.children)
+    // const existingFolderIndex = updatedFolders.findIndex(
+    //   (folder) => folder.name === importedFolder.name
+    // );
+    const existingFolder = folderMap.get(importedFolder.id);
 
-    if (existingFolderIndex !== -1) {
+    if (existingFolder) {
       // Update existing folder
-      updatedFolders[existingFolderIndex] = {
-        ...updatedFolders[existingFolderIndex],
+      Object.assign(existingFolder, {
         ...importedFolder,
-        updatedAt: new Date().toISOString(),
-      };
-    } else {
-      // Add new folder
-      updatedFolders.push({
-        ...importedFolder,
-        // name: `${source} Import`,
-        name: importedFolder.name,
-        createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       });
+    } else {
+      // Add new folder
+      const newFolder = {
+        ...importedFolder,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      updatedFolders.push(newFolder);
+      folderMap.set(newFolder.id, newFolder);
+    }
+  });
+
+  // Update parent-child relationships
+  updatedFolders.forEach((folder) => {
+    if (folder.children) {
+      folder.children = folder.children.filter((childId) =>
+        folderMap.has(childId)
+      );
     }
   });
 

@@ -37,9 +37,8 @@ class ICloudService:
             cleaned_folders = self.clean_folders(imported_folders)
 
             # First pass: create all folders and map them by icloud record name
-            folder_map = self.create_folder_map(cleaned_folders, user)
-            root_folder_data = FolderSerializer(folder_map["Apple Notes Import"]).data
-            imported_folders_data = [root_folder_data]
+            folder_map, map_debug_info = self.create_folder_map(cleaned_folders, user)
+            debug_info["map_debug"] = map_debug_info
 
             # Second pass: set correct parent relationships and process notes
             for imported_folder in cleaned_folders:
@@ -50,14 +49,13 @@ class ICloudService:
 
                     if parent_record and parent_record in folder_map:
                         folder.parent = folder_map[parent_record]
+                    else:
+                        folder.parent = folder_map["Apple Notes Import"]
 
                     folder.save()
 
-                    # TODO: do something with notes data in response
+                    # TODO: do something with notes data
                     notes_data = self.process_notes(imported_folder, folder, user)
-
-                    serialized_folder = FolderSerializer(folder).data
-                    imported_folders_data.append(serialized_folder)
 
                 except Exception as e:
                     raise ICloudProcessingError(
@@ -65,7 +63,11 @@ class ICloudService:
                         debug_info=folder_debug_info,
                     )
 
-            return imported_folders_data
+            # Now with all parent relationships set, serialize all folders for response data
+            all_folders = Folder.objects.filter(author=user)
+            serialized_folders = FolderSerializer(all_folders, many=True).data
+
+            return serialized_folders, debug_info
 
         except Exception as e:
             transaction.set_rollback(True)
@@ -78,12 +80,12 @@ class ICloudService:
             name="Apple Notes Import", author=user
         )
         folder_map = {root_folder.name: root_folder}
+        map_debug_info = {}
         for imported_folder in cleaned_folders:
             try:
                 folder, _ = Folder.objects.get_or_create(
                     name=imported_folder["fields"]["title"],
                     author=user,
-                    defaults={"parent": root_folder},
                 )
                 folder_map[imported_folder["recordName"]] = folder
 
@@ -93,7 +95,7 @@ class ICloudService:
                     debug_info={"imported_folder": str(imported_folder)},
                 )
 
-        return folder_map
+        return folder_map, map_debug_info
 
     @transaction.atomic
     def process_notes(self, imported_folder, folder, user):
