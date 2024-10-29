@@ -121,25 +121,35 @@ def import_icloud_notes(request):
     try:
         icloud_service.connect()
         imported_folders = icloud_service.get_folders()
-        folders_data, debug_info = icloud_service.process_folders(imported_folders, request.user)
-        return JsonResponse(
-            {
-                "imported_folders_count": len(folders_data),
-                # "root_folder": root_folder,
-                "imported_folders": folders_data,
-                "debug_info": debug_info
-            },
-            status=200,
-        )
+        # folders_data, debug_info = icloud_service.process_folders(imported_folders, request.user)
+        import_result = icloud_service.process_folders(imported_folders, request.user)
+
+        # return JsonResponse(
+        #     {
+        #         "imported_folders_count": len(folders_data),
+        #         # "root_folder": root_folder,
+        #         "imported_folders": folders_data,
+        #         "debug_info": debug_info
+        #     },
+        #     status=200,
+        # )
+        return JsonResponse(import_result, status=200)
+    
     except ICloudProcessingError as e:
         return JsonResponse(
-            {"traceback": e.traceback, "debug_info": e.debug_info},
+            {
+                "status": "error",
+                "message": str(e),
+                "traceback": e.traceback,
+                "debug_info": e.debug_info
+            },
             status=500,
         )
     except Exception as e:
         return JsonResponse(
             {
-                "error": str(e),
+                "status": "error",
+                "message": str(e),
                 "error_location": f"{e.__traceback__.tb_frame.f_code.co_filename}:{e.__traceback__.tb_lineno}",
             },
             status=500,
