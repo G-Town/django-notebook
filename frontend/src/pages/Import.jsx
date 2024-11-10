@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import appleLogo from "../assets/apple-14.svg";
 import googleLogo from "../assets/google-g-2015.svg";
-import importService from "../services/importService";
+import { handleImport } from "../services/importService";
 import "../styles/Import.css";
 
 function Import() {
@@ -16,7 +16,7 @@ function Import() {
     setIsLoading(true);
     setError(null);
 
-    const result = await importService.handleImportClick(source);
+    const result = await handleImport(source);
 
     if (result.success) {
       alert(result.message);

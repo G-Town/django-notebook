@@ -43,82 +43,90 @@ class ICloudService:
                 "newNotes": 0,
                 "rootFolders": 0,
             }
-            # Create root import folder
+
+            # Create root import folder, use as default parent folder
             root_folder, _ = Folder.objects.get_or_create(
                 name="Apple Notes Import", author=user
             )
+
             # Create folder map keyed by import recordName
             folder_map = {}
-            # use root import folder for default parent
-            # folder_map = {root_folder.name: {"folder": root_folder}}
+
+            # First pass: clean imported folder record data
             cleaned_folders = self.clean_folders(imported_folders)
 
-            # First pass: Create folder objects and build the map
-            for imported_folder in cleaned_folders:
-                record_name = imported_folder.get("recordName")
-                folder_title = imported_folder["fields"]["title"]
-
-                folder, created = Folder.objects.get_or_create(
-                    name=folder_title, author=user
-                )
-
-                folder_map[record_name] = {
-                    "folder": folder,
-                    "imported_data": imported_folder,
-                }
-
-                summary["totalFolders"] += 1
-                if created:
-                    summary["newFolders"] += 1
-
-            # Second pass: Set parent relationships using the map
-            for record_name, folder_data in folder_map.items():
-                folder = folder_data["folder"]
-                imported_folder = folder_data["imported_data"]
-
-                parent_record = imported_folder.get("parent", {}).get("recordName")
-
-                if parent_record and parent_record in folder_map:
-                    folder.parent = folder_map[parent_record]["folder"]
-                else:
-                    folder.parent = root_folder
-                    summary["rootFolders"] += 1
-
-                folder.save()
-
-                # Process notes for this folder
-                notes_count, new_notes_count = self.process_notes(
-                    imported_folder, folder, user
-                )
-                summary["totalNotes"] += notes_count
-                summary["newNotes"] += new_notes_count
-
+            # # Second pass: Create folder objects and build the map
             # for imported_folder in cleaned_folders:
+            #     record_name = imported_folder.get("recordName")
+            #     folder_title = imported_folder["fields"]["title"]
+
             #     folder, created = Folder.objects.get_or_create(
-            #         name=imported_folder["fields"]["title"], author=user
+            #         name=folder_title, author=user
             #     )
+
+            #     folder_map[record_name] = {
+            #         "folder": folder,
+            #         "imported_data": imported_folder,
+            #     }
+
             #     summary["totalFolders"] += 1
             #     if created:
             #         summary["newFolders"] += 1
 
+            # # Third pass: Set parent relationships using the map
+            # for record_name, folder_data in folder_map.items():
+            #     folder = folder_data["folder"]
+            #     imported_folder = folder_data["imported_data"]
+
             #     parent_record = imported_folder.get("parent", {}).get("recordName")
-            #     if parent_record:
-            #         parent_folder = Folder.objects.filter(
-            #             name=imported_folders[parent_record]["fields"]["title"],
-            #             author=user,
-            #         ).first()
-            #         folder.parent = parent_folder or root_folder
+
+            #     if parent_record and parent_record in folder_map:
+            #         folder.parent = folder_map[parent_record]["folder"]
             #     else:
             #         folder.parent = root_folder
             #         summary["rootFolders"] += 1
 
             #     folder.save()
 
+            #     # Process notes for this folder
             #     notes_count, new_notes_count = self.process_notes(
             #         imported_folder, folder, user
             #     )
             #     summary["totalNotes"] += notes_count
             #     summary["newNotes"] += new_notes_count
+
+            # Second pass: Create folder objects and build the map
+            for imported_folder in cleaned_folders:
+                record_name = imported_folder.get("recordName")
+                folder, created = Folder.objects.get_or_create(
+                    name=imported_folder["fields"]["title"], author=user
+                )
+                folder_map[record_name] = {
+                    "folder": folder,
+                    "imported_data": imported_folder
+                }
+                summary["totalFolders"] += 1
+                if created:
+                    summary["newFolders"] += 1
+
+            # Third pass: Set parent relationships using the map
+            for record_name, folder_data in folder_map.items():
+                folder = folder_data["folder"]
+                imported_folder = folder_data["imported_data"]
+                
+                parent_record = imported_folder.get("parent", {}).get("recordName")
+                if parent_record and parent_record in folder_map:
+                    folder.parent = folder_map[parent_record]["folder"]
+                else:
+                    folder.parent = root_folder
+                    summary["rootFolders"] += 1
+                
+                folder.save()
+
+            # Process notes for this folder
+            notes_count, new_notes_count = self.process_notes(imported_folder, folder, user)
+            summary["totalNotes"] += notes_count
+            summary["newNotes"] += new_notes_count
 
             response = {
                 # "status": "success",
@@ -140,112 +148,6 @@ class ICloudService:
             raise ICloudProcessingError(
                 error_message, debug_info={"traceback": traceback.format_exc()}
             )
-
-    # @transaction.atomic
-    # def process_folders(self, imported_folders, user):
-    #     try:
-    #         debug_info = {}
-    #         cleaned_folders = self.clean_folders(imported_folders)
-    #         folder_map = {}
-    #         serialized_folders = []
-    #         response_data = []
-    #         # Creact root import folder
-    #         root_folder, _ = Folder.objects.get_or_create(
-    #             name="Apple Notes Import", author=user
-    #         )
-    #         folder_map[root_folder.name] = {
-    #             "db_object": root_folder,
-    #             "serialized": FolderSerializer(root_folder).data,
-    #             "children": [],
-    #         }
-
-    #         # First pass: create all folders and map them by icloud record name
-    #         # folder_map, map_debug_info = self.create_folder_map(cleaned_folders, user)
-    #         # debug_info["map_debug"] = map_debug_info
-    #         for imported_folder in cleaned_folders:
-    #             folder, created = Folder.objects.get_or_create(
-    #                 name=imported_folder["fields"]["title"], author=user
-    #             )
-    #             serialized_folder = FolderSerializer(folder).data
-    #             folder_map[imported_folder["recordName"]] = {
-    #                 "db_object": folder,
-    #                 "serialized": serialized_folder,
-    #                 "children": [],
-    #             }
-
-    #         # Second pass: set correct parent relationships and process notes
-    #         for imported_folder in cleaned_folders:
-    #             folder_debug_info = {}
-    #             try:
-    #                 folder_data = folder_map[imported_folder["recordName"]]
-    #                 parent_record = imported_folder.get("parent", {}).get("recordName")
-
-    #                 if parent_record and parent_record in folder_map:
-    #                     # folder.parent = folder_map[parent_record]
-    #                     parent_data = folder_map[parent_record]
-    #                     folder_data["db_object"].parent = parent_data["db_object"]
-    #                     parent_data["children"].append(folder_data["serialized"]["id"])
-    #                 else:
-    #                     # folder.parent = folder_map["Apple Notes Import"]
-    #                     folder_data["db_object"].parent = root_folder
-    #                     folder_map[root_folder.name]["children"].append(
-    #                         folder_data["serialized"]["id"]
-    #                     )
-
-    #                 folder_data["db_object"].save()
-    #                 # folder.save()
-
-    #                 # TODO: do something with notes data
-    #                 notes_data = self.process_notes(imported_folder, folder, user)
-
-    #                 # Add the serialized folder data to the response list
-    #                 # folder_data["serialized"]["children"] = folder_data["children"]
-    #                 # serialized_folders.append(folder_data["serialized"])
-
-    #             except Exception as e:
-    #                 raise ICloudProcessingError(
-    #                     f"Error processing folder: {str(e)}",
-    #                     debug_info=folder_debug_info,
-    #                 )
-
-    #         # Now with all parent relationships set, serialize all folders for response data
-    #         # all_folders = Folder.objects.filter(author=user)
-    #         # serialized_folders = FolderSerializer(all_folders, many=True).data
-
-    #         # Build final response data
-    #         # for folder_data in folder_map.values():
-    #         #     folder_data["serialized"]["children"] = folder_data["children"]
-    #         #     serialized_folders.append(folder_data["serialized"])
-
-    #         return serialized_folders, debug_info
-
-    #     except Exception as e:
-    #         transaction.set_rollback(True)
-    #         error_message = f"Unexpected error in process_folders: {str(e)}"
-
-    #         raise ICloudProcessingError(error_message, debug_info)
-
-    # def create_folder_map(self, cleaned_folders, user):
-    #     root_folder, _ = Folder.objects.get_or_create(
-    #         name="Apple Notes Import", author=user
-    #     )
-    #     folder_map = {root_folder.name: root_folder}
-    #     map_debug_info = {}
-    #     for imported_folder in cleaned_folders:
-    #         try:
-    #             folder, _ = Folder.objects.get_or_create(
-    #                 name=imported_folder["fields"]["title"],
-    #                 author=user,
-    #             )
-    #             folder_map[imported_folder["recordName"]] = folder
-
-    #         except Exception as e:
-    #             raise ICloudProcessingError(
-    #                 f"Error creating folder: {str(e)}",
-    #                 debug_info={"imported_folder": str(imported_folder)},
-    #             )
-
-    #     return folder_map, map_debug_info
 
     @transaction.atomic
     def process_notes(self, imported_folder, folder, user):
