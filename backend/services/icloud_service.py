@@ -123,10 +123,10 @@ class ICloudService:
                 
                 folder.save()
 
-            # Process notes for this folder
-            notes_count, new_notes_count = self.process_notes(imported_folder, folder, user)
-            summary["totalNotes"] += notes_count
-            summary["newNotes"] += new_notes_count
+                # Process notes for this folder
+                notes_count, new_notes_count = self.process_notes(imported_folder, folder, user)
+                summary["totalNotes"] += notes_count
+                summary["newNotes"] += new_notes_count
 
             response = {
                 # "status": "success",
