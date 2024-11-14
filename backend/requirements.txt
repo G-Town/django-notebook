@@ -17,7 +17,7 @@ more-itertools==10.3.0
 protobuf==5.27.1
 psycopg2-binary==2.9.9
 # my fork of pyicloud
-pyicloud @ git+https://github.com/G-Town/pyicloud.git@fbd3c79c3b4a38d47b605a3de621fd8db6a74cc8
+pyicloud @ git+https://github.com/G-Town/pyicloud@2c3db04acc2e241d5c19029eab638fd792174b99
 PyJWT==2.8.0
 python-dotenv==1.0.1
 pytz==2024.1

@@ -2,10 +2,15 @@ import os
 import sys
 import traceback
 from pyicloud import PyiCloudService
-from pyicloud.exceptions import PyiCloudFailedLoginException
-from api.serializers import FolderSerializer, NoteSerializer
+from pyicloud.exceptions import (
+    PyiCloudFailedLoginException,
+    PyiCloudAPIResponseException,
+)
+
+# from api.serializers import FolderSerializer, NoteSerializer
 from api.models import Note, Folder
-from django.db.models import Q
+
+# from django.db.models import Q
 from django.db import transaction
 import uuid
 from django.utils import timezone
@@ -29,14 +34,38 @@ class ICloudService:
     def get_folders(self):
         if not self.service:
             self.connect()
-        folders = self.service.notes.folders
-        return folders
+        try:
+            folders = self.service.notes.folders
+            # print("folders:\n", folders)
+            if not folders:
+                service_info = {
+                    "has_notes_service": hasattr(self.service, "notes"),
+                    "notes_service_type": type(self.service.notes).__name__,
+                    "service_endpoints": getattr(
+                        self.service.notes, "service_endpoint", None
+                    ),
+                    "requires_2fa": self.service.requires_2fa,
+                    "trusted_session": self.service.is_trusted_session,
+                }
+
+                raise PyiCloudAPIResponseException(
+                    reason=f"No folders retrieved from iCloud Notes service. Service state: {service_info}",
+                    code="EMPTY_FOLDERS",
+                )
+            return folders
+
+        except Exception as e:
+            raise ICloudProcessingError(
+                f"Error retrieving folders: {str(e)}",
+                debug_info={"service_info": service_info, "original_error": str(e)},
+            )
 
     @transaction.atomic
     def process_folders(self, imported_folders, user):
         try:
             import_id = str(uuid.uuid4())
             summary = {
+                "import_data_length": len(imported_folders),
                 "totalFolders": 0,
                 "newFolders": 0,
                 "totalNotes": 0,
@@ -55,56 +84,19 @@ class ICloudService:
             # First pass: clean imported folder record data
             cleaned_folders = self.clean_folders(imported_folders)
 
-            # # Second pass: Create folder objects and build the map
-            # for imported_folder in cleaned_folders:
-            #     record_name = imported_folder.get("recordName")
-            #     folder_title = imported_folder["fields"]["title"]
-
-            #     folder, created = Folder.objects.get_or_create(
-            #         name=folder_title, author=user
-            #     )
-
-            #     folder_map[record_name] = {
-            #         "folder": folder,
-            #         "imported_data": imported_folder,
-            #     }
-
-            #     summary["totalFolders"] += 1
-            #     if created:
-            #         summary["newFolders"] += 1
-
-            # # Third pass: Set parent relationships using the map
-            # for record_name, folder_data in folder_map.items():
-            #     folder = folder_data["folder"]
-            #     imported_folder = folder_data["imported_data"]
-
-            #     parent_record = imported_folder.get("parent", {}).get("recordName")
-
-            #     if parent_record and parent_record in folder_map:
-            #         folder.parent = folder_map[parent_record]["folder"]
-            #     else:
-            #         folder.parent = root_folder
-            #         summary["rootFolders"] += 1
-
-            #     folder.save()
-
-            #     # Process notes for this folder
-            #     notes_count, new_notes_count = self.process_notes(
-            #         imported_folder, folder, user
-            #     )
-            #     summary["totalNotes"] += notes_count
-            #     summary["newNotes"] += new_notes_count
-
             # Second pass: Create folder objects and build the map
             for imported_folder in cleaned_folders:
-                record_name = imported_folder.get("recordName")
+                folder_title = imported_folder["fields"]["title"]
                 folder, created = Folder.objects.get_or_create(
-                    name=imported_folder["fields"]["title"], author=user
+                    name=folder_title, author=user
                 )
+
+                record_name = imported_folder.get("recordName")
                 folder_map[record_name] = {
                     "folder": folder,
-                    "imported_data": imported_folder
+                    "imported_data": imported_folder,
                 }
+
                 summary["totalFolders"] += 1
                 if created:
                     summary["newFolders"] += 1
@@ -113,18 +105,21 @@ class ICloudService:
             for record_name, folder_data in folder_map.items():
                 folder = folder_data["folder"]
                 imported_folder = folder_data["imported_data"]
-                
+
                 parent_record = imported_folder.get("parent", {}).get("recordName")
+
                 if parent_record and parent_record in folder_map:
                     folder.parent = folder_map[parent_record]["folder"]
                 else:
                     folder.parent = root_folder
                     summary["rootFolders"] += 1
-                
+
                 folder.save()
 
                 # Process notes for this folder
-                notes_count, new_notes_count = self.process_notes(imported_folder, folder, user)
+                notes_count, new_notes_count = self.process_notes(
+                    imported_folder, folder, user
+                )
                 summary["totalNotes"] += notes_count
                 summary["newNotes"] += new_notes_count
 

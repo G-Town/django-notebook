@@ -134,14 +134,14 @@ def import_icloud_notes(request):
         #     status=200,
         # )
         return JsonResponse(import_result, status=200)
-    
+
     except ICloudProcessingError as e:
         return JsonResponse(
             {
                 "status": "error",
                 "message": str(e),
                 "traceback": e.traceback,
-                "debug_info": e.debug_info
+                "debug_info": e.debug_info,
             },
             status=500,
         )
