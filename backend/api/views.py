@@ -12,7 +12,7 @@ from .serializers import (
     FolderSerializer,
     FolderShareSerializer,
 )
-from services.icloud_service import ICloudService, ICloudProcessingError
+from services.icloud_service import ICloudService
 
 # from pyicloud import PyiCloudService
 # from pyicloud.exceptions import PyiCloudFailedLoginException
@@ -135,7 +135,7 @@ def import_icloud_notes(request):
         # )
         return JsonResponse(import_result, status=200)
 
-    except ICloudProcessingError as e:
+    except Exception as e:
         return JsonResponse(
             {
                 "status": "error",

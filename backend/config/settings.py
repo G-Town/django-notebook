@@ -28,6 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# TODO: switch during production
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
@@ -71,7 +72,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 ]
 
-ROOT_URLCONF = "backend.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
@@ -89,7 +90,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "backend.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Database
@@ -167,3 +168,62 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTALS = True
+
+LOGGING = {
+    # Version is always 1 for now - this is a standard dict config version
+    "version": 1,
+    # If False, existing loggers from other parts of the application (including Django)
+    # won't be disabled when this config is applied
+    "disable_existing_loggers": False,
+    # Formatters define how your log messages will look
+    "formatters": {
+        "verbose": {
+            # This format string defines the log message structure
+            # {levelname}: ERROR, INFO, DEBUG, etc.
+            # {asctime}: Timestamp
+            # {module}: The module name
+            # {message}: The actual log message
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",  # Uses Python's str.format() style
+        },
+        # "simple": {
+        #     "format": "{levelname} {message}",
+        #     "style": "{",
+        # },
+        # "detailed": {
+        #     "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+        #     "style": "{",
+        # },
+    },
+    # Handlers determine where the logs go (file, console, email, etc.)
+    "handlers": {
+        # File handler writes logs to a file
+        "file": {
+            "level": "DEBUG",  # Minimum level to log to file
+            "class": "logging.FileHandler",  # Built-in handler class
+            "filename": "logs/icloud_service.log",  # Log file path
+            "formatter": "verbose",  # Use the formatter defined above
+        },
+        # Console handler writes logs to terminal/stdout
+        "console": {
+            "level": "INFO",  # Minimum level to log to console
+            "class": "logging.StreamHandler",  # Built-in handler class
+            "formatter": "verbose",  # Use the formatter defined above
+        },
+    },
+    # Loggers are the interface you use in your code
+    "loggers": {
+        # This should be your module's name
+        "services.icloud_service": {  # module name
+            "handlers": ["file", "console"],  # Use both handlers defined above
+            "level": "DEBUG",  # Minimum level this logger will handle
+            "propagate": True,  # Pass messages up to parent loggers
+        },
+    },
+}
+
+# Create logs directory if it doesn't exist
+import os
+LOGS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'logs')
+if not os.path.exists(LOGS_DIR):
+    os.makedirs(LOGS_DIR)
