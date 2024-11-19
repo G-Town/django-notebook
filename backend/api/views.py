@@ -25,6 +25,21 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+########## user ##########
+class CreateUserView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+
+
+class UserDetailView(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+
 ########## notes ##########
 class NoteViewSet(viewsets.ModelViewSet):
     serializer_class = NoteSerializer
@@ -54,21 +69,6 @@ class RecentNotesView(generics.ListAPIView):
 
     def get_queryset(self):
         return Note.objects.filter(author=self.request.user).order_by("-updated_at")[:3]
-
-
-########## user ##########
-class CreateUserView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [AllowAny]
-
-
-class UserDetailView(generics.RetrieveAPIView):
-    serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_object(self):
-        return self.request.user
 
 
 ########## folders ##########

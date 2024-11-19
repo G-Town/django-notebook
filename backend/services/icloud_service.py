@@ -14,12 +14,6 @@ from django.utils import timezone
 
 # from django.db.models import Q
 
-logger = logging.getLogger(__name__)
-print(f"Current module path: {__name__}")
-print(f"Logger effective level: {logger.getEffectiveLevel()}")
-print(f"Logger handlers: {logger.handlers}")
-print(f"Logger propagate: {logger.propagate}")
-
 # Configure logging
 logger = logging.getLogger(__name__)
 
