@@ -25,11 +25,11 @@ DEBUG = not IS_PRODUCTION
 ALLOWED_HOSTS = ["*"]
 
 # Basic SSL redirect
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
 
 # Secure cookies
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -103,9 +103,9 @@ if IS_PRODUCTION:
             "HOST": os.getenv("DB_HOST"),
             "PORT": os.getenv("DB_PORT"),
             # Production-specific database settings
-            "OPTIONS": {
-                "sslmode": "require",  # Enable SSL in production
-            },
+            # "OPTIONS": {
+            #     "sslmode": "require",  # Enable SSL in production
+            # },
         }
     }
 else:
