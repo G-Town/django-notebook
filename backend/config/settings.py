@@ -21,7 +21,15 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 DEBUG = not IS_PRODUCTION
 
+# TODO: make more secure by specifying domain
 ALLOWED_HOSTS = ["*"]
+
+# Basic SSL redirect
+SECURE_SSL_REDIRECT = True
+
+# Secure cookies
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -85,16 +93,6 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# for debugging databases
-# print("\ncheck environment variables:")
-# print("DB_NAME:", os.getenv("DB_NAME"))
-# print("DB_USER:", os.getenv("DB_USER"))
-# print("DB_PWD:", os.getenv("DB_PWD"))
-# print("DB_HOST:", os.getenv("DB_HOST"))
-# print("DB_PORT:", os.getenv("DB_PORT"))
-
-# Database configuration
 if IS_PRODUCTION:
     DATABASES = {
         "default": {
@@ -105,7 +103,6 @@ if IS_PRODUCTION:
             "HOST": os.getenv("DB_HOST"),
             "PORT": os.getenv("DB_PORT"),
             # Production-specific database settings
-            "CONN_MAX_AGE": 60,  # Persistent connections
             "OPTIONS": {
                 "sslmode": "require",  # Enable SSL in production
             },
@@ -152,7 +149,6 @@ STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # TODO: make more secure by specifying origins
