@@ -103,9 +103,9 @@ if IS_PRODUCTION:
             "HOST": os.getenv("DB_HOST"),
             "PORT": os.getenv("DB_PORT"),
             # Production-specific database settings
-            "OPTIONS": {
-                "sslmode": "require",  # Enable SSL in production
-            },
+            # "OPTIONS": {
+            #     "sslmode": "require",  # Enable SSL in production
+            # },
         }
     }
 else:
