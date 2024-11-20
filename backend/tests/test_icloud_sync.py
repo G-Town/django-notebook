@@ -2,7 +2,7 @@ from services.icloud_sync import ICloudSyncService
 from dotenv import load_dotenv
 import os
 
-
+# TODO: try to load all env variables in settings.py
 load_dotenv()
 
 def test_icloud_sync():

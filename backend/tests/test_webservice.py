@@ -4,6 +4,7 @@ import os
 
 from pyicloud import PyiCloudService
 
+# TODO: try to load all env variables in settings.py
 load_dotenv()
 
 class TestPyiCloudService(unittest.TestCase):
