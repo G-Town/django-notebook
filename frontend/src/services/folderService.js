@@ -9,8 +9,7 @@ export const getFolders = async () => {
   try {
     const response = await api.get("/api/folders/");
     const fetchedFolders = response.data;
-    console.log("🚀 ~ getFolders ~ fetchedFolders:", fetchedFolders)
-    saveToLocalStorage("folders", fetchedFolders);
+    // saveToLocalStorage("folders", fetchedFolders);
     return fetchedFolders;
   } catch (error) {
     console.error("Error fetching folders:", error);

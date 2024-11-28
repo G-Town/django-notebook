@@ -1,7 +1,7 @@
 import api from "../api";
 
 export const handleImport = async (source) => {
-  if (source === "Apple Notes") {
+  if (source === "iCloud") {
     try {
       const response = await api.post("/api/import-icloud-notes/");
 

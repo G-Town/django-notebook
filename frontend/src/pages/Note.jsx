@@ -29,7 +29,7 @@ const Note = ({ note, onEdit, onDelete }) => {
 
   const ToolbarButton = ({ icon: Icon, onClick }) => (
     <button
-      onMouseDown={(e) => e.preventDefault()} // Prevent blur
+      onMouseDown={(e) => e.preventDefault()} // Prevents blur?
       onClick={() => {
         focusEditor();
         onClick();

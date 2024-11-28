@@ -35,6 +35,7 @@ const FolderActions = ({ folder, loadFolders, setIsAnyMenuOpen }) => {
   const toggleMenu = (e) => {
     e.stopPropagation();
     setIsMenuOpen(!isMenuOpen);
+    console.log("🚀 ~ toggleMenu ~ isMenuOpen:", isMenuOpen)
     setIsAnyMenuOpen(!isMenuOpen);
   };
 

@@ -30,7 +30,7 @@ const Folder = ({
   };
 
   return (
-    <div className="folder-container">
+    <div className="folder-tree-container">
       <div
         className={`folder-card ${isSelected ? "active-folder" : ""}`}
         style={indentStyle}

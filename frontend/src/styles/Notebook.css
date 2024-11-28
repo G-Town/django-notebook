@@ -24,6 +24,10 @@
   background-color: rgba(255, 250, 240, 0.3);
 }
 
+/* .notebook-container.menu-open {
+  pointer-events: none;
+} */
+
 .note-display {
   /* justify-content:start;
   align-items:start; */

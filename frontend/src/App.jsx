@@ -5,7 +5,6 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Notebook from "./pages/Notebook";
-import NoteForm from "./pages/NoteForm";
 import Import from "./pages/Import";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -49,22 +48,6 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <Notebook />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/note/:noteID"
-                  element={
-                    <ProtectedRoute>
-                      <NoteForm />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/note/new"
-                  element={
-                    <ProtectedRoute>
-                      <NoteForm />
                     </ProtectedRoute>
                   }
                 />

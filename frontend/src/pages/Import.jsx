@@ -35,16 +35,16 @@ function Import() {
       <div className="import-options">
         <div
           className={`import-option ${isLoading ? "disabled" : ""}`}
-          onClick={() => !isLoading && handleImportClick("Apple Notes")}
+          onClick={() => !isLoading && handleImportClick("iCloud")}
         >
-          <img src={appleLogo} alt="Apple Notes" />
+          <img src={appleLogo} alt="Apple" />
           <span>Apple Notes</span>
         </div>
         <div
           className="import-option"
-          onClick={() => handleImportClick("Google Keep")}
+          onClick={() => handleImportClick("Google")}
         >
-          <img src={googleLogo} alt="Google Keep" />
+          <img src={googleLogo} alt="Google" />
           <span>Google Keep</span>
         </div>
         {/* Add more options as needed */}
