@@ -8,13 +8,14 @@ import { getNotesByFolder } from "../services/noteService";
 import PropTypes from "prop-types";
 import "../styles/NoteList.css";
 
-const NoteList = ({ folderId, onNoteSelect, selectedNoteId }) => {
+const NoteList = ({ folderId, handleNoteSelect, selectedNoteId }) => {
   const [notes, setNotes] = useState([]);
   // const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   // const navigate = useNavigate();
 
   useEffect(() => {
+    // defined inside hook to minimize re-rendering
     const loadNotes = async () => {
       if (folderId) {
         setIsLoading(true);
@@ -79,7 +80,7 @@ const NoteList = ({ folderId, onNoteSelect, selectedNoteId }) => {
           className={`note-container ${
             selectedNoteId === note.id ? "selected" : ""
           }`}
-          onClick={() => onNoteSelect(note)}
+          onClick={() => handleNoteSelect(note.id)}
         >
           <div className="note-header">
             <p>{note.title}</p>
@@ -94,7 +95,7 @@ const NoteList = ({ folderId, onNoteSelect, selectedNoteId }) => {
 
 NoteList.propTypes = {
   folderId: PropTypes.number,
-  onNoteSelect: PropTypes.func.isRequired,
+  handleNoteSelect: PropTypes.func,
   selectedNoteId: PropTypes.number,
 };
 

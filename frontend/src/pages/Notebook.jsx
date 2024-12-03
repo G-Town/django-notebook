@@ -3,7 +3,6 @@ import { useState } from "react";
 import FolderList from "../components/FolderList";
 import NoteList from "../components/NoteList";
 import Note from "../pages/Note";
-// import { getNotesByFolder } from "../services/noteService";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faPlus } from "@fortawesome/free-solid-svg-icons";
 // import api from "../api";
@@ -11,8 +10,6 @@ import "../styles/Notebook.css";
 
 const Notebook = () => {
   // const navigate = useNavigate();
-  // const [folders, setFolders] = useState([]);
-  // const [notes, setNotes] = useState([]);
 
   const [selectedFolderId, setSelectedFolderId] = useState(null);
   const [selectedNoteId, setSelectedNoteId] = useState(null);
@@ -37,58 +34,8 @@ const Notebook = () => {
   //   }
   // };
 
-  // useEffect(() => {
-  //   loadFolders();
-  // }, []);
-
-  // useEffect(() => {
-  //   if (selectedFolderId) {
-  //     loadNotesByFolder(selectedFolderId);
-  //   } else {
-  //     setNotes([]);
-  //     setSelectedNoteId
-  //   }
-  // }, [selectedFolderId]);
-
-  // const loadFolders = async () => {
-  //   try {
-  //     const fetchedFolders = await getFolders();
-  //     setFolders(fetchedFolders);
-  //   } catch (error) {
-  //     console.error("Error loading folders:", error);
-  //   }
-  // };
-
-  // const loadNotesByFolder = async (folderId) => {
-  //   try {
-  //     const fetchedNotes = await getNotesByFolder(folderId);
-  //     setNotes(fetchedNotes);
-  //   } catch (error) {
-  //     console.error("Error loading notes:", error);
-  //   }
-  // };
-
-  // const getDescendantFolders = (rootFolder) => {
-  //   const descendants = [];
-  //   const stack = [rootFolder];
-
-  //   while (stack.length > 0) {
-  //     const currentFolder = stack.pop();
-  //     descendants.push(currentFolder);
-
-  //     if (currentFolder.children) {
-  //       currentFolder.children.forEach((childId) => {
-  //         const childFolder = folders.find((f) => f.id === childId);
-  //         if (childFolder) {
-  //           stack.push(childFolder);
-  //         }
-  //       });
-  //     }
-  //   }
-  //   return descendants;
-  // };
-
   const handleNoteSelect = (noteId) => {
+    console.log("🚀 ~ handleNoteSelect ~ noteId:", noteId)
     setSelectedNoteId(noteId);
   };
 
@@ -102,10 +49,6 @@ const Notebook = () => {
     console.log("Deleting note:", noteId);
     setSelectedNoteId(null);
   };
-
-  // const toggleNotebookMenuState = (isOpen) => {
-  //   setIsAnyMenuOpen(isOpen);
-  // };
 
   // const rootFolders = folders.filter((folder) => !folder.parent);
   // const selectedNote = notes.find(note => note.id === selectedNoteId);
@@ -136,8 +79,7 @@ const Notebook = () => {
         <div className="notes-container">
           <NoteList
             folderId={selectedFolderId}
-            onNoteSelect={handleNoteSelect}
-            // isAnyMenuOpen={isAnyMenuOpen}
+            handleNoteSelect={handleNoteSelect}
           />
         </div>
       </div>

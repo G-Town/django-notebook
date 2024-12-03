@@ -9,8 +9,8 @@ export const getNotesByFolder = async (folderId) => {
     const response = await api.get(`/api/notes/?folder=${folderId}`);
     const fetchedNotes = response.data;
     // console.log("🚀 ~ getNotesByFolder ~ fetchedNotes:", fetchedNotes);
-    saveToLocalStorage(`notes_${folderId}`, fetchedNotes);
-    return response.data;
+    // saveToLocalStorage(`notes_${folderId}`, fetchedNotes);
+    return fetchedNotes;
   } catch (error) {
     console.error("Error fetching notes:", error);
     return;
@@ -18,12 +18,15 @@ export const getNotesByFolder = async (folderId) => {
 };
 
 export const getNote = async (noteId) => {
+  console.log("test");
   const cachedNote = getFromLocalStorage(`note_${noteId}`);
   if (cachedNote) return cachedNote;
   try {
     const response = await api.get(`/api/notes/?note=${noteId}`);
     const fetchedNote = response.data;
-    saveToLocalStorage(`note_${noteId}`, fetchedNote);
+    console.log("🚀 ~ getNote ~ response:", response);
+    // saveToLocalStorage(`note_${noteId}`, fetchedNote);
+    return fetchedNote;
   } catch (error) {
     console.error("Error fetching note:", error);
     return;

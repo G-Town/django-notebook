@@ -1,24 +1,56 @@
 /* eslint-disable react/prop-types */
-import { useState, useCallback } from 'react';
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import { Bold, Italic, List, ListOrdered, Heading1, Heading2 } from 'lucide-react';
-import '../styles/Note.css';
+import { useState, useEffect, useCallback } from "react";
+import { getNote } from "../services/noteService";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import {
+  Bold,
+  Italic,
+  List,
+  ListOrdered,
+  Heading1,
+  Heading2,
+} from "lucide-react";
+import "../styles/Note.css";
 
-const Note = ({ note, onEdit, onDelete }) => {
-  const [title, setTitle] = useState(note.title);
+const Note = ({ noteId, onEdit, onDelete }) => {
+  const [note, setNote] = useState(null);
+  // const [title, setTitle] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const editor = useEditor({
     extensions: [StarterKit],
-    content: note.content,
+    content: note?.content || "",
     onUpdate: ({ editor }) => {
       onEdit(note.id, { content: editor.getHTML() });
     },
   });
 
+  useEffect(() => {
+    const fetchNoteData = async () => {
+      try {
+        setIsLoading(true);
+        const fetchedNote = await getNote(noteId);
+        console.log("🚀 ~ fetchNoteData ~ noteId:", noteId)
+        // console.log("🚀 ~ fetchNoteData ~ fetchedNote:", fetchedNote.title || "Untitled")
+        setNote(fetchedNote);
+        editor.commands.setContent(fetchedNote.content);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchNoteData();
+  }, [noteId]);
+
   const handleTitleChange = (e) => {
-    setTitle(e.target.value);
-    onEdit(note.id, { title: e.target.value });
+    // setTitle(e.target.value);
+    // onEdit(note.id, { title: e.target.value });
+    if (note) {
+      const newTitle = e.target.value;
+      setNote((prev) => ({ ...prev, title: newTitle }));
+      onEdit(note.id, { title: newTitle });
+    }
   };
 
   const focusEditor = useCallback(() => {
@@ -40,11 +72,19 @@ const Note = ({ note, onEdit, onDelete }) => {
     </button>
   );
 
+  // if (!note) {
+  //   return <div>No note found</div>;
+  // }
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="note-content">
       <input
         type="text"
-        value={title}
+        value={note.title || ""}
         onChange={handleTitleChange}
         className="note-title"
       />
@@ -59,11 +99,15 @@ const Note = ({ note, onEdit, onDelete }) => {
         />
         <ToolbarButton
           icon={Heading1}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 1 }).run()
+          }
         />
         <ToolbarButton
           icon={Heading2}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 2 }).run()
+          }
         />
         <ToolbarButton
           icon={List}
@@ -76,10 +120,7 @@ const Note = ({ note, onEdit, onDelete }) => {
       </div>
       <EditorContent editor={editor} className="note-editor" />
       <div className="note-actions">
-        <button
-          onClick={() => onDelete(note.id)}
-          className="delete-button"
-        >
+        <button onClick={() => onDelete(note.id)} className="delete-button">
           Delete
         </button>
       </div>

@@ -15,6 +15,7 @@ const FolderList = ({
   const [expandedFolders, setExpandedFolders] = useState(new Set());
   const [isLoading, setIsLoading] = useState(false);
 
+  // defined outside hook so it can be called from Folder component
   const loadFolders = async () => {
     setIsLoading(true);
     try {
@@ -67,7 +68,7 @@ const FolderList = ({
   };
 
   const folderTree = (folder, depth) => {
-    console.log("🚀 ~ folderTree ~ folder:", folder.id);
+    // console.log("🚀 ~ folderTree ~ folder:", folder.id);
     const isExpanded = expandedFolders.has(folder.id);
     // Efficiently get children using the pre-computed map
     const childFolders = folderChildrenMap.get(folder.id) || [];
@@ -84,10 +85,6 @@ const FolderList = ({
         loadFolders={loadFolders}
         depth={depth}
       >
-        {/* {childFolders.map((childId) => {
-          const childFolder = folders.find((f) => f.id === childId);
-          return childFolder ? folderTree(childFolder, depth + 1) : null;
-        })} */}
         {childFolders.map(childFolder => 
           folderTree(childFolder, depth + 1)
         )}
@@ -100,11 +97,6 @@ const FolderList = ({
   }
 
   const rootFolders = folders.filter((folder) => !folder.parent);
-  // Directly filter root folders without repeated searching
-  // const rootFolders = useMemo(() =>
-  //   folders.filter(folder => !folder.parent),
-  //   [folders]
-  // );
 
   return rootFolders.map((rootFolder) => {
     return folderTree(rootFolder, 0);
