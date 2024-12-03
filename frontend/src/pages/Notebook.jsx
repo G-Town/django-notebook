@@ -16,7 +16,7 @@ const Notebook = () => {
 
   // const [isLoading, setIsLoading] = useState(false);
   const [isAnyMenuOpen, setIsAnyMenuOpen] = useState(false);
-  console.log("🚀 ~ Notebook ~ isAnyMenuOpen:", isAnyMenuOpen);
+  // console.log("🚀 ~ Notebook ~ isAnyMenuOpen:", isAnyMenuOpen);
 
   // const handleCreate = () => {
   //   navigate(`/note/new`);

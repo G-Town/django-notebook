@@ -21,6 +21,9 @@ const Note = ({ noteId, onEdit, onDelete }) => {
   const editor = useEditor({
     extensions: [StarterKit],
     content: note?.content || "",
+    parseOptions: {
+      preserveWhitespace: "full",
+    },
     onUpdate: ({ editor }) => {
       onEdit(note.id, { content: editor.getHTML() });
     },
@@ -31,17 +34,19 @@ const Note = ({ noteId, onEdit, onDelete }) => {
       try {
         setIsLoading(true);
         const fetchedNote = await getNote(noteId);
-        console.log("🚀 ~ fetchNoteData ~ noteId:", noteId)
+        console.log("🚀 ~ fetchNoteData ~ noteId:", noteId);
         // console.log("🚀 ~ fetchNoteData ~ fetchedNote:", fetchedNote.title || "Untitled")
         setNote(fetchedNote);
-        editor.commands.setContent(fetchedNote.content);
+        editor.commands.setContent(fetchedNote.content, false, {
+          preserveWhitespace: "full",
+        });
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchNoteData();
-  }, [noteId]);
+  }, [noteId, editor]);
 
   const handleTitleChange = (e) => {
     // setTitle(e.target.value);

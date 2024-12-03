@@ -1,0 +1,5 @@
+INFO 2024-12-02 23:27:11,620 icloud_service - Retrieved 14 folders from iCloud
+INFO 2024-12-02 23:27:11,621 icloud_service - Starting folder processing with import ID: 317951a6-d59e-4329-9f58-93b75a8afdee
+DEBUG 2024-12-02 23:27:11,622 icloud_service - Root folder retrieved
+INFO 2024-12-02 23:27:11,622 icloud_service - Cleaned 13 folders
+INFO 2024-12-02 23:27:11,650 icloud_service - Import completed successfully

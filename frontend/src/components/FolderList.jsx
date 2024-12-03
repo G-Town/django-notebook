@@ -48,7 +48,7 @@ const FolderList = ({
         childMap.set(folder.id, []);
       }
     });
-    console.log("🚀 ~ folderChildrenMap ~ childMap:", childMap);
+    // console.log("🚀 ~ folderChildrenMap ~ childMap:", childMap);
 
     return childMap;
   }, [folders]);

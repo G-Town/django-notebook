@@ -22,10 +22,10 @@ export const getNote = async (noteId) => {
   const cachedNote = getFromLocalStorage(`note_${noteId}`);
   if (cachedNote) return cachedNote;
   try {
-    const response = await api.get(`/api/notes/?note=${noteId}`);
-    const fetchedNote = response.data;
-    console.log("🚀 ~ getNote ~ response:", response);
-    // saveToLocalStorage(`note_${noteId}`, fetchedNote);
+    const response = await api.get(`/api/notes/?id=${noteId}`);
+    const fetchedNote = response.data[0];
+    // console.log("🚀 ~ getNote ~ response:", response);
+    saveToLocalStorage(`note_${noteId}`, fetchedNote);
     return fetchedNote;
   } catch (error) {
     console.error("Error fetching note:", error);

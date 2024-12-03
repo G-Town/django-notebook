@@ -48,6 +48,7 @@ class NoteViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         folder_id = self.request.query_params.get("folder", None)
+        note_id = self.request.query_params.get("id", None)
         queryset = (
             Note.objects.filter(author=user)
             # performs a SQL join between the Note and Folder tables, fetches related Folder objects
@@ -57,6 +58,8 @@ class NoteViewSet(viewsets.ModelViewSet):
         )
         if folder_id:
             return queryset.filter(folder_id=folder_id)
+        if note_id:
+            return queryset.filter(id=note_id)
         return queryset
 
     def perform_create(self, serializer):
