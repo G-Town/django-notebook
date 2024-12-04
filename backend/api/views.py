@@ -49,6 +49,7 @@ class NoteViewSet(viewsets.ModelViewSet):
         user = self.request.user
         folder_id = self.request.query_params.get("folder", None)
         note_id = self.request.query_params.get("id", None)
+
         queryset = (
             Note.objects.filter(author=user)
             # performs a SQL join between the Note and Folder tables, fetches related Folder objects
@@ -56,6 +57,7 @@ class NoteViewSet(viewsets.ModelViewSet):
             # fetches all Tag objects related to the Note objects in a separate query
             .prefetch_related("tags")
         )
+
         if folder_id:
             return queryset.filter(folder_id=folder_id)
         if note_id:
@@ -64,6 +66,11 @@ class NoteViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+        def retrieve(self, requeust, *args, **kwargs):
+            instance = self.get_object()
+            serializer = self.get_serializer(instance)
+            return Response(serializer.data)
 
 
 class RecentNotesView(generics.ListAPIView):
