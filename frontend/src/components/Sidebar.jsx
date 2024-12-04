@@ -10,7 +10,7 @@ import "../styles/Sidebar.css";
 const Sidebar = () => {
   return (
     <div className="sidebar">
-      <div className="sidebar-header">{"logo"}</div>
+      {/* <div className="sidebar-header">{"logo"}</div> */}
       <nav className="sidebar-nav">
         <Link to="/notebook">
           <FontAwesomeIcon icon={faBook} /> Notebook

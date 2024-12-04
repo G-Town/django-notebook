@@ -1,6 +1,6 @@
 .sidebar {
   /* position: fixed; */
-  width: 5.5rem;
+  width: 6rem;
   background-color: lightgray;
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@
 .sidebar-nav a {
   display: flex;
   align-items: center;
-  padding: 3px 6px;
+  padding: 4px 8px;
   border-radius: 3px;
   background-color: gainsboro;
   border: solid var(--color-accent) 0.1rem;
@@ -34,7 +34,7 @@
   /* color: white; */
   color: var(--color-text);
   text-decoration: none;
-  font-size: 13px;
+  font-size: 14px;
   margin-top: 6px;
   transition: background-color 0.3s ease;
 }
