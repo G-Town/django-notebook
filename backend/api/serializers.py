@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+
 # from rest_framework.decorators import action
 from .models import Folder, Note, Tag, NoteTag, FolderShare
 
@@ -56,19 +57,30 @@ class NoteSerializer(serializers.ModelSerializer):
         ]
         extra_kwargs = {"author": {"read_only": True}}
 
-    def to_representation(self, instance):
-        # Check if this is a detail view (single note request)
-        context = self.context
-        view = context.get("view")
-        request = context.get("request")
+    # def to_representation(self, instance):
+    #     # Check if this is a detail view (single note request)
+    #     context = self.context
+    #     view = context.get("view")
+    #     request = context.get("request")
 
+    #     rep = super().to_representation(instance)
+
+    #     if view and not view.action == "retrieve":
+    #         rep.pop("content", None)
+
+    #     return rep
+
+    def to_representation(self, instance):
         rep = super().to_representation(instance)
 
-        if view and not view.action == "retrieve":
+        # Check the view name or action to determine whether to include content
+        view = self.context.get("view")
+
+        # Exclude content for any view that is not a single note retrieval
+        if not (view and hasattr(view, "action") and view.action == "retrieve"):
             rep.pop("content", None)
 
         return rep
-
 
     def create(self, validated_data):
         # Check if a folder is provided, otherwise assign to "Unfiled"

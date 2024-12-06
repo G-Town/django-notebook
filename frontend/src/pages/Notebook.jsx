@@ -35,7 +35,6 @@ const Notebook = () => {
   // };
 
   const handleNoteSelect = (noteId) => {
-    console.log("🚀 ~ handleNoteSelect ~ noteId:", noteId)
     setSelectedNoteId(noteId);
   };
 
