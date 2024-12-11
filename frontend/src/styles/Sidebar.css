@@ -48,14 +48,14 @@
   margin-right: 10px;
 }
 
-.sidebar-header {
+/* .sidebar-header {
   width: 100%;
   flex-shrink: 0;
   position: sticky;
   top: 0;
   background-color: inherit;
   padding-bottom: 5px;
-}
+} */
 
 .sidebar-footer {
   margin-top: auto;

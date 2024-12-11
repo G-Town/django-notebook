@@ -1,28 +1,45 @@
-/* Header.css */
-
 .header {
   /* font-family: consolas; */
-  background-color:rgb(195, 221, 146);
+  background-color: var(--theme-secondary);
   /* color: white; */
   /* padding: 0px 20px; */
-  border-bottom: solid var(--color-accent) 0.1rem;
+  border-bottom: solid var(--theme-accent-contrast) 0.1rem;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
 }
 
 .nav ul {
   list-style-type: none;
   padding: 0;
+  display: flex;
+  align-items: center;
 }
 
 .nav ul li {
   display: inline;
+  /* align-items: center; */
   margin: 0 20px;
+  font-size: 14px;
 }
 
 .nav ul li a {
   color: var(--color-text);
   text-decoration: none;
+  display: flex;
+  align-items: center;
 }
 
 .nav ul li a:hover {
   text-decoration: underline;
+}
+
+.nav ul li a img {
+  /* width: 20px;
+  height: 20px; */
+  display: inline-block;
+  margin-right: 5px;
 }
