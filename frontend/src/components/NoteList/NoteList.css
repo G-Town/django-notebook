@@ -10,30 +10,33 @@
 }
 
 .note-list {
-  padding: 8px;
+  padding: 0px;
 }
 
 .note-container {
-  /* padding: 3px; */
+  padding: 8px 15px;
   border-radius: 10px;
 }
 
 .note-container:hover {
-  background-color: rgba(225, 221, 203, 0.8);
+  /* background-color: rgba(225, 221, 203, 0.8); */
+  background-color: var(--theme-highlight);
 }
 
 .note-container.selected {
   background-color: #e6f2ff;
+  /* background-color: var(--theme-shadow); */
 }
 
 .note-header {
   display: flex;
   justify-content: space-between;
+  font-weight: 500;
 }
 
 .note-list p {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--color-text);
 }
 

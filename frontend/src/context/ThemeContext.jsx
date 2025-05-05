@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 const THEMES = [
   "theme-light",
   "theme-dark",
-  "theme-bright",
-  "theme-black",
+  "theme-light-alt",
+  "theme-dark-alt",
 ];
 
 export const ThemeContext = createContext({

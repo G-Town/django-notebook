@@ -9,7 +9,7 @@ import Notebook from "./pages/Notebook";
 import Import from "./pages/Import";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Header from "./components/Header";
+import Header from "./components/Header/";
 // import Sidebar from "./components/Sidebar";
 import "./styles/App.css";
 

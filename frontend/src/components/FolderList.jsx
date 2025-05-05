@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { getFolders } from "../services/folderService";
 import Folder from "./Folder";
 import PropTypes from "prop-types";
-import "../styles/Folder.css";
+// import "../styles/Folder.css";
 
 const FolderList = ({
   selectedFolderId,

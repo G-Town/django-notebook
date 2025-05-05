@@ -3,8 +3,8 @@ import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import { AuthContext } from "../AuthContext";
-import "../styles/UserForm.css";
-import LoadingIndicator from "./LoadingIndicator";
+import "../styles/component/UserForm.css";
+import LoadingIndicator from "./Loading";
 
 // eslint-disable-next-line react/prop-types
 function UserForm({ route, method }) {

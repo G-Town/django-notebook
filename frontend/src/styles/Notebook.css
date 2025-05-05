@@ -14,14 +14,15 @@
 
 .folders-container {
   padding: 11px;
-  width: 11rem;
+  width: 12rem;
   /* background-color: #ddd; */
 }
 
 .notes-container {
-  padding: 11px;
-  width: 11rem;
-  background-color: rgba(255, 250, 240, 0.3);
+  padding: 8px;
+  width: 18rem;
+  background-color: rgba(255, 250, 240, 0.1);
+  background-color: var(--theme-shadow);
 }
 
 /* .notebook-container.menu-open {

@@ -1,13 +1,16 @@
 .folder-actions {
   display: flex;
-  padding: 0px 3px;
+  padding: 0px 2px;
   margin-left: auto;
+  border: 1px solid rgba(119, 136, 153, 0);
 }
 
 .folder-actions:hover {
   padding: 0px 2px;
+  margin-right: 0px;
   border-radius: 9px;
   border: 1px solid lightslategray;
+  color: var(--theme-highlight);
 }
 
 .folder-container.active-folder .folder-actions {

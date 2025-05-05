@@ -1,0 +1,86 @@
+.theme-selector {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Base button styles */
+.toggle-button {
+  background: none;
+  border: 1px solid var(--theme-accent-contrast);
+  color: var(--theme-accent-contrast);
+  border-radius: 50%;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+/* Icon base styles */
+.toggle-button svg {
+  transition: transform 0.3s ease;
+}
+
+/* Mode toggle icon styles */
+.sun-icon,
+.moon-icon {
+  position: absolute;
+}
+
+.toggle-button .sun-icon {
+  opacity: 1;
+  transform: rotate(0);
+}
+
+.toggle-button .moon-icon {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+
+/* Variant toggle icon styles */
+.toggle-button.alt .brush-icon {
+  transform: rotate(-25deg);
+}
+
+/* Dark mode states */
+.toggle-button.dark .sun-icon {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+.toggle-button.dark .moon-icon {
+  opacity: 1;
+  transform: rotate(0);
+}
+
+
+/* Alt states */
+.toggle-button.alt {
+  border-color: var(--theme-accent-subtle);
+  color: var(--theme-accent-subtle);
+  /* background-color: var(--theme-accent-subtle); */
+}
+
+/* Interactive states */
+.toggle-button:hover {
+  background-color: var(--theme-accent-main);
+}
+
+.toggle-button.alt:hover {
+  background-color: var(--theme-accent-contrast);
+}
+
+.toggle-button:active {
+  transform: scale(0.9);
+}
+
+/* Focus styles for accessibility */
+.toggle-button:focus-visible {
+  outline: 2px solid var(--theme-accent-contrast);
+  outline-offset: 2px;
+}

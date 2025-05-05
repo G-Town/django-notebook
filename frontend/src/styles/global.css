@@ -1,21 +1,83 @@
 :root {
-  theme-light {
-    color-scheme: light;
-  }
+  color-scheme: light;
+}
+
+.theme-light {
+  --theme-primary: #ffffff;
+  --theme-secondary: #a0e4b0;
+  --theme-text: #111111;
+  --theme-accent-main: #78d98f;
+  --theme-accent-subtle: #c8efd1;
+  --theme-accent-contrast: #2a2a2a;
+
+  --theme-shadow: #d2d2d22c;
+  --theme-highlight: #a0e4b030;
+  /* --theme-highlight: #78d98f30; */
+}
+
+.theme-dark {
+  /* --theme-primary: #2a2a2a; */
+  --theme-primary: #111111;
+  --theme-secondary: #49beb7;
+  --theme-text: #eafff7;
+  /* --theme-text: #ffffff; */
+  --theme-accent-main: #389c96;
+  /* --theme-accent-subtle: #6fcbc6; */
+  --theme-accent-subtle: #131f1c;
+  /* --theme-accent-subtle: #2a2a2a; */
+  --theme-accent-contrast: #ffffff;
+}
+
+.theme-light-alt {
+  --theme-primary: #abedd8;
+  --theme-secondary: #2a2a2a;
+  /* --theme-secondary: #2a2a2a; */
+  --theme-text: #000000;
+  --theme-accent-main: #81e4c4;
+  --theme-accent-subtle: #d5f6eb;
+  --theme-accent-contrast: #111111;
+}
+
+.theme-dark-alt {
+  --theme-primary: #111111;
+  --theme-secondary: #dcedc2;
+  --theme-text: #f3f9e9;
+  --theme-accent-main: #000000;
+  --theme-accent-subtle: #2a2a2a;
+  --theme-accent-contrast: #c5e19b;
 }
 
 body {
   margin: 0;
-  /* font-family: Georgia, 'Times New Roman', Times, serif; */
-  font-family: consolas;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft YaHei Light", sans-serif;
+  /* font-family: consolas; */
   /* font-family:'Courier New', Courier, monospace; */
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 13px;
+  /* line-height: 1.35; */
   color: var(--theme-text);
-  background-color: var(--theme-primary);
+  background-color: var(--theme-primary); /* Fallback */
   /* background-image: url("path/to/your/texture.jpg"); */
   /* background-repeat: repeat; */
   /* background-size: 200px; */
+  position: relative;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Gradient overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* pointer-events: none; */
+  background: radial-gradient(
+    circle at top right,
+    var(--theme-accent-subtle),
+    transparent 100%
+  );
+  z-index: -1;
 }
 
 h1,
@@ -24,84 +86,20 @@ h3,
 h4,
 h5,
 h6 {
-  /* font-family: consolas; */
-  /* font-family:'Courier New', Courier, monospace; */
-  font-weight: 700;
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
+  font-weight: 500;
+  /* margin-top: 1.5rem;
+  margin-bottom: 1rem; */
 }
 
-/* Reusable Styles */
-.container {
-  max-width: 640px;
-  margin-left: auto;
-  margin-right: auto;
-  /* align-items: center; */
-  /* margin: 10px; */
-  /* padding: 0 1rem; */
+a {
+  color: var(--theme-accent-main);
 }
 
-.btn {
-  display: inline-block;
-  font-weight: 600;
-  text-align: center;
-  white-space: nowrap;
+img {
   vertical-align: middle;
-  user-select: none;
-  border: 1px solid transparent;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
-}
-
-.btn-primary:hover {
-  color: #fff;
-  background-color: var(--color-accent);
-  border-color: var(--color-accent);
-}
-
-.theme-light {
-  --theme-primary: #ffffff;
-  --theme-secondary: #a0e4b0;
-  --theme-text: #111111;
-  --theme-accent-main: #78d98f;
-  --theme-accent-sublte: #c8efd1;
-  --theme-accent-contrast: #2a2a2a;
-}
-
-.theme-dark {
-  --theme-primary: #2a2a2a;
-  --theme-secondary: #49beb7;
-  /* --theme-text: #eafff7; */
-  --theme-text: #ffffff;
-  --theme-accent-main: #389c96;
-  --theme-accent-sublte: #6fcbc6;
-  --theme-accent-contrast: #ffffff;
-}
-
-.theme-bright {
-  --theme-primary: #abedd8;
-  --theme-secondary: #2a2a2a;
-  --theme-text: #000000;
-  --theme-accent-main: #d5f6eb;
-  --theme-accent-sublte: #81e4c4;
-  --theme-accent-contrast: #111111;
-}
-
-.theme-black {
-  --theme-primary: #111111;
-  --theme-secondary: #dcedc2;
-  --theme-text: #f3f9e9;
-  --theme-accent-main: #000000;
-  --theme-accent-sublte: #2a2a2a;
-  --theme-accent-contrast: #c5e19b;
-}
+/* :focus {
+  outline: 2px solid var(--theme-accent-main);
+  outline-offset: 2px;
+} */

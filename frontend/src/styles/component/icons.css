@@ -1,0 +1,85 @@
+/* .icon-base {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--theme-accent-contrast);
+  transition: all 0.3s ease;
+}
+
+.icon-base.alt {
+  color: var(--theme-accent-subtle);
+}
+
+.icon-base svg {
+  transition: all 0.3s ease;
+}
+
+.icon-base:hover {
+  background-color: var(--theme-accent-main);
+}
+
+.icon-base.alt:hover {
+  background-color: var(--theme-accent-contrast);
+} */
+
+/* Base icon styles */
+.icon-button {
+  background: none;
+  border: 1px solid var(--theme-accent-contrast);
+  color: var(--theme-accent-contrast);
+  border-radius: 50%;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+/* Icon states */
+.icon-button.alt {
+  border-color: var(--theme-accent-subtle);
+  color: var(--theme-accent-subtle);
+}
+
+/* Interactive states */
+.icon-button:hover {
+  background-color: var(--theme-accent-main);
+}
+
+.icon-button.alt:hover {
+  background-color: var(--theme-accent-contrast);
+}
+
+.icon-button:active {
+  transform: scale(0.9);
+}
+
+/* Focus styles for accessibility */
+.icon-button:focus-visible {
+  outline: 2px solid var(--theme-accent-contrast);
+  outline-offset: 2px;
+}
+
+/* Shared icon wrapper styles */
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.icon-wrapper svg {
+  transition: transform 0.3s ease;
+}
+
+/* Theme-specific icon colors */
+.default-theme-icon {
+  color: var(--theme-accent-contrast);
+}
+
+.alt-theme-icon {
+  color: var(--theme-accent-subtle);
+}

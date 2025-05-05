@@ -5,7 +5,7 @@ import {
   faUpload,
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import "../styles/Sidebar.css";
+import "../styles/component/Sidebar.css";
 
 const Sidebar = () => {
   return (

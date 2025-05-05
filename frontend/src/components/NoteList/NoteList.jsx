@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
 // import { Link } from "react-router-dom";
-import { getNotesByFolder } from "../services/noteService";
+import { getNotesByFolder } from "../../services/noteService";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 // import api from "../api";
 import PropTypes from "prop-types";
-import "../styles/NoteList.css";
+import "./NoteList.css";
 
 const NoteList = ({ folderId, handleNoteSelect, selectedNoteId }) => {
   const [notes, setNotes] = useState([]);
@@ -62,7 +62,7 @@ const NoteList = ({ folderId, handleNoteSelect, selectedNoteId }) => {
   }
 
   if (notes.length === 0) {
-    return <p>Empty</p>;
+    return <p>No Notes</p>;
   }
 
   if (isLoading) {

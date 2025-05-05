@@ -1,18 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEllipsis,
-  faEdit,
-  faPlus,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
 import {
   updateFolder,
   deleteFolder,
   createFolder,
-} from "../services/folderService";
+} from "../../services/folderService";
+import { Ellipsis, Edit, Plus, Trash } from "../../icons";
+import "./FolderActions.css";
 import PropTypes from "prop-types";
-import "../styles/FolderActions.css";
 
 const FolderActions = ({ folder, loadFolders, setIsAnyMenuOpen }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,7 +29,7 @@ const FolderActions = ({ folder, loadFolders, setIsAnyMenuOpen }) => {
   const toggleMenu = (e) => {
     e.stopPropagation();
     setIsMenuOpen(!isMenuOpen);
-    console.log("🚀 ~ toggleMenu ~ isMenuOpen:", isMenuOpen)
+    console.log("🚀 ~ toggleMenu ~ isMenuOpen:", isMenuOpen);
     setIsAnyMenuOpen(!isMenuOpen);
   };
 
@@ -88,31 +82,35 @@ const FolderActions = ({ folder, loadFolders, setIsAnyMenuOpen }) => {
       className={`folder-actions ${isMenuOpen ? "menu-open" : ""}`}
       onClick={(e) => e.stopPropagation()}
     >
-      <FontAwesomeIcon
+      <Ellipsis onClick={toggleMenu} className={isMenuOpen ? "active" : ""} />
+      {/* <FontAwesomeIcon
         icon={faEllipsis}
         size="sm"
         onClick={toggleMenu}
         className={isMenuOpen ? "active" : ""}
-      />
+      /> */}
       {isMenuOpen && (
         <div className="folder-actions-menu" ref={menuRef}>
           <div
             className="menu-item"
             onClick={() => handleFolderAction("rename")}
           >
-            <FontAwesomeIcon icon={faEdit} /> Rename
+            <Edit />
+            {/* <FontAwesomeIcon icon={faEdit} /> Rename */}
           </div>
           <div
             className="menu-item"
             onClick={() => handleFolderAction("createSubfolder")}
           >
-            <FontAwesomeIcon icon={faPlus} /> Add Subfolder
+            <Plus />
+            {/* <FontAwesomeIcon icon={faPlus} /> Add Subfolder */}
           </div>
           <div
             className="menu-item"
             onClick={() => handleFolderAction("delete")}
           >
-            <FontAwesomeIcon icon={faTrash} /> Delete
+            <Trash />
+            {/* <FontAwesomeIcon icon={faTrash} /> Delete */}
           </div>
         </div>
       )}
