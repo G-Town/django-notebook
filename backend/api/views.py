@@ -98,6 +98,7 @@ class FeaturedFoldersView(generics.ListAPIView):
     serializer_class = FolderSerializer
     permission_classes = [IsAuthenticated]
 
+    #TODO: want to feature new folders and folders with new notes
     def get_queryset(self):
         return Folder.objects.filter(author=self.request.user).order_by("-id")[:3]
 
