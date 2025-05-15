@@ -1,0 +1,22 @@
+.card {
+  background-color: var(--theme-primary);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--theme-shadow);
+  padding: 15px;
+  /* border: 1px solid var(--theme-border-color-light); */
+  color: var(--theme-text);
+}
+
+.card h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 17px;
+  color: var(--theme-text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--theme-border-color);
+}
+
+.card-content {
+  width: 100%;
+  flex-grow: 1; /* Allows content to fill the card if card has fixed height or is in a flex container */
+}

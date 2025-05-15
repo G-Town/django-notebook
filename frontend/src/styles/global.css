@@ -6,26 +6,55 @@
   --theme-primary: #ffffff;
   --theme-secondary: #a0e4b0;
   --theme-text: #111111;
+  --theme-text-secondary: #555555; /* For less important text */
+
   --theme-accent-main: #78d98f;
   --theme-accent-subtle: #c8efd1;
   --theme-accent-contrast: #2a2a2a;
+  --theme-accent-hover: #60c378; /* Darker shade for hover */
+  --theme-accent-main-transparent: rgba(120, 217, 143, 0.3); /* Transparent version of accent */
 
-  --theme-shadow: #d2d2d22c;
+  --theme-shadow: rgba(0, 0, 0, 0.15);
   --theme-highlight: #a0e4b030;
   /* --theme-highlight: #78d98f30; */
+
+  --theme-border-color: #d6d6d6; /* General border color */
+  --theme-border-color-light: #eeeeee; /* Lighter border for internal dividers */
+
+  --theme-input-bg: #f9f9f9;
+
+  --theme-disabled-bg: #e0e0e0;
+  --theme-disabled-text: #9e9e9e;
+
+  --theme-error-bg: #ffebee;
+  --theme-error-text: #c62828;
+  --theme-error-border: #ef9a9a;
+
+  --theme-tip-bg: #fff3cd;
+  --theme-tip-border: #ffc107;
+  --theme-tip-text: #664d03; /* Adjusted for better contrast */
 }
 
 .theme-dark {
-  /* --theme-primary: #2a2a2a; */
-  --theme-primary: #111111;
+  --theme-primary: #121212;
   --theme-secondary: #49beb7;
   --theme-text: #eafff7;
-  /* --theme-text: #ffffff; */
+  --theme-text-secondary: #aaaaaa;
+
   --theme-accent-main: #389c96;
-  /* --theme-accent-subtle: #6fcbc6; */
-  --theme-accent-subtle: #131f1c;
+  --theme-accent-subtle: #052a2a;
+  /* --theme-accent-subtle: #131f1c; */
   /* --theme-accent-subtle: #2a2a2a; */
   --theme-accent-contrast: #ffffff;
+  --theme-accent-hover: #6fcbc6;
+  --theme-accent-main-transparent: rgba(73, 190, 183, 0.3);
+
+  --theme-shadow: rgba(255, 255, 255, 0.2);
+  --theme-highlight: rgba(73, 190, 183, 0.15);
+
+  --theme-border-color: #3a3a3a;
+  --theme-border-color-light: #2c2c2c;
+  --theme-input-bg: #1e1e1e;
 }
 
 .theme-light-alt {
@@ -52,10 +81,11 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft YaHei Light", sans-serif;
   /* font-family: consolas; */
   /* font-family:'Courier New', Courier, monospace; */
-  font-size: 13px;
+  font-size: 12px;
   /* line-height: 1.35; */
   color: var(--theme-text);
-  background-color: var(--theme-primary); /* Fallback */
+  background-color: var(--theme-primary);
+  /* background-color: var(--theme-accent-subtle); */
   /* background-image: url("path/to/your/texture.jpg"); */
   /* background-repeat: repeat; */
   /* background-size: 200px; */
@@ -73,9 +103,11 @@ body::before {
   bottom: 0;
   /* pointer-events: none; */
   background: radial-gradient(
-    circle at top right,
-    var(--theme-accent-subtle),
-    transparent 100%
+    /* circle at top right, */
+    farthest-corner at 65rem 35rem,
+    var(--theme-accent-subtle) 0%,
+    /* var(--theme-primary), */
+    transparent 70%
   );
   z-index: -1;
 }
@@ -99,7 +131,7 @@ img {
   vertical-align: middle;
 }
 
-/* :focus {
-  outline: 2px solid var(--theme-accent-main);
+:focus {
+  outline: 2px solid var(--theme-accent-contrast);
   outline-offset: 2px;
-} */
+}

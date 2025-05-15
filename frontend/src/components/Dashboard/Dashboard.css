@@ -1,0 +1,229 @@
+.dash-content {
+  display: flex;
+  gap: 20px;
+}
+
+.dash-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 280px;
+}
+
+.button-group {
+  display: flex;
+  /* flex-direction: column; */
+  gap: 10px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 8px 12px;
+  /* background-color: var(--theme-secondary); */
+  background-color: var(--theme-accent-subtle);
+  color: var(--theme-accent-contrast);
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  text-align: center;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.btn:hover {
+  /* background-color: var(--theme-accent-main); */
+  background-color: var(--theme-secondary);
+}
+.btn:active {
+  transform: translateY(0px);
+}
+
+.btn:disabled,
+.btn[disabled] { /* More robust selector for disabled state */
+  background-color: var(--theme-disabled-bg); /* Define in global.css */
+  color: var(--theme-disabled-text);       /* Define in global.css */
+  /* cursor: not-allowed; */
+  cursor:auto;
+  transform: none;
+}
+
+.quick-add-note textarea {
+  width: 94%;
+  min-height: 50px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid  var(--theme-border-color-light);
+  border-radius: 4px;
+  resize: vertical;
+  background-color: var(--theme-input-bg);
+  color: var(--theme-text);
+}
+.quick-add-note textarea:focus {
+  outline: none;
+  border-color: var(--theme-accent-main);
+  box-shadow: 0 0 0 2px var(--theme-accent-main-transparent);
+}
+
+.pinned-items ul, 
+.recent-notes ul, 
+.featured-folders ul,
+.activity-feed ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pinned-items li, 
+.featured-folders li,
+.activity-feed li,
+.stat-item {
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: var(--theme-accent-subtle);
+  color: var(--theme-text);
+  transition: background-color 0.2s ease;
+}
+
+/* .pinned-items li:hover,
+.featured-folders li:hover,
+.activity-feed li:hover,
+.stat-item:hover {
+  background-color: var(--theme-highlight);
+}
+
+.pinned-items li .pin-icon {
+  margin-right: var(--space-xs, 8px);
+  color: var(--theme-accent-main);
+}
+
+.pinned-items li a,
+.featured-folders li a {
+  text-decoration: none;
+  color: var(--theme-accent-main);
+  font-weight: 500;
+}
+.pinned-items li a:hover,
+.featured-folders li a:hover {
+  text-decoration: underline;
+} */
+
+.recent-notes li {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-bottom: 1px solid var(--theme-border-color);
+}
+.recent-notes li:last-child {
+  border-bottom: none;
+}
+.recent-notes li:hover {
+  background-color: var(--theme-highlight);
+}
+
+.recent-notes li a {
+  text-decoration: none;
+  color: inherit; /* Takes color from parent, which is var(--theme-text) */
+  display: block; /* Make the whole area clickable */
+}
+
+.recent-notes h3 {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+  color: var(--theme-text);
+}
+
+.note-snippet {
+  margin: 0;
+  color: var(--theme-text-secondary);
+  font-size: 14px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.view-more {
+  display: block;
+  text-align: right;
+  margin-top: 10px;
+  color: var(--theme-accent-main);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+.view-more:hover {
+  text-decoration: underline;
+}
+
+/* .stat-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 8px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}.stat-label {
+  color: var(--theme-text-secondary);
+}
+.stat-value {
+  font-weight: 500;
+  color: var(--theme-text);
+}
+
+.activity-feed li {
+  display: flex;
+  align-items: center;
+} */
+
+.activity-icon {
+  margin-right: 10px;
+  color: var(--theme-accent-main);
+}
+
+.activity-text {
+  flex: 1;
+  font-size: 14px;
+  color: var(--theme-text);
+}
+
+.activity-time {
+  font-size: 12px;
+  color: var(--theme-text-secondary);
+  margin-left: 10px;
+}
+
+.empty-message {
+  color: var(--theme-text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: 10px;
+}
+
+.user-tips p {
+  background-color: var(--theme-tip-bg);
+  border-left: 4px solid var(--theme-tip-border);
+  padding: 12px;
+  margin: 0;
+  border-radius: 4px;
+  color: var(--theme-tip-text);
+}
+
+
+
+@media (max-width: 1024px) {
+  .dash-content {
+    flex-direction: column; /* Stack columns on medium screens */
+  }
+  /* .dash-column will naturally take full width then */
+}
+
+@media (max-width: 768px) {
+  .dash-content {
+    /* Further adjustments for smaller screens if needed */
+    gap: 15px;
+  }
+  .dash-column {
+    gap: 15px;
+  }
+  /* You might want to reduce padding on cards for smaller screens */
+}

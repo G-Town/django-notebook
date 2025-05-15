@@ -75,9 +75,9 @@
   background-color: var(--theme-accent-contrast);
 }
 
-.toggle-button:active {
+/* .toggle-button:active {
   transform: scale(0.9);
-}
+} */
 
 /* Focus styles for accessibility */
 .toggle-button:focus-visible {

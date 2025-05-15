@@ -1,8 +1,13 @@
 import api from "../api";
-// import { getFromLocalStorage, saveToLocalStorage } from "./storageService";
+import { getFromLocalStorage, saveToLocalStorage } from "./storageService";
 
-// Function to fetch all home page data in parallel
+// Core function to fetch all home page data in parallel
 export const fetchHomeData = async () => {
+  const cachedData = getFromLocalStorage("home_data");
+  if (cachedData && Date.now() - cachedData.timestamp < 300000) { // 5 minute cache
+    return cachedData.data;
+  }
+
   try {
     const [
       userRes,
@@ -15,12 +20,12 @@ export const fetchHomeData = async () => {
       api.get("/api/user/"),
       api.get("/api/recent/"),
       api.get("/api/featured/"),
-      // api.get("/api/pinned/"),
-      // api.get("/api/activity/"),
+      api.get("/api/pinned/"),
+      api.get("/api/activity/"),
       api.get("/api/tags/")
     ]);
     
-    return {
+    const data = {
       user: userRes.data,
       recentNotes: recentRes.data,
       featuredFolders: foldersRes.data,
@@ -28,13 +33,21 @@ export const fetchHomeData = async () => {
       activityFeed: activityRes.data,
       tags: tagsRes.data
     };
+
+    // Cache the data with a timestamp
+    saveToLocalStorage("home_data", {
+      data,
+      timestamp: Date.now()
+    });
+    
+    return data;
   } catch (error) {
     console.error("Error fetching home data:", error);
     throw error;
   }
 };
 
-// Function to handle search functionality
+// Function to handle search functionality - remains in homeService since it's global
 export const searchItems = async (query) => {
   try {
     const response = await api.get(`/api/search?q=${query}`);
@@ -45,26 +58,7 @@ export const searchItems = async (query) => {
   }
 };
 
-// Additional home-related functions could be added here
-export const pinItem = async (itemId, itemType) => {
-  try {
-    const response = await api.post("/api/pinned/", {
-      item_id: itemId,
-      item_type: itemType
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error pinning item:", error);
-    throw error;
-  }
-};
-
-export const unpinItem = async (pinId) => {
-  try {
-    await api.delete(`/api/pinned/${pinId}/`);
-    return true;
-  } catch (error) {
-    console.error("Error unpinning item:", error);
-    throw error;
-  }
+// Clear home data cache (useful after operations that modify data)
+export const clearHomeDataCache = () => {
+  localStorage.removeItem("home_data");
 };

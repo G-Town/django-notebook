@@ -83,7 +83,7 @@ function Header() {
   );
 
   return (
-    <header>
+    <header className="site-header">
       {isAuthenticated && <NavItems />}
       <Link to="/">
         <img src={logo} alt="Site Logo" className="logo" />

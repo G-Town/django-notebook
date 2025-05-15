@@ -1,4 +1,4 @@
-header {
+.site-header {
   background-color: var(--theme-secondary);
   padding: 0.5rem 0.75rem;
   border-bottom: solid var(--theme-accent-contrast) 0.1rem;
@@ -18,7 +18,7 @@ header {
   gap: 1.25rem;
   font-weight: 500;
   /* linje height centers the text vertically */
-  line-height: 1.1;
+  /* line-height: 1.1; */
 }
 
 .nav-list {
@@ -30,6 +30,12 @@ header {
   align-items: center;
   gap: 0.35rem;
   text-decoration: none;
+}
+.nav-list .icon-wrapper {
+  font-size: 13px;
+}
+.util-list .icon-wrapper {
+  font-size: 12px;
 }
 
 .logo {

@@ -1,0 +1,56 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0px;
+  /* background-color: white; */
+}
+
+.welcome-header {
+  margin-bottom: 15px;
+  /* background-color: var(--theme-accent-subtle); */
+  background: none;
+}
+
+.welcome-header h1 {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.search-results {
+  margin-top: var(--space-lg, 20px);
+  padding: var(--space-md, 15px);
+  background-color: var(--theme-accent-subtle); /* Or var(--theme-primary) with a border */
+  border: 1px solid var(--theme-accent-main);
+  border-radius: var(--border-radius-md, 4px); /* Example: use radius variables */
+}
+
+.search-results h2 {
+  color: var(--theme-text);
+  margin-top: 0;
+  margin-bottom: var(--space-md, 15px);
+}
+
+/* Keep the button style consistent with .btn, perhaps add a modifier class */
+.search-results button {
+  /* Inherit from .btn or define specifically */
+  /* Example: using .btn styles directly or creating a variant */
+  /* If it's always the same as other .btn, no need to restyle */
+  margin-top: var(--space-sm, 10px);
+}
+
+.loading {
+  text-align: center;
+  padding: var(--space-xl, 40px);
+  font-size: 1.2rem;
+  color: var(--theme-text);
+}
+
+/* .error-message {
+  margin-top: var(--space-md, 15px);
+  padding: var(--space-sm, 10px) var(--space-md, 15px);
+  background-color: #ffdddd;
+  border: 1px solid #ff0000;
+  color: #d8000c;
+  border-radius: var(--border-radius-md, 4px);
+  text-align: center;
+} */
