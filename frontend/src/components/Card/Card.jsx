@@ -1,13 +1,11 @@
-import "./Card.css";
-import PropTypes from 'prop-types';
+import styles from "./Card.module.css";
+import PropTypes from "prop-types";
 
 const Card = ({ title, className, children }) => {
   return (
-    <div className={`card ${className || ""}`}>
+    <div className={`${styles.card} ${className || ""}`}>
       {title && <h2>{title}</h2>}
-      <div className="card-content">
-        {children}
-      </div>
+      <div className="card-content">{children}</div>
     </div>
   );
 };
@@ -15,7 +13,7 @@ const Card = ({ title, className, children }) => {
 Card.propTypes = {
   title: PropTypes.string,
   className: PropTypes.string,
-  children: PropTypes.node
-}
+  children: PropTypes.node,
+};
 
 export default Card;

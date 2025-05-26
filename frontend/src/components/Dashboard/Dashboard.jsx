@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Card from "../Card";
 import TagCloud from "../TagCloud";
 import { addQuickNote, getActivityIcon } from "../../services/dashService";
-import "./Dashboard.css";
+import styles from "./Dashboard.module.css";
 import PropTypes from 'prop-types';
 
 const Dashboard = ({
@@ -39,21 +39,21 @@ const Dashboard = ({
   };
 
   return (
-    <div className="dash-content">
+    <div className={styles.dashContent}>
       {/* Column 1 */}
-      <div className="dash-column">
-        <Card title="Quick Actions" className="quick-actions">
-          <div className="button-group">
-            <Link to="/notebook/new/" className="btn">
+      <div className={styles.dashColumn}>
+        <Card title="Quick Actions" className={styles.quickActions}>
+          <div className={styles.buttonGroup}>
+            <Link to="/notebook/new/" className={styles.btn}>
               New Note
             </Link>
-            <Link to="/notebook/import/" className="btn">
+            <Link to="/notebook/import/" className={styles.btn}>
               Import
             </Link>
           </div>
         </Card>
 
-        <Card title="Quick Add Note" className="quick-add-note">
+        <Card title="Quick Add Note" className={styles.quickAddNote}>
           <textarea
             value={quickNote}
             onChange={(e) => setQuickNote(e.target.value)}
@@ -62,19 +62,19 @@ const Dashboard = ({
           ></textarea>
           <button
             onClick={handleQuickNoteAdd}
-            className="btn"
+            className={styles.btn}
             disabled={isAdding || !quickNote.trim()}
           >
             {isAdding ? "Adding..." : "Add Note"}
           </button>
         </Card>
 
-        <Card title="Pinned Items" className="pinned-items">
+        <Card title="Pinned Items" className={styles.pinnedItems}>
           {pinnedItems.length > 0 ? (
             <ul>
               {pinnedItems.map((item) => (
                 <li key={item.id}>
-                  <span className="pin-icon">📌</span>
+                  <span className={styles.pinIcon}>📌</span>
                   <Link to={`/notebook/${item.type}/${item.id}`}>
                     {item.title || item.name}
                   </Link>
@@ -82,14 +82,14 @@ const Dashboard = ({
               ))}
             </ul>
           ) : (
-            <p className="empty-message">No pinned items yet</p>
+            <p className={styles.emptyMessage}>No pinned items yet</p>
           )}
         </Card>
       </div>
 
       {/* Column 2 */}
-      <div className="dash-column">
-        <Card title="Recent Notes" className="recent-notes">
+      <div className={styles.dashColumn}>
+        <Card title="Recent Notes" className={styles.recentNotes}>
           {recentNotes.length > 0 ? (
             <>
               <ul>
@@ -97,21 +97,21 @@ const Dashboard = ({
                   <li key={note.id}>
                     <Link to={`/notebook/note/${note.id}`}>
                       <h3>{note.title}</h3>
-                      <p className="note-snippet">{note.snippet}</p>
+                      <p className={styles.noteSnippet}>{note.snippet}</p>
                     </Link>
                   </li>
                 ))}
               </ul>
-              <Link to="/notebook/notes/" className="view-more">
+              <Link to="/notebook/notes/" className={styles.viewMore}>
                 View More
               </Link>
             </>
           ) : (
-            <p className="empty-message">No recent notes</p>
+            <p className={styles.emptyMessage}>No recent notes</p>
           )}
         </Card>
 
-        <Card title="Featured Folders" className="featured-folders">
+        <Card title="Featured Folders" className={styles.featuredFolders}>
           {featuredFolders.length > 0 ? (
             <>
               <ul>
@@ -123,52 +123,52 @@ const Dashboard = ({
                   </li>
                 ))}
               </ul>
-              <Link to="/notebook/folders/" className="view-more">
+              <Link to="/notebook/folders/" className={styles.viewMore}>
                 View More
               </Link>
             </>
           ) : (
-            <p className="empty-message">No featured folders</p>
+            <p className={styles.emptyMessage}>No featured folders</p>
           )}
         </Card>
 
-        <Card title="Statistics" className="statistics">
-          <div className="stat-item">
-            <span className="stat-label">Notes: </span>
-            <span className="stat-value">{user.noteCount || 0}</span>
+        <Card title="Statistics" className={styles.statistics}>
+          <div className={styles.statItem}>
+            <span className={styles.statLabel}>Notes: </span>
+            <span className={styles.statValue}>{user.noteCount || 0}</span>
           </div>
-          <div className="stat-item">
-            <span className="stat-label">Folders: </span>
-            <span className="stat-value">{user.folderCount || 0}</span>
+          <div className={styles.statItem}>
+            <span className={styles.statLabel}>Folders: </span>
+            <span className={styles.statValue}>{user.folderCount || 0}</span>
           </div>
-          <div className="stat-item">
-            <span className="stat-label">Tags: </span>
-            <span className="stat-value">{user.tagCount || 0}</span>
+          <div className={styles.statItem}>
+            <span className={styles.statLabel}>Tags: </span>
+            <span className={styles.statValue}>{user.tagCount || 0}</span>
           </div>
         </Card>
       </div>
 
       {/* Column 3 */}
-      <div className="dash-column">
-        <Card title="Tips" className="user-tips">
+      <div className={styles.dashColumn}>
+        <Card title="Tips" className={styles.userTips}>
           <p>Did you know you can organize your notes with tags?</p>
         </Card>
 
-        <Card title="Activity Feed" className="activity-feed">
+        <Card title="Activity Feed" className={styles.activityFeed}>
           {activityFeed.length > 0 ? (
             <ul>
               {activityFeed.map((activity) => (
                 <li key={activity.id}>
-                  <span className="activity-icon">
+                  <span className={styles.activityIcon}>
                     {getActivityIcon(activity.type)}
                   </span>
-                  <span className="activity-text">{activity.description}</span>
-                  <span className="activity-time">{activity.time}</span>
+                  <span className={styles.activityText}>{activity.description}</span>
+                  <span className={styles.activityTime}>{activity.time}</span>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="empty-message">No recent activity</p>
+            <p className={styles.emptyMessage}>No recent activity</p>
           )}
         </Card>
 

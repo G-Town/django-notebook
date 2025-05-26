@@ -1,4 +1,6 @@
-.folder-card {
+/* foler.module.css */
+.folderCard {
+  /* Renamed from .folder-card */
   position: relative;
   display: flex;
   width: auto;
@@ -15,7 +17,8 @@
   /* border-bottom: 3px solid rgba(155, 155, 155, 0.448); */
 }
 
-.folder-card:hover {
+.folderCard:hover {
+  /* Renamed from .folder-card:hover */
   /* background-color: beige;
   background-color: cornsilk; */
   padding: 3px 10px;
@@ -24,14 +27,16 @@
   /* outline: 1px solid; */
 }
 
-.folder-card.active-folder {
+.folderCard.activeFolder {
+  /* Renamed from .folder-card.active-folder */
   pointer-events: all;
   opacity: 1;
   background-color: #f0f0f0;
   border: 1px solid lightslategray;
 }
 
-.folder-card-items {
+.folderCardItems {
+  /* Renamed from .folder-card-items */
   display: flex;
   align-items: center;
   /* justify-content: space-between; */
@@ -40,11 +45,13 @@
   overflow: hidden;
 }
 
-.expand-icon {
+.expandIcon {
+  /* Renamed from .expand-icon */
   display: flex;
 }
 
-.folder-card-items h6 {
+.folderCardItems h6 {
+  /* Remains as is, targets h6 within .folderCardItems */
   margin: 0px 5px;
   /* word-wrap: break-word; */
   white-space: nowrap;
@@ -55,7 +62,8 @@
   line-height: 1.3;
 }
 
-.folder-icon {
+.folderIcon {
+  /* Renamed from .folder-icon */
   /* color: burlywood; */
   margin-right: 5px;
 }

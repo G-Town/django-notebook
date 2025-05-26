@@ -8,7 +8,7 @@
 // } from "@fortawesome/free-solid-svg-icons";
 import FolderActions from "../FolderActions";
 // import { FolderClosed, FolderOpen, ChevronRight, ChevronDown } from "../../icons";
-import "./Folder.css";
+import styles from "./Folder.module.css";
 import PropTypes from "prop-types";
 
 const Folder = ({
@@ -31,17 +31,17 @@ const Folder = ({
   };
 
   return (
-    <div className="folder-tree-container">
+    <div className={styles.folderTreeContainer}>
       <div
-        className={`folder-card ${isSelected ? "active-folder" : ""}`}
+        className={`${styles.folderCard} ${isSelected ? "active-folder" : ""}`}
         style={indentStyle}
         onClick={() => {
           setSelectedFolderId(folder.id);
         }}
       >
-        <div className="folder-card-items">
+        <div className={styles.folderCardItems}>
           <div
-            className="expand-icon"
+            className={styles.expandIcon}
             onClick={(e) => {
               e.stopPropagation();
               onToggle();
@@ -82,7 +82,7 @@ const Folder = ({
             )}
           </div>
           {/* <FontAwesomeIcon
-            className="expand-icon"
+            className={styles.expandIcon}
             icon={isExpanded ? faChevronCircleDown : faChevronCircleRight}
             size="xs"
             onClick={(e) => {
@@ -92,7 +92,7 @@ const Folder = ({
             }}
           /> */}
           {isSelected ? (
-            // <FolderOpen className="folder-icon" />
+            // <FolderOpen className={styles.folderIcon" />
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="15"
@@ -109,7 +109,7 @@ const Folder = ({
               />
             </svg>
           ) : (
-            // <FolderClosed className="folder-icon" />
+            // <FolderClosed className={styles.folderIcon} />
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="15"
@@ -127,7 +127,7 @@ const Folder = ({
             </svg>
           )}
           {/* <FontAwesomeIcon
-            className="folder-icon"
+            className={styles.folderIcon}
             icon={isExpanded ? faFolderOpen : faFolderClosed}
             size="sm"
           /> */}
@@ -141,7 +141,7 @@ const Folder = ({
         />
       </div>
       {isExpanded && children && (
-        <div className="folder-children">{children}</div>
+        <div className={styles.folderChildren}>{children}</div>
       )}
     </div>
   );

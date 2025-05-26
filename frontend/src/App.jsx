@@ -2,12 +2,15 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { AuthContext, AuthProvider } from "./AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
+// Pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Notebook from "./pages/Notebook";
 import Import from "./pages/Import";
 import NotFound from "./pages/NotFound";
+// Components
 import ProtectedRoute from "./components/ProtectedRoute";
 import Header from "./components/Header/";
 // import Sidebar from "./components/Sidebar";
@@ -37,8 +40,14 @@ function App() {
               {/* <Sidebar /> */}
               <div className="main-content">
                 <Routes>
+                  {/* Public Routes */}
+                  <Route path="/" element={<Landing />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/logout" element={<Logout />} />
+                  <Route path="/register" element={<RegisterAndLogout />} />
+                  {/* Protected Routes */}
                   <Route
-                    path="/"
+                    path="/home"
                     element={
                       <ProtectedRoute>
                         <Home />
@@ -61,9 +70,7 @@ function App() {
                       </ProtectedRoute>
                     }
                   />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/logout" element={<Logout />} />
-                  <Route path="/register" element={<RegisterAndLogout />} />
+                  {/* Catch-all Not Found Route */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </div>

@@ -29,7 +29,7 @@ function UserForm({ route, method }) {
         // console.log("Access token stored:", localStorage.getItem(ACCESS_TOKEN));
         // console.log("Refresh token stored:", localStorage.getItem(REFRESH_TOKEN));
         login(res.data.access, res.data.refresh);
-        navigate("/");
+        navigate("/home");
       } else {
         navigate("/login");
       }

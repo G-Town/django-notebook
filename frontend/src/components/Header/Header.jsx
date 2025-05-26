@@ -18,7 +18,7 @@ function Header() {
 
   const NavItems = () => (
     <nav className="nav-list">
-      <Link to="/" className={`icon-wrapper ${themeClass}`}>
+      <Link to="/home" className={`icon-wrapper ${themeClass}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="22"
