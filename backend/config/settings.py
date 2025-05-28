@@ -22,7 +22,7 @@ SECRET_KEY = "django-insecure-9p(k&c2nood^q3qwvb4mqjqmi_p97u30nuhmzu*=qcq&tji-_d
 
 DEBUG = not IS_PRODUCTION
 
-# TODO: make more secure by specifying domain
+# TODO: specify domain to improve security
 ALLOWED_HOSTS = ["*"]
 
 # Basic SSL redirect
@@ -42,8 +42,10 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=2),
+    # "ACCESS_TOKEN_LIFETIME": timedelta(seconds=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=3),
+    # "REFRESH_TOKEN_LIFETIME": timedelta(seconds=5),
 }
 
 # Application definition

@@ -1,3 +1,4 @@
+// frontend/src/api.js
 import axios from "axios";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constants";
 
@@ -12,10 +13,9 @@ const api = axios.create({
 // request to authenticate use with backend API, so we don't have to
 // manually add it in the hearder of every request.
 
-// request interceptor
+// request interceptor - add auth header
 api.interceptors.request.use(
   (config) => {
-    // use access token as auth header if we have one
     const token = localStorage.getItem(ACCESS_TOKEN);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -27,6 +27,7 @@ api.interceptors.request.use(
   }
 );
 
+// Token refresh management
 let isRefreshing = false;
 let refreshSubscribers = []; // Array of { resolve, reject, originalRequestConfig }
 
@@ -36,9 +37,12 @@ let refreshSubscribers = []; // Array of { resolve, reject, originalRequestConfi
 // };
 
 const onRefreshed = (token) => {
-  refreshSubscribers.forEach(subscriber => {
-    if (subscriber.originalRequestConfig.headers) { // Ensure headers exist
-        subscriber.originalRequestConfig.headers['Authorization'] = `Bearer ${token}`;
+  refreshSubscribers.forEach((subscriber) => {
+    if (subscriber.originalRequestConfig.headers) {
+      // Ensure headers exist
+      subscriber.originalRequestConfig.headers[
+        "Authorization"
+      ] = `Bearer ${token}`;
     }
     subscriber.resolve(api(subscriber.originalRequestConfig));
   });
@@ -46,12 +50,11 @@ const onRefreshed = (token) => {
 };
 
 const onRefreshFailed = (error) => {
-  refreshSubscribers.forEach(subscriber => {
+  refreshSubscribers.forEach((subscriber) => {
     subscriber.reject(error);
   });
   refreshSubscribers = [];
 };
-
 
 // const addRefreshSubscriber = (callback) => {
 //   refreshSubscribers.push(callback);
@@ -61,7 +64,7 @@ const addRefreshSubscriber = (resolve, reject, originalRequestConfig) => {
   refreshSubscribers.push({ resolve, reject, originalRequestConfig });
 };
 
-// function to refersh the access token
+// function to refresh the access token
 // const refreshToken = async () => {
 //   try {
 //     const refreshToken = localStorage.getItem(REFRESH_TOKEN);
@@ -86,7 +89,7 @@ const addRefreshSubscriber = (resolve, reject, originalRequestConfig) => {
 //   }
 // };
 
-const refreshAuth = async () => { // Renamed to avoid confusion with any context/component functions
+const refreshAuth = async () => {
   try {
     const storedRefreshToken = localStorage.getItem(REFRESH_TOKEN);
     if (!storedRefreshToken) {
@@ -96,17 +99,25 @@ const refreshAuth = async () => { // Renamed to avoid confusion with any context
     // const response = await plainApi.post("/api/token/refresh/", {
     //   refresh: storedRefreshToken,
     // });
-    const response = await api.post("/api/token/refresh/", { refresh: storedRefreshToken }, { _isRefreshCall: true }); // Option A
+    const response = await api.post(
+      "/api/token/refresh/",
+      { refresh: storedRefreshToken },
+      { _isRefreshCall: true } // Prevent interceptor from handling this call
+    ); // Option A
 
-    localStorage.setItem(ACCESS_TOKEN, response.data.access);
-    api.defaults.headers.common["Authorization"] = `Bearer ${response.data.access}`;
-    onRefreshed(response.data.access); // Notify subscribers of success
-    return response.data.access;
+    const newAccessToken = response.data.access;
+    localStorage.setItem(ACCESS_TOKEN, newAccessToken);
+
+    api.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
+
+    onRefreshed(newAccessToken); // Notify subscribers of success
+    return newAccessToken;
   } catch (error) {
-    console.error("Token refresh failed in api.js (refreshTokenInternal):", error);
+    console.error("Token refresh failed:", error);
     localStorage.removeItem(ACCESS_TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
-    window.dispatchEvent(new CustomEvent('authFailureGlobal'));
+
+    window.dispatchEvent(new CustomEvent("authFailureGlobal")); // Notify AuthContext to logout
     onRefreshFailed(error); // Notify subscribers of failure
     throw error;
   }
@@ -157,12 +168,19 @@ const refreshAuth = async () => { // Renamed to avoid confusion with any context
 //   (error) => handleResponseError(error)
 // );
 
+// Response interceptor - handle 401s and refresh tokens
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    // Check if it's a 401, not a retry, and not the refresh call itself (if using Option A flag)
-    if (error.response && error.response.status === 401 && !originalRequest._retry && !originalRequest._isRefreshCall) {
+    // Check if it's a 401, not a retry, and not the refresh call itself
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest._isRefreshCall
+    ) {
+      // If already refreshing, queue this request
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           addRefreshSubscriber(resolve, reject, originalRequest);
@@ -173,13 +191,13 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        await refreshAuth (); // Use the renamed internal refresh token function
-        isRefreshing = false; // Reset after potential success of refreshTokenInternal
-                             // onRefreshed will have been called by refreshTokenInternal
-        return api(originalRequest); // Retry the original request
+        await refreshAuth();
+        isRefreshing = false; // Reset after potential success of refreshAuth
+        // onRefreshed will have been called by refreshAuth
+        return api(originalRequest); // Retry the original request with new token
       } catch (refreshError) {
         isRefreshing = false; // Reset on error too
-                             // onRefreshFailed will have been called by refreshTokenInternal
+        // onRefreshFailed will have been called by refreshAuth
         return Promise.reject(refreshError);
       }
     }

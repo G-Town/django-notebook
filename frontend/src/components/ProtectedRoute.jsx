@@ -4,8 +4,10 @@ import { useContext } from "react";
 import { AuthContext } from "../AuthContext";
 import LoadingIndicator from "../components/Loading"; // Make sure you have this component
 
+// eslint-disable-next-line react/prop-types
 function ProtectedRoute({ children }) {
   const { isAuthenticated, isLoading } = useContext(AuthContext);
+  console.log("🚀 ~ ProtectedRoute ~ isAuthenticated:", isAuthenticated)
 
   if (isLoading) {
     return <LoadingIndicator />; // Or any other loading spinner
