@@ -2,7 +2,13 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 # from rest_framework.decorators import action
-from .models import Folder, Note, Tag, NoteTag, FolderShare
+from .models import (
+    Folder,
+    Note,
+    Tag,
+    NoteTag,
+    # FolderShare
+)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -49,11 +55,13 @@ class NoteSerializer(serializers.ModelSerializer):
             "title",
             "content",
             "snippet",
-            "created_at",
-            "updated_at",
             "author",
             "folder",
+            "created_at",
+            "updated_at",
+            "imported_at",
             "tags",
+            "is_pinned",
         ]
         extra_kwargs = {"author": {"read_only": True}}
 
@@ -93,11 +101,20 @@ class FolderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Folder
-        fields = ["id", "name", "author", "parent", "children", "note_count"]
+        fields = [
+            "id",
+            "name",
+            "author",
+            "parent",
+            "children",
+            "note_count",
+            "created_at",
+            "imported_at"
+        ]
         extra_kwargs = {"author": {"read_only": True}}
 
 
-class FolderShareSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FolderShare
-        fields = ["folder", "shared_with", "permission"]
+# class FolderShareSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = FolderShare
+#         fields = ["folder", "shared_with", "permission"]

@@ -15,6 +15,8 @@ class Folder(models.Model):
     parent = models.ForeignKey(
         "self", on_delete=models.CASCADE, null=True, blank=True, related_name="children"
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    imported_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -26,15 +28,17 @@ class Folder(models.Model):
 
 class Note(models.Model):
     title = models.CharField(max_length=100)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notes")
     content = models.TextField()
     snippet = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notes")
     folder = models.ForeignKey(
         Folder, on_delete=models.CASCADE, related_name="notes", null=True, blank=True
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    imported_at = models.DateTimeField(null=True, blank=True)
     tags = models.ManyToManyField(Tag, through="NoteTag")
+    is_pinned = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         self.snippet = self.generate_snippet()
@@ -54,7 +58,7 @@ class NoteTag(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
 
 
-class FolderShare(models.Model):
-    folder = models.ForeignKey(Folder, on_delete=models.CASCADE)
-    shared_with = models.ForeignKey(User, on_delete=models.CASCADE)
-    permission = models.CharField(max_length=50)  # e.g., 'read', 'write'
+# class FolderShare(models.Model):
+#     folder = models.ForeignKey(Folder, on_delete=models.CASCADE)
+#     shared_with = models.ForeignKey(User, on_delete=models.CASCADE)
+#     permission = models.CharField(max_length=50)  # e.g., 'read', 'write'

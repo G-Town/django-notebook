@@ -66,8 +66,13 @@ class ICloudService:
         }
         try:
             root_folder, created = Folder.objects.get_or_create(
-                name="iCloud Import", author=user
+                name="iCloud Import", author=user, imported_at=timezone.now()
             )
+            # Set imported_at after creation
+            if created:
+                root_folder.imported_at = timezone.now()
+                root_folder.save()
+
             logger.debug(f"Root folder {'created' if created else 'retrieved'}")
 
             # First pass: clean imported folder record data
@@ -79,8 +84,13 @@ class ICloudService:
             for imported_folder in cleaned_folders:
                 folder_title = imported_folder["fields"]["title"]
                 folder, created = Folder.objects.get_or_create(
-                    name=folder_title, author=user
+                    name=folder_title,
+                    author=user,
                 )
+                # if it was newly created, set imported_at
+                if created:
+                    folder.imported_at = timezone.now()
+                    folder.save() # Save the change to imported_at
 
                 record_name = imported_folder.get("recordName")
                 folder_map[record_name] = {
@@ -149,6 +159,8 @@ class ICloudService:
                 notes_count += 1
                 if created:
                     new_notes_count += 1
+                    note.imported_at = timezone.now()
+                    note.save() # Save the change to imported_at
 
             except Exception as e:
                 logger.error(

@@ -3,14 +3,18 @@ from rest_framework import generics, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth.models import User
-from .models import Note, Folder, FolderShare, Tag, NoteTag
+from .models import (
+    Note, Folder,
+    # FolderShare,
+    Tag, NoteTag
+)
 from .serializers import (
     UserSerializer,
     NoteSerializer,
     TagSerializer,
     NoteTagSerializer,
     FolderSerializer,
-    FolderShareSerializer,
+    # FolderShareSerializer,
 )
 from services.icloud_service import ICloudService
 
@@ -81,6 +85,29 @@ class RecentNotesView(generics.ListAPIView):
         return Note.objects.filter(author=self.request.user).order_by("-updated_at")[:3]
 
 
+class PinnedNotesView(generics.ListAPIView):
+    serializer_class = NoteSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Note.objects.filter(author=self.request.user, is_pinned=True).order_by(
+            "-updated_at"
+        )
+
+
+class ActivityView(generics.ListAPIView):
+
+    serializer_class = NoteSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # For 'activity', returning recently updated notes is a common approach.
+        # Adjust as needed if 'activity' encompasses more (e.g., new folders, etc.).
+        return Note.objects.filter(author=self.request.user).order_by("-updated_at")[
+            :10
+        ]  # Get top 10 most recent activities
+
+
 ########## folders ##########
 class FolderViewSet(viewsets.ModelViewSet):
     # queryset = Folder.objects.all()
@@ -98,15 +125,27 @@ class FeaturedFoldersView(generics.ListAPIView):
     serializer_class = FolderSerializer
     permission_classes = [IsAuthenticated]
 
-    #TODO: want to feature new folders and folders with new notes
     def get_queryset(self):
-        return Folder.objects.filter(author=self.request.user).order_by("-id")[:3]
+        # To select new folders and folders with new notes:
+        # 1. Order by folder's own 'updated_at' (captures newly created and recently modified folders).
+        # 2. To account for "folders with new notes", we can annotate the folder with the
+        #    max updated_at of its notes and then order by that.
+        from django.db.models import Max
+        user = self.request.user
+        
+        return Folder.objects.filter(author=user).annotate(
+            last_note_update=Max('notes__updated_at') # Get the latest update time of any note in the folder
+        ).order_by(
+            '-created_at', # Prioritize newly created folders
+            '-last_note_update', # Then prioritize folders with recently updated notes
+            # '-updated_at' # Fallback to folder's own update time
+        ).distinct()[:5] # Get top 5 featured folders
 
 
-class FolderShareViewSet(viewsets.ModelViewSet):
-    queryset = FolderShare.objects.all()
-    serializer_class = FolderShareSerializer
-    permission_classes = [IsAuthenticated]
+# class FolderShareViewSet(viewsets.ModelViewSet):
+#     queryset = FolderShare.objects.all()
+#     serializer_class = FolderShareSerializer
+#     permission_classes = [IsAuthenticated]
 
 
 ########## tags ##########
@@ -151,17 +190,9 @@ def import_icloud_notes(request):
             {
                 "status": "error",
                 "message": str(e),
-                "traceback": e.traceback,
-                "debug_info": e.debug_info,
-            },
-            status=500,
-        )
-    except Exception as e:
-        return JsonResponse(
-            {
-                "status": "error",
-                "message": str(e),
+                # "traceback": e.traceback,
                 "error_location": f"{e.__traceback__.tb_frame.f_code.co_filename}:{e.__traceback__.tb_lineno}",
+                # "debug_info": e.debug_info,
             },
             status=500,
         )

@@ -3,3 +3,300 @@ INFO 2024-12-02 23:27:11,621 icloud_service - Starting folder processing with im
 DEBUG 2024-12-02 23:27:11,622 icloud_service - Root folder retrieved
 INFO 2024-12-02 23:27:11,622 icloud_service - Cleaned 13 folders
 INFO 2024-12-02 23:27:11,650 icloud_service - Import completed successfully
+INFO 2025-05-31 14:40:40,313 icloud_service - Retrieved 15 folders from iCloud
+INFO 2025-05-31 14:40:40,313 icloud_service - Starting folder processing with import ID: 5aec4d28-6be9-4574-bd5d-4afa6de2a24c
+ERROR 2025-05-31 14:40:40,315 icloud_service - Failed to process folders
+Traceback (most recent call last):
+  File "C:\Users\gerry\projects\django-notebook\backend\services\icloud_service.py", line 68, in process_folders
+    root_folder, created = Folder.objects.get_or_create(
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\query.py", line 948, in get_or_create
+    return self.get(**kwargs), False
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\query.py", line 635, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\query.py", line 1494, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\sql\query.py", line 1609, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\sql\query.py", line 1641, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\sql\query.py", line 1303, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\sql\query.py", line 1768, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'imported_at' into field. Choices are: author, author_id, children, created_at, id, name, notes, parent, parent_id
+INFO 2025-05-31 14:43:15,804 icloud_service - Retrieved 15 folders from iCloud
+INFO 2025-05-31 14:43:15,805 icloud_service - Starting folder processing with import ID: 064ce47b-3552-4f78-ae9f-eb168e053692
+ERROR 2025-05-31 14:43:15,805 icloud_service - Failed to process folders
+Traceback (most recent call last):
+  File "C:\Users\gerry\projects\django-notebook\backend\services\icloud_service.py", line 68, in process_folders
+    root_folder, created = Folder.objects.get_or_create(
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\query.py", line 948, in get_or_create
+    return self.get(**kwargs), False
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\query.py", line 635, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\query.py", line 1494, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\sql\query.py", line 1609, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\sql\query.py", line 1641, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\sql\query.py", line 1303, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\sql\query.py", line 1768, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'imported_at' into field. Choices are: author, author_id, children, created_at, id, name, notes, parent, parent_id
+INFO 2025-06-02 18:40:05,061 icloud_service - Retrieved 15 folders from iCloud
+INFO 2025-06-02 18:40:05,063 icloud_service - Starting folder processing with import ID: ae1daa19-09a8-45e6-ae72-a63a6784957e
+ERROR 2025-06-02 18:40:05,063 icloud_service - Failed to process folders
+Traceback (most recent call last):
+  File "C:\Users\gerry\projects\django-notebook\backend\services\icloud_service.py", line 68, in process_folders
+    root_folder, created = Folder.objects.get_or_create(
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\query.py", line 948, in get_or_create
+    return self.get(**kwargs), False
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\query.py", line 635, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\query.py", line 1494, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\sql\query.py", line 1609, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\sql\query.py", line 1641, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\sql\query.py", line 1303, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\env\Lib\site-packages\django\db\models\sql\query.py", line 1768, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'imported_at' into field. Choices are: author, author_id, children, created_at, id, name, notes, parent, parent_id
+INFO 2025-06-02 23:23:11,453 icloud_service - Retrieved 15 folders from iCloud
+INFO 2025-06-02 23:23:11,455 icloud_service - Starting folder processing with import ID: 6ca48ffc-528e-4b63-a6cf-4980b87d0fca
+DEBUG 2025-06-02 23:23:11,458 icloud_service - Root folder created
+INFO 2025-06-02 23:23:11,458 icloud_service - Cleaned 14 folders
+DEBUG 2025-06-02 23:23:11,459 icloud_service - Created new folder: kubeko
+DEBUG 2025-06-02 23:23:11,460 icloud_service - Created new folder: thermo
+DEBUG 2025-06-02 23:23:11,461 icloud_service - Created new folder: LLM suggestions
+DEBUG 2025-06-02 23:23:11,461 icloud_service - Created new folder: Formscapes
+DEBUG 2025-06-02 23:23:11,502 icloud_service - Created new folder: ML
+DEBUG 2025-06-02 23:23:11,503 icloud_service - Created new folder: gwern
+DEBUG 2025-06-02 23:23:11,503 icloud_service - Created new folder: reading
+DEBUG 2025-06-02 23:23:11,504 icloud_service - Created new folder: topics
+DEBUG 2025-06-02 23:23:11,504 icloud_service - Created new folder: write
+DEBUG 2025-06-02 23:23:11,505 icloud_service - Created new folder: prayers
+DEBUG 2025-06-02 23:23:11,505 icloud_service - Created new folder: OBC
+DEBUG 2025-06-02 23:23:11,506 icloud_service - Created new folder: EtherNote
+DEBUG 2025-06-02 23:23:11,507 icloud_service - Created new folder: Notes
+ERROR 2025-06-02 23:23:11,508 icloud_service - Error processing note
+Traceback (most recent call last):
+  File "C:\Users\gerry\projects\django-notebook\backend\services\icloud_service.py", line 150, in process_notes
+    imported_at=timezone.now() if created else None
+                                  ^^^^^^^
+UnboundLocalError: cannot access local variable 'created' where it is not associated with a value
+ERROR 2025-06-02 23:23:11,508 icloud_service - Failed to process folders
+Traceback (most recent call last):
+  File "C:\Users\gerry\projects\django-notebook\backend\services\icloud_service.py", line 114, in process_folders
+    notes_count, new_notes_count = self.process_notes(
+                                   ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 81, in inner
+    return func(*args, **kwds)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\services\icloud_service.py", line 150, in process_notes
+    imported_at=timezone.now() if created else None
+                                  ^^^^^^^
+UnboundLocalError: cannot access local variable 'created' where it is not associated with a value
+INFO 2025-06-02 23:23:28,966 icloud_service - Retrieved 15 folders from iCloud
+INFO 2025-06-02 23:23:28,966 icloud_service - Starting folder processing with import ID: 9a483c7e-c7fa-48a2-ab42-a426c6fab391
+DEBUG 2025-06-02 23:23:28,970 icloud_service - Root folder created
+INFO 2025-06-02 23:23:28,970 icloud_service - Cleaned 14 folders
+DEBUG 2025-06-02 23:23:28,972 icloud_service - Created new folder: kubeko
+DEBUG 2025-06-02 23:23:28,973 icloud_service - Created new folder: thermo
+DEBUG 2025-06-02 23:23:28,973 icloud_service - Created new folder: LLM suggestions
+DEBUG 2025-06-02 23:23:28,974 icloud_service - Created new folder: Formscapes
+DEBUG 2025-06-02 23:23:28,979 icloud_service - Created new folder: ML
+DEBUG 2025-06-02 23:23:28,980 icloud_service - Created new folder: gwern
+DEBUG 2025-06-02 23:23:28,980 icloud_service - Created new folder: reading
+DEBUG 2025-06-02 23:23:28,981 icloud_service - Created new folder: topics
+DEBUG 2025-06-02 23:23:28,982 icloud_service - Created new folder: write
+DEBUG 2025-06-02 23:23:28,983 icloud_service - Created new folder: prayers
+DEBUG 2025-06-02 23:23:28,983 icloud_service - Created new folder: OBC
+DEBUG 2025-06-02 23:23:28,984 icloud_service - Created new folder: EtherNote
+DEBUG 2025-06-02 23:23:28,985 icloud_service - Created new folder: Notes
+ERROR 2025-06-02 23:23:28,985 icloud_service - Error processing note
+Traceback (most recent call last):
+  File "C:\Users\gerry\projects\django-notebook\backend\services\icloud_service.py", line 150, in process_notes
+    imported_at=timezone.now() if created else None
+                                  ^^^^^^^
+UnboundLocalError: cannot access local variable 'created' where it is not associated with a value
+ERROR 2025-06-02 23:23:28,985 icloud_service - Failed to process folders
+Traceback (most recent call last):
+  File "C:\Users\gerry\projects\django-notebook\backend\services\icloud_service.py", line 114, in process_folders
+    notes_count, new_notes_count = self.process_notes(
+                                   ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 81, in inner
+    return func(*args, **kwds)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gerry\projects\django-notebook\backend\services\icloud_service.py", line 150, in process_notes
+    imported_at=timezone.now() if created else None
+                                  ^^^^^^^
+UnboundLocalError: cannot access local variable 'created' where it is not associated with a value
+INFO 2025-06-03 10:10:49,169 icloud_service - Retrieved 15 folders from iCloud
+INFO 2025-06-03 10:10:49,170 icloud_service - Starting folder processing with import ID: d50e92b3-afa7-4d06-986b-5ac105a5ea29
+DEBUG 2025-06-03 10:10:49,175 icloud_service - Root folder created
+INFO 2025-06-03 10:10:49,175 icloud_service - Cleaned 14 folders
+DEBUG 2025-06-03 10:10:49,176 icloud_service - Created new folder: kubeko
+DEBUG 2025-06-03 10:10:49,176 icloud_service - Created new folder: thermo
+DEBUG 2025-06-03 10:10:49,177 icloud_service - Created new folder: LLM suggestions
+DEBUG 2025-06-03 10:10:49,178 icloud_service - Created new folder: Formscapes
+DEBUG 2025-06-03 10:10:49,187 icloud_service - Created new folder: ML
+DEBUG 2025-06-03 10:10:49,187 icloud_service - Created new folder: gwern
+DEBUG 2025-06-03 10:10:49,188 icloud_service - Created new folder: reading
+DEBUG 2025-06-03 10:10:49,189 icloud_service - Created new folder: topics
+DEBUG 2025-06-03 10:10:49,190 icloud_service - Created new folder: write
+DEBUG 2025-06-03 10:10:49,190 icloud_service - Created new folder: prayers
+DEBUG 2025-06-03 10:10:49,191 icloud_service - Created new folder: OBC
+DEBUG 2025-06-03 10:10:49,192 icloud_service - Created new folder: EtherNote
+DEBUG 2025-06-03 10:10:49,192 icloud_service - Created new folder: Notes
+INFO 2025-06-03 10:10:49,244 icloud_service - Import completed successfully
+INFO 2025-06-05 14:29:50,066 icloud_service - Retrieved 15 folders from iCloud
+INFO 2025-06-05 14:29:50,069 icloud_service - Starting folder processing with import ID: fba14ae4-7470-45e1-8f19-bd599b674e34
+DEBUG 2025-06-05 14:29:50,071 icloud_service - Root folder created
+INFO 2025-06-05 14:29:50,071 icloud_service - Cleaned 14 folders
+DEBUG 2025-06-05 14:29:50,072 icloud_service - Created new folder: kubeko
+DEBUG 2025-06-05 14:29:50,073 icloud_service - Created new folder: thermo
+DEBUG 2025-06-05 14:29:50,074 icloud_service - Created new folder: LLM suggestions
+DEBUG 2025-06-05 14:29:50,074 icloud_service - Created new folder: Formscapes
+DEBUG 2025-06-05 14:29:50,115 icloud_service - Created new folder: ML
+DEBUG 2025-06-05 14:29:50,116 icloud_service - Created new folder: gwern
+DEBUG 2025-06-05 14:29:50,117 icloud_service - Created new folder: reading
+DEBUG 2025-06-05 14:29:50,117 icloud_service - Created new folder: topics
+DEBUG 2025-06-05 14:29:50,118 icloud_service - Created new folder: write
+DEBUG 2025-06-05 14:29:50,119 icloud_service - Created new folder: prayers
+DEBUG 2025-06-05 14:29:50,120 icloud_service - Created new folder: OBC
+DEBUG 2025-06-05 14:29:50,121 icloud_service - Created new folder: EtherNote
+DEBUG 2025-06-05 14:29:50,121 icloud_service - Created new folder: Notes
+INFO 2025-06-05 14:29:50,170 icloud_service - Import completed successfully
+INFO 2025-06-07 13:32:43,139 icloud_service - Retrieved 15 folders from iCloud
+INFO 2025-06-07 13:32:43,141 icloud_service - Starting folder processing with import ID: b3179145-ecb7-4e05-a82b-49eeb24e6791
+DEBUG 2025-06-07 13:32:43,147 icloud_service - Root folder created
+INFO 2025-06-07 13:32:43,148 icloud_service - Cleaned 14 folders
+DEBUG 2025-06-07 13:32:43,149 icloud_service - Created new folder: kubeko
+DEBUG 2025-06-07 13:32:43,150 icloud_service - Created new folder: thermo
+DEBUG 2025-06-07 13:32:43,151 icloud_service - Created new folder: LLM suggestions
+DEBUG 2025-06-07 13:32:43,151 icloud_service - Created new folder: Formscapes
+DEBUG 2025-06-07 13:32:43,192 icloud_service - Created new folder: ML
+DEBUG 2025-06-07 13:32:43,193 icloud_service - Created new folder: gwern
+DEBUG 2025-06-07 13:32:43,194 icloud_service - Created new folder: reading
+DEBUG 2025-06-07 13:32:43,195 icloud_service - Created new folder: topics
+DEBUG 2025-06-07 13:32:43,196 icloud_service - Created new folder: write
+DEBUG 2025-06-07 13:32:43,197 icloud_service - Created new folder: prayers
+DEBUG 2025-06-07 13:32:43,197 icloud_service - Created new folder: OBC
+DEBUG 2025-06-07 13:32:43,198 icloud_service - Created new folder: EtherNote
+DEBUG 2025-06-07 13:32:43,199 icloud_service - Created new folder: Notes
+INFO 2025-06-07 13:32:43,258 icloud_service - Import completed successfully
+INFO 2025-06-07 14:03:32,945 icloud_service - Retrieved 15 folders from iCloud
+INFO 2025-06-07 14:03:32,945 icloud_service - Starting folder processing with import ID: b8d73c44-509e-46e8-b11f-75ddacddc96f
+DEBUG 2025-06-07 14:03:32,950 icloud_service - Root folder created
+INFO 2025-06-07 14:03:32,950 icloud_service - Cleaned 14 folders
+INFO 2025-06-07 14:03:32,979 icloud_service - Import completed successfully
+INFO 2025-06-07 16:01:04,091 icloud_service - Retrieved 15 folders from iCloud
+INFO 2025-06-07 16:01:04,092 icloud_service - Starting folder processing with import ID: 8d1819b9-6edb-4338-86ca-0be3f0602564
+DEBUG 2025-06-07 16:01:04,097 icloud_service - Root folder created
+INFO 2025-06-07 16:01:04,097 icloud_service - Cleaned 14 folders
+DEBUG 2025-06-07 16:01:04,098 icloud_service - Created new folder: kubeko
+DEBUG 2025-06-07 16:01:04,099 icloud_service - Created new folder: thermo
+DEBUG 2025-06-07 16:01:04,099 icloud_service - Created new folder: LLM suggestions
+DEBUG 2025-06-07 16:01:04,100 icloud_service - Created new folder: Formscapes
+DEBUG 2025-06-07 16:01:04,108 icloud_service - Created new folder: ML
+DEBUG 2025-06-07 16:01:04,109 icloud_service - Created new folder: gwern
+DEBUG 2025-06-07 16:01:04,110 icloud_service - Created new folder: reading
+DEBUG 2025-06-07 16:01:04,110 icloud_service - Created new folder: topics
+DEBUG 2025-06-07 16:01:04,111 icloud_service - Created new folder: write
+DEBUG 2025-06-07 16:01:04,112 icloud_service - Created new folder: prayers
+DEBUG 2025-06-07 16:01:04,112 icloud_service - Created new folder: OBC
+DEBUG 2025-06-07 16:01:04,114 icloud_service - Created new folder: EtherNote
+DEBUG 2025-06-07 16:01:04,114 icloud_service - Created new folder: Notes
+INFO 2025-06-07 16:01:04,165 icloud_service - Import completed successfully
+INFO 2025-06-07 18:05:51,729 icloud_service - Retrieved 15 folders from iCloud
+INFO 2025-06-07 18:05:51,729 icloud_service - Starting folder processing with import ID: 9f631422-7b22-49d1-8ea3-c97281426dcd
+DEBUG 2025-06-07 18:05:51,734 icloud_service - Root folder created
+INFO 2025-06-07 18:05:51,734 icloud_service - Cleaned 14 folders
+DEBUG 2025-06-07 18:05:51,735 icloud_service - Created new folder: kubeko
+DEBUG 2025-06-07 18:05:51,736 icloud_service - Created new folder: thermo
+DEBUG 2025-06-07 18:05:51,738 icloud_service - Created new folder: LLM suggestions
+DEBUG 2025-06-07 18:05:51,738 icloud_service - Created new folder: Formscapes
+DEBUG 2025-06-07 18:05:51,744 icloud_service - Created new folder: ML
+DEBUG 2025-06-07 18:05:51,745 icloud_service - Created new folder: gwern
+DEBUG 2025-06-07 18:05:51,746 icloud_service - Created new folder: reading
+DEBUG 2025-06-07 18:05:51,747 icloud_service - Created new folder: topics
+DEBUG 2025-06-07 18:05:51,749 icloud_service - Created new folder: write
+DEBUG 2025-06-07 18:05:51,750 icloud_service - Created new folder: prayers
+DEBUG 2025-06-07 18:05:51,750 icloud_service - Created new folder: OBC
+DEBUG 2025-06-07 18:05:51,751 icloud_service - Created new folder: EtherNote
+DEBUG 2025-06-07 18:05:51,751 icloud_service - Created new folder: Notes
+INFO 2025-06-07 18:05:51,804 icloud_service - Import completed successfully
+INFO 2025-06-07 19:24:07,509 icloud_service - Retrieved 15 folders from iCloud
+INFO 2025-06-07 19:24:07,510 icloud_service - Starting folder processing with import ID: 3b0be48d-88b7-4fa2-aead-af2452f8d658
+DEBUG 2025-06-07 19:24:07,514 icloud_service - Root folder created
+INFO 2025-06-07 19:24:07,514 icloud_service - Cleaned 14 folders
+DEBUG 2025-06-07 19:24:07,515 icloud_service - Created new folder: kubeko
+DEBUG 2025-06-07 19:24:07,516 icloud_service - Created new folder: thermo
+DEBUG 2025-06-07 19:24:07,517 icloud_service - Created new folder: LLM suggestions
+DEBUG 2025-06-07 19:24:07,517 icloud_service - Created new folder: Formscapes
+DEBUG 2025-06-07 19:24:07,524 icloud_service - Created new folder: ML
+DEBUG 2025-06-07 19:24:07,525 icloud_service - Created new folder: gwern
+DEBUG 2025-06-07 19:24:07,526 icloud_service - Created new folder: reading
+DEBUG 2025-06-07 19:24:07,526 icloud_service - Created new folder: topics
+DEBUG 2025-06-07 19:24:07,527 icloud_service - Created new folder: write
+DEBUG 2025-06-07 19:24:07,528 icloud_service - Created new folder: prayers
+DEBUG 2025-06-07 19:24:07,528 icloud_service - Created new folder: OBC
+DEBUG 2025-06-07 19:24:07,530 icloud_service - Created new folder: EtherNote
+DEBUG 2025-06-07 19:24:07,530 icloud_service - Created new folder: Notes
+INFO 2025-06-07 19:24:07,585 icloud_service - Import completed successfully
