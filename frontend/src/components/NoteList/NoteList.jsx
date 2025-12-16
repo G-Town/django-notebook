@@ -33,10 +33,6 @@ const NoteList = ({ folderId, handleNoteSelect, selectedNoteId }) => {
     loadNotes();
   }, [folderId]);
 
-  // const handleEdit = (id) => {
-  //   navigate(`/note/${id}`);
-  // };
-
   // const handleDelete = (id) => {
   //   api
   //     .delete(`/api/notes/${id}/`)

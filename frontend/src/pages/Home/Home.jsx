@@ -4,12 +4,18 @@ import {
   searchItems,
   clearHomeDataCache,
 } from "../../services/homeService";
+import { useContext } from "react";
+import { AuthContext } from "../../AuthContext";
+import UserForm from "../../components/UserForm";
 import SearchBar from "../../components/SearchBar";
 import Dashboard from "../../components/Dashboard";
 import LoadingIndicator from "../../components/Loading";
 import "./Home.css";
 
 const Home = () => {
+
+  const { isAuthenticated } = useContext(AuthContext);
+
   // Single data state object to manage all home data
   const [homeData, setHomeData] = useState({
     user: {},
@@ -37,10 +43,6 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    loadAllData();
-  }, []);
-
   const handleSearch = async (query) => {
     if (!query.trim()) {
       setSearchResults(null);
@@ -64,6 +66,23 @@ const Home = () => {
     clearHomeDataCache();
     loadAllData();
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadAllData();
+    }
+  }, [isAuthenticated]);
+  
+  // If not authenticated, show login form
+  if (!isAuthenticated) {
+    return (
+      <div className="login-container">
+        <h1>Welcome to NotesApp</h1>
+        <p>Please login to continue</p>
+        <UserForm route="/api/token/" method="login" />
+      </div>
+    );
+  }
 
   if (loading && !homeData.user.name) {
     return <LoadingIndicator />;

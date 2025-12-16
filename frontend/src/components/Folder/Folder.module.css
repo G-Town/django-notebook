@@ -1,42 +1,34 @@
 /* foler.module.css */
 .folderCard {
-  /* Renamed from .folder-card */
   position: relative;
   display: flex;
   width: auto;
   align-items: center;
   cursor: pointer;
-  /* color: darkslategray; */
   /* color: var(--theme-text); */
-  /* background-color: floralwhite; */
   background-color: var(--theme-accent-subtle);
-  padding: 3px 10px;
-  margin: 2px 0px;
-  border-radius: 5px;
+  padding: 4px 10px;
+  margin: 3px 0px;
+  border-radius: 6px;
   border: solid 1px #63636355;
   /* border-bottom: 3px solid rgba(155, 155, 155, 0.448); */
 }
 
 .folderCard:hover {
-  /* Renamed from .folder-card:hover */
-  /* background-color: beige;
-  background-color: cornsilk; */
-  padding: 3px 10px;
-  margin: 2px 0px;
+  /* padding: 4px 10px; */
+  /* margin: 3px 0px; */
   border: 1px solid var(--theme-accent-contrast);
   /* outline: 1px solid; */
 }
 
 .folderCard.activeFolder {
-  /* Renamed from .folder-card.active-folder */
   pointer-events: all;
   opacity: 1;
-  background-color: #f0f0f0;
+  background-color: var(--theme-primary);
   border: 1px solid lightslategray;
 }
 
 .folderCardItems {
-  /* Renamed from .folder-card-items */
   display: flex;
   align-items: center;
   /* justify-content: space-between; */
@@ -45,10 +37,9 @@
   overflow: hidden;
 }
 
-.expandIcon {
-  /* Renamed from .expand-icon */
+/* .expandIcon {
   display: flex;
-}
+} */
 
 .folderCardItems h6 {
   /* Remains as is, targets h6 within .folderCardItems */

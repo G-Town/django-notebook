@@ -14,7 +14,7 @@
 
 .folders-container {
   padding: 11px;
-  width: 12rem;
+  width: 14rem;
   /* background-color: #ddd; */
 }
 
@@ -22,7 +22,7 @@
   padding: 8px;
   width: 18rem;
   background-color: rgba(255, 250, 240, 0.1);
-  background-color: var(--theme-shadow);
+  background-color: var(--theme-accent-main-transparent);
 }
 
 /* .notebook-container.menu-open {

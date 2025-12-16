@@ -5,7 +5,6 @@ import { ThemeProvider } from "./context/ThemeContext";
 // Pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Notebook from "./pages/Notebook";
 import Import from "./pages/Import";
@@ -21,7 +20,7 @@ function Logout() {
   useEffect(() => {
     logout();
   }, [logout]);
-  return <Navigate to="/login" />;
+  return <Navigate to="/" />;
 }
 
 function RegisterAndLogout() {
@@ -41,19 +40,11 @@ function App() {
               <div className="main-content">
                 <Routes>
                   {/* Public Routes */}
-                  <Route path="/" element={<Landing />} />
+                  <Route path="/" element={<Home />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/logout" element={<Logout />} />
                   <Route path="/register" element={<RegisterAndLogout />} />
                   {/* Protected Routes */}
-                  <Route
-                    path="/home"
-                    element={
-                      <ProtectedRoute>
-                        <Home />
-                      </ProtectedRoute>
-                    }
-                  />
                   <Route
                     path="/notebook"
                     element={

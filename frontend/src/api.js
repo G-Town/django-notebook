@@ -31,11 +31,6 @@ api.interceptors.request.use(
 let isRefreshing = false;
 let refreshSubscribers = []; // Array of { resolve, reject, originalRequestConfig }
 
-// const onRefreshed = (token) => {
-//   refreshSubscribers.forEach((callback) => callback(token));
-//   refreshSubscribers = [];
-// };
-
 const onRefreshed = (token) => {
   refreshSubscribers.forEach((subscriber) => {
     if (subscriber.originalRequestConfig.headers) {
@@ -56,38 +51,9 @@ const onRefreshFailed = (error) => {
   refreshSubscribers = [];
 };
 
-// const addRefreshSubscriber = (callback) => {
-//   refreshSubscribers.push(callback);
-// };
-
 const addRefreshSubscriber = (resolve, reject, originalRequestConfig) => {
   refreshSubscribers.push({ resolve, reject, originalRequestConfig });
 };
-
-// function to refresh the access token
-// const refreshToken = async () => {
-//   try {
-//     const refreshToken = localStorage.getItem(REFRESH_TOKEN);
-//     if (!refreshToken) {
-//       // Added check for refresh token
-//       throw new Error("No refresh token available");
-//     }
-//     // console.log("🚀 ~ refreshToken ~ refreshToken:", refreshToken);
-//     const response = await api.post("/api/token/refresh/", {
-//       refresh: refreshToken,
-//     });
-//     console.log("🚀 ~ refreshToken ~ response:", response);
-//     localStorage.setItem(ACCESS_TOKEN, response.data.access);
-//     return response.data.access;
-//   } catch (error) {
-//     console.error("Token refresh failed:", error);
-//     localStorage.removeItem(ACCESS_TOKEN);
-//     localStorage.removeItem(REFRESH_TOKEN);
-//     console.log("🚀 ~ refreshToken ~ authFailureGlobal");
-//     window.dispatchEvent(new CustomEvent("authFailureGlobal"));
-//     throw error;
-//   }
-// };
 
 const refreshAuth = async () => {
   try {
@@ -95,15 +61,11 @@ const refreshAuth = async () => {
     if (!storedRefreshToken) {
       throw new Error("No refresh token available");
     }
-    // Use Option B: Separate Axios instance for clarity
-    // const response = await plainApi.post("/api/token/refresh/", {
-    //   refresh: storedRefreshToken,
-    // });
     const response = await api.post(
       "/api/token/refresh/",
       { refresh: storedRefreshToken },
       { _isRefreshCall: true } // Prevent interceptor from handling this call
-    ); // Option A
+    );
 
     const newAccessToken = response.data.access;
     localStorage.setItem(ACCESS_TOKEN, newAccessToken);
@@ -122,51 +84,6 @@ const refreshAuth = async () => {
     throw error;
   }
 };
-
-// response interceptor to handle 401 errors and refresh the token
-// const handleResponseError = async (error) => {
-//   console.log("🚀 ~ handleResponseError ~");
-//   const originalRequest = error.config;
-//   if (
-//     error.response &&
-//     error.response.status === 401 &&
-//     !originalRequest._retry
-//   ) {
-//     if (isRefreshing) {
-//       // If already refreshing, queue the request
-//       console.log("🚀 ~ handleResponseError ~ isRefreshing:", isRefreshing)
-//       return new Promise((resolve) => {
-//         addRefreshSubscriber((token) => {
-//           originalRequest.headers["Authorization"] = `Bearer ${token}`;
-//           resolve(api(originalRequest));
-//         });
-//       });
-//     }
-
-//     originalRequest._retry = true;
-//     isRefreshing = true;
-
-//     try {
-//       console.log("🚀 ~ try refreshAuth() ~");
-//       const newAccessToken = await refreshAuth();
-//       // console.log("🚀 ~ handleResponseError ~ newAccessToken:", newAccessToken)
-//       isRefreshing = false;
-//       onRefreshed(newAccessToken);
-
-//       api.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
-//       originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-//       return api(originalRequest);
-//     } catch (error) {
-//       return Promise.reject(error);
-//     }
-//   }
-//   return Promise.reject(error);
-// };
-
-// api.interceptors.response.use(
-//   (response) => response,
-//   (error) => handleResponseError(error)
-// );
 
 // Response interceptor - handle 401s and refresh tokens
 api.interceptors.response.use(

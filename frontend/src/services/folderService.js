@@ -1,16 +1,16 @@
 import api from "../api";
-import { getFromLocalStorage, saveToLocalStorage } from "./storageService";
+import { createCacheService } from "./baseCacheService";
 
-export const getFolders = async () => {
-  const cachedFolders = getFromLocalStorage("folders");
-  if (cachedFolders) {
-    return cachedFolders;
-  }
-  try {
+const foldersCache = createCacheService("folders",  5 * 60 * 1000);
+
+export const getFolders = async (options = {}) => {
+  const fetchFunction = async () => {
     const response = await api.get("/api/folders/");
-    const fetchedFolders = response.data;
-    // saveToLocalStorage("folders", fetchedFolders);
-    return fetchedFolders;
+    return response.data;
+  };
+
+  try {
+    return await foldersCache.getData(fetchFunction, options);
   } catch (error) {
     console.error("Error fetching folders:", error);
     return [];
@@ -20,11 +20,12 @@ export const getFolders = async () => {
 export const createFolder = async (folderData) => {
   try {
     const response = await api.post("/api/folders/", folderData);
-    const updatedFolders = await getFolders();
-    saveToLocalStorage("folders", updatedFolders);
-    return response.data;
+    const newFolder = response.data;
+    foldersCache.optomisticUpdate((folders) => [...folders, newFolder]);
+    return newFolder;
   } catch (error) {
     console.error("Error creating folder:", error);
+    foldersCache.invalidate();
     throw error;
   }
 };
@@ -32,11 +33,16 @@ export const createFolder = async (folderData) => {
 export const updateFolder = async (folderId, folderData) => {
   try {
     const response = await api.put(`/api/folders/${folderId}/`, folderData);
-    const updatedFolders = await getFolders();
-    saveToLocalStorage("folders", updatedFolders);
-    return response.data;
+    const updatedFolder = response.data;
+    foldersCache.optomisticUpdate(folders => 
+      folders.map(folder => 
+        folder.id === folderId ? updatedFolder : folder
+      )
+    );
+    return updatedFolder;
   } catch (error) {
     console.error("Error updating folder:", error);
+    foldersCache.invalidate();
     throw error;
   }
 };
@@ -44,8 +50,9 @@ export const updateFolder = async (folderId, folderData) => {
 export const deleteFolder = async (folderId) => {
   try {
     await api.delete(`/api/folders/${folderId}/`);
-    const updatedFolders = await getFolders();
-    saveToLocalStorage("folders", updatedFolders);
+    foldersCache.optomisticUpdate(folders => 
+      folders.filter(folder => folder.id !== folderId)
+    );
     return true;
   } catch (error) {
     console.error("Error deleting folder:", error);
@@ -53,15 +60,10 @@ export const deleteFolder = async (folderId) => {
   }
 };
 
-// export const handleRenameSubmit = async (e) => {
-//   e.preventDefault();
-//   if (editFolderName.trim()) {
-//     try {
-//       await updateFolder(folder.id, { name: editFolderName.trim() });
-//       setIsEditing(false);
-//       // You might want to trigger a re-fetch of folders here
-//     } catch (error) {
-//       console.error("Error renaming folder:", error);
-//     }
-//   }
-// };
+export const refreshFolders = async () => {
+  return await getFolders({ forceRefresh: true });
+};
+
+export const invalidateFoldersCache = () => {
+  foldersCache.invalidate();
+};

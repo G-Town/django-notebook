@@ -19,8 +19,8 @@ export const fetchHomeData = async () => {
     ] = await Promise.all([
       api.get("/api/user/"),
       api.get("/api/recent/"),
-      api.get("/api/featured/"),
-      api.get("/api/pinned/"),
+      api.get("/api/featured-folders/"),
+      api.get("/api/pinned-notes/"),
       api.get("/api/activity/"),
       api.get("/api/tags/")
     ]);

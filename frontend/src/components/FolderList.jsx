@@ -11,11 +11,11 @@ const FolderList = ({
 }) => {
   const [folders, setFolders] = useState([]);
   // tracking expanded folders at tree level for centralized control,
-  // consider implementing "expand all" and "collapse all"
+  // TODO: consider implementing "expand all" and "collapse all"
   const [expandedFolders, setExpandedFolders] = useState(new Set());
   const [isLoading, setIsLoading] = useState(false);
 
-  // defined outside hook so it can be called from Folder component
+  // defined outside useEffect hook so it can be called from Folder component
   const loadFolders = async () => {
     setIsLoading(true);
     try {
@@ -29,6 +29,7 @@ const FolderList = ({
   };
 
   useEffect(() => {
+    console.log("FolderList useEffect")
     loadFolders();
   }, []);
 

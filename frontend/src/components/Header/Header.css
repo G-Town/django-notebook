@@ -1,7 +1,7 @@
 .site-header {
-  background-color: var(--theme-secondary);
+  background-color: var(--theme-primary);
   padding: 0.5rem 0.75rem;
-  border-bottom: solid var(--theme-accent-contrast) 0.1rem;
+  border-bottom: solid var(--theme-accent-contrast) 0.5px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;

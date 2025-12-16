@@ -3,8 +3,6 @@ import { useState } from "react";
 import FolderList from "../components/FolderList";
 import NoteList from "../components/NoteList";
 import Note from "../pages/Note";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faPlus } from "@fortawesome/free-solid-svg-icons";
 // import api from "../api";
 import "../styles/Notebook.css";
 
@@ -16,35 +14,18 @@ const Notebook = () => {
 
   // const [isLoading, setIsLoading] = useState(false);
   const [isAnyMenuOpen, setIsAnyMenuOpen] = useState(false);
-  // console.log("🚀 ~ Notebook ~ isAnyMenuOpen:", isAnyMenuOpen);
-
-  // const handleCreate = () => {
-  //   navigate(`/note/new`);
-  // };
-
-  // const addNewFolder = async () => {
-  //   if (newFolderName.trim()) {
-  //     try {
-  //       await createFolder({ name: newFolderName.trim() });
-  //       setNewFolderName("");
-  //       await loadFolders();
-  //     } catch (error) {
-  //       console.error("Error creating new folder:", error);
-  //     }
-  //   }
-  // };
 
   const handleNoteSelect = (noteId) => {
     setSelectedNoteId(noteId);
   };
 
   const handleNoteEdit = (noteId) => {
-    // Implement edit functionality
+    // TODO: Implement edit functionality
     console.log("Editing note:", noteId);
   };
 
   const handleNoteDelete = (noteId) => {
-    // Implement delete functionality
+    // TODO: Implement delete functionality
     console.log("Deleting note:", noteId);
     setSelectedNoteId(null);
   };
@@ -55,9 +36,6 @@ const Notebook = () => {
   return (
     // <div className="notebook-container">
     <div className={`notebook-container ${isAnyMenuOpen ? "menu-open" : ""}`}>
-      {/* <button className="plus-button" onClick={handleCreate}>
-        <FontAwesomeIcon icon={faPlus} />
-      </button> */}
       <div className="notebook-nav">
         <div className="folders-container">
           <FolderList

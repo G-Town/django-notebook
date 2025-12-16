@@ -18,7 +18,7 @@ function Header() {
 
   const NavItems = () => (
     <nav className="nav-list">
-      <Link to="/home" className={`icon-wrapper ${themeClass}`}>
+      <Link to="/" className={`icon-wrapper ${themeClass}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="22"
@@ -84,7 +84,8 @@ function Header() {
 
   return (
     <header className="site-header">
-      {isAuthenticated && <NavItems />}
+      {isAuthenticated ? <NavItems /> : <div />
+      }
       <Link to="/">
         <img src={logo} alt="Site Logo" className="logo" />
       </Link>

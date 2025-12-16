@@ -69,6 +69,24 @@ const Dashboard = ({
           </button>
         </Card>
 
+        <Card title="Statistics" className={styles.statistics}>
+          <div className={styles.statItem}>
+            <span className={styles.statLabel}>Notes: </span>
+            <span className={styles.statValue}>{user.noteCount || 0}</span>
+          </div>
+          <div className={styles.statItem}>
+            <span className={styles.statLabel}>Folders: </span>
+            <span className={styles.statValue}>{user.folderCount || 0}</span>
+          </div>
+          <div className={styles.statItem}>
+            <span className={styles.statLabel}>Tags: </span>
+            <span className={styles.statValue}>{user.tagCount || 0}</span>
+          </div>
+        </Card>
+      </div>
+
+      {/* Column 2 */}
+      <div className={styles.dashColumn}>
         <Card title="Pinned Items" className={styles.pinnedItems}>
           {pinnedItems.length > 0 ? (
             <ul>
@@ -85,10 +103,7 @@ const Dashboard = ({
             <p className={styles.emptyMessage}>No pinned items yet</p>
           )}
         </Card>
-      </div>
 
-      {/* Column 2 */}
-      <div className={styles.dashColumn}>
         <Card title="Recent Notes" className={styles.recentNotes}>
           {recentNotes.length > 0 ? (
             <>
@@ -131,29 +146,10 @@ const Dashboard = ({
             <p className={styles.emptyMessage}>No featured folders</p>
           )}
         </Card>
-
-        <Card title="Statistics" className={styles.statistics}>
-          <div className={styles.statItem}>
-            <span className={styles.statLabel}>Notes: </span>
-            <span className={styles.statValue}>{user.noteCount || 0}</span>
-          </div>
-          <div className={styles.statItem}>
-            <span className={styles.statLabel}>Folders: </span>
-            <span className={styles.statValue}>{user.folderCount || 0}</span>
-          </div>
-          <div className={styles.statItem}>
-            <span className={styles.statLabel}>Tags: </span>
-            <span className={styles.statValue}>{user.tagCount || 0}</span>
-          </div>
-        </Card>
       </div>
 
       {/* Column 3 */}
       <div className={styles.dashColumn}>
-        <Card title="Tips" className={styles.userTips}>
-          <p>Did you know you can organize your notes with tags?</p>
-        </Card>
-
         <Card title="Activity Feed" className={styles.activityFeed}>
           {activityFeed.length > 0 ? (
             <ul>
@@ -174,6 +170,10 @@ const Dashboard = ({
 
         <Card title="Tags">
           <TagCloud tags={tags} />
+        </Card>
+        
+        <Card title="Tips" className={styles.userTips}>
+          <p>Did you know you can organize your notes with tags?</p>
         </Card>
       </div>
     </div>
